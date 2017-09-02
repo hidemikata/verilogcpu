@@ -5,7 +5,7 @@ input [31:0]ope;
 input [31:0]immidiate_data;
 input [7:0]registor_in;
 output [7:0]alu_result_bus;
-//hoge
+
 always @(posedge clock_5) begin
 	if (ope == 8'h55) begin 
 		//1‰ñ–Ú‚Ì–½—ßsub esp, 0xZZ
