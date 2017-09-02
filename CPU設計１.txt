@@ -1,0 +1,74 @@
+00000000  55                push ebp
+00000001  89E5              mov ebp,esp
+00000003  B802000000        mov eax,0x2
+00000008  5D                pop ebp
+00000009  C3                ret            pop eipとおなじ
+0000000A  55                push ebp
+0000000B  89E5              mov ebp,esp
+0000000D  E218EEFFFFFF        call dword 0x0
+00000012  5D                pop ebp
+00000013  C3                ret
+
+
+1バイト目プレフィックス
+プレフィックスは　0xf1, f2, f3, 26, 2e, 36, 3e, 64,65,66,67
+2バイト目がオペコード
+
+
+必ずフェッチしたらeipは＋１する。
+その１
+0000000A  55                push ebp
+[レジスタへの入力ON/OFF]
+esp, ebp, ALUからレジスタへ行くと見せかけてアドレス出力ポートへ行く。
+sub esp, 0xZZ（スタックポインタZZ分移動）
+mov [esp], ebp　アドレスに書き込む
+と同じ動作をする。
+２サイクルようする。
+[入力セレクタ]
+ebp、esp
+備考
+普通にALUを通過するが、一周回ってアドレス出力ポートへ行く。アドレス出力レジスタてきなもの。へ。
+
+↓
+その２
+0000000B  89E5              mov ebp,esp
+[レジスタへの入力ON/OFF]
+ebp
+[入力セレクタ]
+esp
+
+
+その３
+0000000D  E8EEFFFFFF        call dword 0x0
+push eip
+jump 0x0
+[レジスタへの入力ON/OFF]
+push -> eipの次のアドレス, esp, 出力ポート
+jump -> eip
+[入力セレクタ]
+push -> eip, esp
+jump -> immidiateデータ
+
+その４
+00000003  B802000000        mov eax,0x2
+[レジスタへの入力ON/OFF]
+eax
+[入力セレクタ]
+immidiateデータ
+
+その５
+00000008  5D                pop ebp
+[レジスタへの入力ON/OFF]
+esp, ebp, 
+pushの逆とすると
+mov ebp, [esp]　アドレスから取り出し
+add esp, 0xZZ（スタックポインタZZ分移動）
+[入力セレクタ]
+ebp、esp、アドレスからデータを引いてくるバス。immidiateデータと同様？
+
+その６
+00000009  C3                ret            pop eipとおなじ
+
+
+
+
