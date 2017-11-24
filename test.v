@@ -16,6 +16,12 @@ wire [3:0]select_2;
 reg clk;
 reg reset;
 wire [31:0]ope;
+wire [31:0]eip;
+wire [3:0]selected_reg_load;
+wire [31:0]alu_result_bus;
+wire [31:0]ebp;
+wire [31:0]esp;
+wire [31:0]selected_registor_output;
 
 parameter STEP = 1000;
 
@@ -26,36 +32,20 @@ end
 
 cpu_clock clock(clk, reset, clock_1, clock_2, clock_3, clock_4, clock_5, clock_6, clock_7, clock_8);
 
-fetch fetch(reset, clock_1, ope);//32bitのopeが手に入る
+fetch fetch(reset, clock_1, ope, eip);//32bitのopeが手に入る
 wire [3:0]num_of_ope;
 decode decode(reset, clock_2, ope, reg_load_1, select_1, reg_load_2, select_2, num_of_ope);
-//reg_load_1がclock_1が変わったタイミングで変わってしまう。これでいいのか？た
-//ぶんだめ。あかんねやったら中でレジスタ持たせる
-//
-wire [7:0]selected_registor_output;
-wire [31:0]alu_result_bus;
 
-wire [31:0]eip;
-eip_register eip_register(1'b0, 4'h0, alu_result_bus, eip);
-wire [31:0]ebp;
-ebp_register ebp_register(1'b0, 4'h0, alu_result_bus, ebp);
-wire [31:0]esp;
-esp_register esp_register(1'b0, 4'h0, alu_result_bus, esp);
-selector selector(select_1, select_2, eip, ebp, esp, selected_registor_output);
+eip_register eip_register(clock_5, reset, selected_reg_load, alu_result_bus, eip);
+ebp_register ebp_register(clock_5, reset, selected_reg_load, alu_result_bus, ebp);
+esp_register esp_register(clock_5, reset, selected_reg_load, alu_result_bus, esp);
+selector selector(select_1, select_2, eip, ebp, esp, selected_registor_output);//aluに入力するレジスタを選択する。
 
-////clockは何を入れたらいいのかわからん。2命令目用でselectorをわけたらいいのか？
-//
 //wire immidiate_data;
 //immidiator(ope, eip,immidiate_data);//こいつはもしかしたら2クロック目かもしれん。eipはすすんだらだめ。
 alu alu(clock_5, ope, 32'h0000, selected_registor_output, alu_result_bus);
-wire [3:0]selected_reg_load;
 alu_result_selector alu_result_selector(clock_5, 1'b0, reg_load_1, reg_load_2, selected_reg_load);//1命令目か2命令目かで入力先レジスタがちがうのでセレクタをかます。
 //第2引数は2命令目。aluとクロックを合わすこと。
-
-
-
-
-
 
 
 
@@ -75,13 +65,22 @@ initial begin
 	#(STEP*40);
 	$finish;
 end
-
-initial $monitor("1:[%d],2:[%d],3:[%d],4:[%d],5:[%d],6:[%d],7:[%d],8:[%d]llllfetch.eip[%h]fetch.data[%h], ope[%h], numope[%d]",
+//initial $monitor("1:[%d],2:[%d],3:[%d],4:[%d],5:[%d],6:[%d],7:[%d],8:[%d]fetch.eip[%h]fetch.data[%h], ope[%h], numope[%d]",
+//	clock_1, clock_2, clock_3, clock_4, clock_5, clock_6, clock_7, clock_8,
+//	fetch.eip, fetch.data[31:24], ope, num_of_ope);
+initial $monitor("%d%d%d%d%d%d%d%d,fetch.eip[%h]fetch.data[%h],ope[%h],numope[%d],reg_select[%d],alu_rslt[%d]",
 	clock_1, clock_2, clock_3, clock_4, clock_5, clock_6, clock_7, clock_8,
-	fetch.eip, fetch.data[31:24], ope, num_of_ope);
+	fetch.eip, fetch.data[31:24], ope, num_of_ope,selected_registor_output, alu_result_bus);
+
 
 //initial $monitor("reg_load_1[%h], select_1[%h], reg_load_2[%h], select_2[%h]",reg_load_1, select_1, reg_load_2, select_2);
 endmodule
 
-// 2017/10/15
+// 2017/11/24
 //iverilog.exe .\test.v .\cpu_clock.v .\eip_register.v .\fetch.v .\memory.v .\decode.v .\ebp_register.v .\selector.v .\alu.v alu_result_selector.v
+//55の命令がespに入るところまでできた（とおもうのでそこからかくにんすること。）
+//そのまえに、32ビットだと思ってたところffffのやつが16ビットなので修正するとこ
+//ろから。
+//それができたら2サイクル目の実装をやる。
+//
+//

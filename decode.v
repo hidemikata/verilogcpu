@@ -2,15 +2,14 @@ module decode(reset, clk2, ope, reg_load_1, select_1, reg_load_2, select_2, num_
 input wire reset;
 input wire clk2;
 input wire [31:0]ope;
-output wire [3:0]reg_load_1;//どのレジスタに入力するか1命令目
-output wire [3:0]reg_load_2;//どのレジスタに入力するか2命令目
-output wire [3:0]select_1;//どのレジスタの出力を使うか1命令目
-output wire [3:0]select_2;//どのレジスタの出力を使うか2命令目
-output reg [3:0]num_of_ope;//eipに足し算する値
-wire [7:0]ope1;//opecode1バイト目
+output wire [3:0]reg_load_1;//ALUの出力をどのレジスタに入力するか1命令目
+output wire [3:0]reg_load_2;//ALUの出力をどのレジスタに入力するか2命令目
+output wire [3:0]select_1;//ALUの入力をどのレジスタの出力を使うか1命令目
+output wire [3:0]select_2;//ALUの入力をどのレジスタの出力を使うか2命令目
+output reg [3:0]num_of_ope;//eipに足し算する値//どこで足し算するか課題
+wire [7:0]ope1;//opecode1バイト目//regはfetchが持ってる
 
 assign ope1 = ope[31:24];//上位
-
  
 assign reg_load_1 = load_reg_1(ope1);
 assign reg_load_2 = load_reg_2(ope1);

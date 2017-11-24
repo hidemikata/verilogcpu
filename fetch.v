@@ -1,11 +1,9 @@
-module fetch(reset, clk1, ope_data);
+module fetch(reset, clk1, ope_data, eip);
 input wire reset;
 input wire clk1;
+input wire [31:0]eip;
 output reg [31:0]ope_data;
-wire [31:0]eip;
 wire [31:0]data;
-
-eip_register eip_register(reset, 4'h0, 32'h0000, eip);
 
 program_memory program_memory (reset, eip, data);
 

@@ -1,18 +1,24 @@
-module eip_register(reset,read_or_write, write_data, eip);
+module eip_register(clock_5, reset, read_or_write, write_data, eip);
+input wire clock_5;
 input wire reset;
 input wire [3:0]read_or_write;
 input wire [31:0]write_data;
 output reg [31:0]eip;
+//クロックを入れないと、read_or_writeが切り替わったら勝手に書き換えてしまう。
 
 always @(*)begin
 	if (reset == 1'b1) begin
-		eip <= 0;
-	end
-	else begin
-		if (read_or_write == 4'h3) begin
-			eip <= write_data;
-		end
+		eip <= 32'h0000;//ここで初期値のアドレスを入れる。
 	end
 end
+
+always @(posedge clock_5)begin//2クロック目はここに足す
+	if (read_or_write == 4'h3) begin
+		eip <= write_data;
+	end
+end
+
+
+
 endmodule
 
