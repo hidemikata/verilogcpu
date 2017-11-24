@@ -1,6 +1,6 @@
 module program_memory(reset, addr, ope);
 input wire reset;
-input wire [7:0]addr;
+input wire [31:0]addr;
 output wire [31:0]ope;
 reg [7:0]mem[0:255];//8bit 256ŒÂ
 

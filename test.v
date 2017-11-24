@@ -8,7 +8,7 @@ wire clock_6;
 wire clock_7;
 wire clock_8;
 
-wire [3:0]reg_load_1;
+wire [3:0]reg_load_1; //LOAD1,LOAD2,LOAD3,LOAD4の1サイクル目の命令用
 wire [3:0]select_1;
 wire [3:0]reg_load_2;
 wire [3:0]select_2;
@@ -32,41 +32,34 @@ decode decode(reset, clock_2, ope, reg_load_1, select_1, reg_load_2, select_2, n
 //reg_load_1がclock_1が変わったタイミングで変わってしまう。これでいいのか？た
 //ぶんだめ。あかんねやったら中でレジスタ持たせる
 //
-wire [7:0]registor_output;
+wire [7:0]selected_registor_output;
+wire [31:0]alu_result_bus;
 
-wire [7:0]eip;
-eip_register eip_register(1'b0, 1'b0, 8'h00, eip);
-wire [7:0]ebp;
-ebp_register ebp_register(1'b0, 1'b0, 8'h00, ebp);
-wire [7:0]esp;
-ebp_register esp_register(1'b0, 1'b0, 8'h00, esp);
-selector selector(select_1, select_2, eip, ebp, esp, registor_output);
+wire [31:0]eip;
+eip_register eip_register(1'b0, 4'h0, alu_result_bus, eip);
+wire [31:0]ebp;
+ebp_register ebp_register(1'b0, 4'h0, alu_result_bus, ebp);
+wire [31:0]esp;
+esp_register esp_register(1'b0, 4'h0, alu_result_bus, esp);
+selector selector(select_1, select_2, eip, ebp, esp, selected_registor_output);
 
 ////clockは何を入れたらいいのかわからん。2命令目用でselectorをわけたらいいのか？
 //
-wire [7:0]alu_result_bus;
 //wire immidiate_data;
 //immidiator(ope, eip,immidiate_data);//こいつはもしかしたら2クロック目かもしれん。eipはすすんだらだめ。
-alu alu(clock_5, ope, 32'h0000, registor_output, alu_result_bus);
+alu alu(clock_5, ope, 32'h0000, selected_registor_output, alu_result_bus);
+wire [3:0]selected_reg_load;
+alu_result_selector alu_result_selector(clock_5, 1'b0, reg_load_1, reg_load_2, selected_reg_load);//1命令目か2命令目かで入力先レジスタがちがうのでセレクタをかます。
+//第2引数は2命令目。aluとクロックを合わすこと。
 
 
 
-register_input register_input(alu_result_bus, eip, ebp, esp);
 
 
-//
-//
-//wire ebp_load_switch;
-//wire eip_load_switch;
-//wire stack_load_switch;
-//assign ebp_load_switch = (reg_load_1 == 4'h2);
-//assign eip_load_switch = (reg_load_1 == 4'h4 || 4'h3);
-//assign stack_load_switch = (reg_load_1 == 4'h1);
-//
-//ebp_register(reset, ebp_load_switch, alu_result_bus, clock_5);
-//eip_register(reset, eip_load_switch, alu_result_bus, clock_5);
-//esp_register(reset, esp_load_switch, alu_result_bus, clock_5);
-//
+
+
+
+
 ////addressに書き込むやつ。
 //wire [7:0]stack_connect_address;
 //esp_register(reset, 8'h0, stack_connect_address, clock_6);//6? 8'h0でつないでるとずっとreadでアドレスとれてるのか.
@@ -91,6 +84,4 @@ initial $monitor("1:[%d],2:[%d],3:[%d],4:[%d],5:[%d],6:[%d],7:[%d],8:[%d]llllfet
 endmodule
 
 // 2017/10/15
-//iverilog.exe .\test.v .\cpu_clock.v .\eip_register.v .\fetch.v .\memory.v .\decode.v .\ebp_register.v .\sellector.v .\alu.v
-//次はalu_result_busをレジスタに渡すところから。その前に、レジスタを32bitに直す。register_input.vを実装する。
-//alu_result_busはopeからどのレジスタにINするのかもらわないとできない。
+//iverilog.exe .\test.v .\cpu_clock.v .\eip_register.v .\fetch.v .\memory.v .\decode.v .\ebp_register.v .\selector.v .\alu.v alu_result_selector.v
