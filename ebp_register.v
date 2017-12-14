@@ -7,10 +7,10 @@ output reg [31:0]ebp;
 
 always @(*)begin
 	if (reset == 1'b1) begin
-		ebp <= 0;
+		ebp <= 32'h0000_0000;
 	end
 end
-always @(posedge clock_5)begin//2クロック目はここに足す
+always @(clock_5)begin//2クロック目はここに足す
 	if (read_or_write == 4'h2) begin
 		ebp <= write_data;
 	end
