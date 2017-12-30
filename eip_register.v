@@ -17,6 +17,13 @@ always @(clock_5)begin//2ƒNƒƒbƒN–Ú‚Í‚±‚±‚É‘«‚·
 		eip <= write_data;
 	end
 end
+//NIY
+//always @(clock_8)begin
+//	if (read_or_write == 4'h4) begin
+//		eip <= write_data;
+//	end
+//end
+
 
 
 

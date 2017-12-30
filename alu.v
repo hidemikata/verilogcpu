@@ -12,7 +12,7 @@ always @(posedge clock_5) begin
 	if (ope_31_24 == 8'h55) begin 
 		//1回目の命令sub esp, 0xZZ
 		//espのアドレスを１バイト上に移動させる
-		alu_result_bus <= registor_in - 8'h01;
+		alu_result_bus <= registor_in + 32'h1;//本当はマイナスだがプラスで実装。
 	end
 	if (ope_31_24 == 8'h89) begin 
 		alu_result_bus <= 32'h2;//registor_in;
@@ -38,7 +38,7 @@ always @(posedge clock_7) begin
 	if (ope_31_24 == 8'h55) begin 
 		//1回目の命令sub esp, 0xZZ
 		//espのアドレスを１バイト上に移動させる
-		alu_result_bus <= registor_in - 8'h01;
+		alu_result_bus <= registor_in;
 	end
 	if (ope_31_24 == 8'h89) begin 
 		alu_result_bus <= 32'h2;//registor_in;

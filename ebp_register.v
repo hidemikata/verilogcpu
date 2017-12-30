@@ -7,13 +7,20 @@ output reg [31:0]ebp;
 
 always @(*)begin
 	if (reset == 1'b1) begin
-		ebp <= 32'h0000_0000;
+		ebp <= 32'h0000_0999;//デバッグで999にしてる。
 	end
 end
-always @(clock_5)begin//2クロック目はここに足す
+always @(clock_5)begin
 	if (read_or_write == 4'h2) begin
 		ebp <= write_data;
 	end
 end
+//NIY
+//always @(clock_8)begin
+//	if (read_or_write == 4'h2) begin
+//		ebp <= write_data;
+//	end
+//end
+
 
 endmodule

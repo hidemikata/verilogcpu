@@ -8,7 +8,7 @@ output reg [31:0]esp;
 
 always @(posedge reset)begin
 	if (reset == 1'b1) begin
-		esp <= 32'hffffffff;//スタックの最大アドレス。
+		esp <= 32'h00000000;//本当は全部fだが、0からインクリするようにする
 	end
 end
 always @(clock_5)begin//2クロック目はここに足す
@@ -16,5 +16,14 @@ always @(clock_5)begin//2クロック目はここに足す
 		esp <= alu_result_bus;
 	end
 end
+
+//NIY
+//always @(clock_5)begin
+//	if (read_or_write == 4'h1) begin
+//		esp <= alu_result_bus;
+//	end
+//end
+
+
 endmodule
 
