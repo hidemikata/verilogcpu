@@ -9,7 +9,7 @@ assign ope = {mem[addr+0], mem[addr+1], mem[addr+2], mem[addr+3]};
 always @(posedge reset)begin
 	if (reset == 1'b1) begin
 		mem[0] <= 8'h55;//適当
-		mem[1] <= 8'h89;//適当
+		mem[1] <= 8'h89;//適当89
 		mem[2] <= 8'hb8;//適当
 		mem[3] <= 8'h02;//適当
 		mem[4] <= 8'h00;//適当

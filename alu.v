@@ -1,6 +1,6 @@
-module alu(clock_5, clock_7, ope, immidiate_data, registor_in, alu_result_bus);
-input clock_5;
-input clock_7;
+module alu(clock_4, clock_6, ope, immidiate_data, registor_in, alu_result_bus);
+input clock_4;
+input clock_6;
 input [31:0]ope;
 input [31:0]immidiate_data;
 input [31:0]registor_in;
@@ -8,7 +8,7 @@ output reg [31:0]alu_result_bus;
 wire [7:0]ope_31_24;
 assign ope_31_24 = ope[31:24];
 
-always @(posedge clock_5) begin
+always @(posedge clock_4) begin
 	if (ope_31_24 == 8'h55) begin 
 		//1回目の命令sub esp, 0xZZ
 		//espのアドレスを１バイト上に移動させる
@@ -34,7 +34,7 @@ always @(posedge clock_5) begin
 	end
 end
 
-always @(posedge clock_7) begin
+always @(posedge clock_6) begin
 	if (ope_31_24 == 8'h55) begin 
 		//1回目の命令sub esp, 0xZZ
 		//espのアドレスを１バイト上に移動させる

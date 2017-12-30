@@ -1,6 +1,6 @@
-module stack_memory(clock_5, clock_8, reset, read_or_write, write_data, esp, stack);
+module stack_memory(clock_5, clock_7, reset, read_or_write, write_data, esp, stack);
 input wire clock_5;
-input wire clock_8;
+input wire clock_7;
 input wire reset;
 input wire [3:0]read_or_write;
 input wire [31:0]write_data;
@@ -21,7 +21,7 @@ always @(clock_5)begin//1クロック目
 //	end
 end
 
-always @(clock_8)begin//2クロック目
+always @(clock_7)begin//2クロック目
 	if (read_or_write == 4'h1) begin
 		//espのアドレスのところに書く。
 		stack <= write_data;

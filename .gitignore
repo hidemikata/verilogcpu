@@ -3,3 +3,6 @@
 *.BAK
 .*
 a.out
+a.out
+*.out
+*.out
