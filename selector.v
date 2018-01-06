@@ -21,14 +21,14 @@ input [31:0] ebp;
 if (clock_3 == 1)begin
 	case(sel1)
 		4'h1:select = esp;
-		4'h2:select = ebp;
+		4'h2:select = esp;
 		4'h3:select = 4'h0;//出力なし（immidiate_data使用のため）;
 		4'h4:select = esp;
 	endcase	 
 end else if (clock_5 == 1)begin//2クロック目
 	case(sel2)
 		4'h1:select = ebp;
-		4'h2:select = ebp;//NIY
+		4'h2:select = 4'h0;
 		4'h3:select = 4'h0;//NIY
 		4'h4:select = esp;//NIY
 	endcase

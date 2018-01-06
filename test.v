@@ -73,6 +73,7 @@ endmodule
 // stackはアドレスが増えていく感じになっている。
 // iverilog.exe .\test.v .\cpu_clock.v .\eip_register.v .\fetch.v .\memory.v .\decode.v .\ebp_register.v .\selector.v .\alu.v alu_result_selector.v .\esp_register.v .\stack_memory.v
 //vvp .\a.out
-//55ができたっぽいので、89命令を実装する。
+//89命令を実装中
+//sel_reg_loadが2になるタイミングがおかしい。
 //
 //

@@ -4,8 +4,8 @@ input wire clk2;
 input wire [31:0]ope;
 output wire [3:0]reg_load_1;//ALUの出力をどのレジスタに入力するか1命令目
 output wire [3:0]reg_load_2;//ALUの出力をどのレジスタに入力するか2命令目
-output wire [3:0]select_1;//ALUの入力をどのレジスタの出力を使うか1命令目
-output wire [3:0]select_2;//ALUの入力をどのレジスタの出力を使うか2命令目
+output wire [3:0]select_1;//ALUの入力にはどのレジスタの出力を使うか1命令目
+output wire [3:0]select_2;//ALUの入力にはどのレジスタの出力を使うか2命令目
 output reg [3:0]num_of_ope;//eipに足し算する値//どこで足し算するか課題
 wire [7:0]ope1;//opecode1バイト目//regはfetchが持ってる
 
