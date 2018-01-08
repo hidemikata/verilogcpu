@@ -54,7 +54,7 @@ initial begin
 	reset = 1;
 	#(STEP);
 	reset = 0;
-	#(STEP*25);
+	#(STEP*40);
 	$finish;
 end
 //initial $monitor("1:[%d],2:[%d],3:[%d],4:[%d],5:[%d],6:[%d],7:[%d],8:[%d]fetch.eip[%h]fetch.data[%h], ope[%h], numope[%d]",
@@ -73,7 +73,7 @@ endmodule
 // stackはアドレスが増えていく感じになっている。
 // iverilog.exe .\test.v .\cpu_clock.v .\eip_register.v .\fetch.v .\memory.v .\decode.v .\ebp_register.v .\selector.v .\alu.v alu_result_selector.v .\esp_register.v .\stack_memory.v
 //vvp .\a.out
-//89命令を実装中
-//sel_reg_loadが2になるタイミングがおかしい。
+//89命令を実装中だったが、クロックを一個飛ばしにした。これでposedgeで実装でき
+//るはずなのでわからずnegedgeとかにしたところを作り直す思った通りに修正する。
 //
 //
