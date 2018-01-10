@@ -40,13 +40,13 @@ decode decode(reset, clock_2, ope, reg_load_1, select_1, reg_load_2, select_2, n
 eip_register eip_register(clock_4, clock_8, num_of_ope, reset, selected_reg_load, alu_result_bus, eip);
 ebp_register ebp_register(clock_4, reset, selected_reg_load, alu_result_bus, ebp);
 esp_register esp_register(clock_4, reset, selected_reg_load, alu_result_bus, esp);
-stack_memory stack_memory(clock_4, clock_7, reset, selected_reg_load, alu_result_bus, esp, stack);
+stack_memory stack_memory(clock_4, clock_6, reset, selected_reg_load, alu_result_bus, esp, stack);
 selector selector(clock_3, clock_5, select_1, select_2, eip, ebp, esp, selected_registor_output);//aluに入力するレジスタを選択する。
 
 //wire immidiate_data;
 //immidiator(ope, eip,immidiate_data);//こいつはもしかしたら2クロック目かもしれん。eipはすすんだらだめ。
 alu alu(clock_4, clock_6, ope, 32'h0000, selected_registor_output, alu_result_bus);
-alu_result_selector alu_result_selector(clock_4, clock_7, reg_load_1, reg_load_2, selected_reg_load);//1命令目か2命令目かで入力先レジスタがちがうのでセレクタをかます。
+alu_result_selector alu_result_selector(clock_4, clock_6, reg_load_1, reg_load_2, selected_reg_load);//1命令目か2命令目かで入力先レジスタがちがうのでセレクタをかます。
 
 
 initial begin
@@ -54,7 +54,7 @@ initial begin
 	reset = 1;
 	#(STEP);
 	reset = 0;
-	#(STEP*40);
+	#(STEP*50);
 	$finish;
 end
 //initial $monitor("1:[%d],2:[%d],3:[%d],4:[%d],5:[%d],6:[%d],7:[%d],8:[%d]fetch.eip[%h]fetch.data[%h], ope[%h], numope[%d]",
@@ -69,11 +69,10 @@ initial $monitor("%d%d%d%d_%d%d%d%d,fetch.eip[%h]fetch.data[%h],ope[%h],numope[%
 //initial $monitor("reg_load_1[%h], select_1[%h], reg_load_2[%h], select_2[%h]",reg_load_1, select_1, reg_load_2, select_2);
 endmodule
 
-// 2017/12/30
+// 2018/01/10
 // stackはアドレスが増えていく感じになっている。
 // iverilog.exe .\test.v .\cpu_clock.v .\eip_register.v .\fetch.v .\memory.v .\decode.v .\ebp_register.v .\selector.v .\alu.v alu_result_selector.v .\esp_register.v .\stack_memory.v
 //vvp .\a.out
-//89命令を実装中だったが、クロックを一個飛ばしにした。これでposedgeで実装でき
-//るはずなのでわからずnegedgeとかにしたところを作り直す思った通りに修正する。
+//b802から。そのまえに89e5のe5は機能しているのかしらべる。e5じゃなかったら別のレジスタにちゃんとかわるのか。
 //
 //
