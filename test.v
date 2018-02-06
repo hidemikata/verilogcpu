@@ -74,5 +74,7 @@ endmodule
 // iverilog.exe .\test.v .\cpu_clock.v .\eip_register.v .\fetch.v .\memory.v .\decode.v .\ebp_register.v .\selector.v .\alu.v alu_result_selector.v .\esp_register.v .\stack_memory.v
 //vvp .\a.out
 //b802から。そのまえに89e5のe5は機能しているのかしらべる。e5じゃなかったら別のレジスタにちゃんとかわるのか。
+// →変わらない。89しか見ていないので。E5の場所も見るようにしてあげないとダ
+// メ。そのまえにb8やってみようか。たぶん2個目を見なければならなくなる。
 //
 //

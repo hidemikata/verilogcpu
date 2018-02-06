@@ -11,10 +11,10 @@ wire [7:0]ope1;//opecode1バイト目//regはfetchが持ってる
 
 assign ope1 = ope[31:24];//上位
  
-assign reg_load_1 = load_reg_1(ope1);
-assign reg_load_2 = load_reg_2(ope1);
-assign select_1 = select_input_1(ope1);
-assign select_2 = select_input_2(ope1);
+assign reg_load_1 = load_reg_1(ope1);//ALUの出力先
+assign reg_load_2 = load_reg_2(ope1);//ALUの出力先
+assign select_1 = select_input_1(ope1);//ALUの入力元
+assign select_2 = select_input_2(ope1);//ALUの入力元
 
 function [3:0] load_reg_1;
 input [7:0]ope;
@@ -31,6 +31,20 @@ begin
 end
 endfunction
 
+function [3:0] select_input_1;
+input [7:0]ope;
+begin
+	case(ope)
+		8'h55: select_input_1 = 4'h1;//固定値？(スタック移動分かアドレス)
+		8'h89: select_input_1 = 4'h2;//esp
+		8'hb8: select_input_1 = 4'h3;//immidiate data
+		8'h5d: select_input_1 = 4'h4;//espの指すアドレスバス
+		8'hc3: select_input_1 = 4'h4;//espの指すアドレスバス
+		8'he8: select_input_1 = 4'h1;//固定値？(スタック移動分かアドレス)
+		default select_input_1 = 4'hx;
+	endcase
+end
+endfunction
 
 function [3:0] load_reg_2;
 input [7:0]ope;
@@ -43,21 +57,6 @@ begin
 		8'hc3: load_reg_2 = 4'h3;//eip
 		8'he8: load_reg_2 = 4'h1;//espの指すアドレスバス
 		default load_reg_2 = 4'hx;
-	endcase
-end
-endfunction
-
-function [3:0] select_input_1;
-input [7:0]ope;
-begin
-	case(ope)
-		8'h55: select_input_1 = 4'h1;//固定値？(スタック移動分かアドレス)
-		8'h89: select_input_1 = 4'h2;//esp
-		8'hb8: select_input_1 = 4'h3;//immidiate data
-		8'h5d: select_input_1 = 4'h4;//espの指すアドレスバス
-		8'hc3: select_input_1 = 4'h4;//espの指すアドレスバス
-		8'he8: select_input_1 = 4'h1;//固定値？(スタック移動分かアドレス)
-		default select_input_1 = 4'hx;
 	endcase
 end
 endfunction

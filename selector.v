@@ -18,6 +18,7 @@ input [3:0] sel1;
 input [3:0] sel2;
 input [31:0] eip;
 input [31:0] ebp;
+
 if (clock_3 == 1)begin
 	case(sel1)
 		4'h1:select = esp;
