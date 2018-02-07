@@ -46,7 +46,7 @@ selector selector(clock_3, clock_5, select_1, select_2, eip, ebp, esp, selected_
 //wire immidiate_data;
 //immidiator(ope, eip,immidiate_data);//こいつはもしかしたら2クロック目かもしれん。eipはすすんだらだめ。
 alu alu(clock_4, clock_6, ope, 32'h0000, selected_registor_output, alu_result_bus);
-alu_result_selector alu_result_selector(clock_4, clock_6, reg_load_1, reg_load_2, selected_reg_load);//1命令目か2命令目かで入力先レジスタがちがうのでセレクタをかます。
+alu_result_selector alu_result_selector(clock_4, clock_6, reg_load_1, reg_load_2, selected_reg_load);//1命令目か2命令目かでalu->のレジスタがちがうのでセレクタをかます。
 
 
 initial begin
@@ -69,12 +69,17 @@ initial $monitor("%d%d%d%d_%d%d%d%d,fetch.eip[%h]fetch.data[%h],ope[%h],numope[%
 //initial $monitor("reg_load_1[%h], select_1[%h], reg_load_2[%h], select_2[%h]",reg_load_1, select_1, reg_load_2, select_2);
 endmodule
 
-// 2018/01/10
+// 2018/02/08
 // stackはアドレスが増えていく感じになっている。
 // iverilog.exe .\test.v .\cpu_clock.v .\eip_register.v .\fetch.v .\memory.v .\decode.v .\ebp_register.v .\selector.v .\alu.v alu_result_selector.v .\esp_register.v .\stack_memory.v
 //vvp .\a.out
 //b802から。そのまえに89e5のe5は機能しているのかしらべる。e5じゃなかったら別のレジスタにちゃんとかわるのか。
-// →変わらない。89しか見ていないので。E5の場所も見るようにしてあげないとダ
-// メ。そのまえにb8やってみようか。たぶん2個目を見なければならなくなる。
+// →変わらない。decodeのselect_input_2で2個目違うやつが入るようにしてあげないとダメ。でも
+// fibondisasemをみると長さが3のやつもあるな。。。
+// メ。
+// そのまえにb8やってみようか。
+// b8の実装。
+//alu_result_bus <= {8'h00, ope[7:0], ope[15:8], ope[23:16]};
+//を実装した。次はどうさ確認から。
 //
 //

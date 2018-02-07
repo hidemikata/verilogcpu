@@ -18,7 +18,7 @@ always @(posedge clock_4) begin
 		alu_result_bus <= registor_in;
 	end
 	if (ope_31_24 == 8'hb8) begin 
-		alu_result_bus <= 32'h3;
+		alu_result_bus <= {8'h00, ope[7:0], ope[15:8], ope[23:16]};
 	end
 	if (ope_31_24 == 8'h5d) begin 
 		alu_result_bus <= 32'h4;
