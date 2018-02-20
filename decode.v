@@ -19,7 +19,7 @@ assign select_2 = select_input_2(ope1);//ALUの入力元
 function [3:0] load_reg_1;
 input [7:0]ope;
 begin
-	case(ope)
+	case(ope)//ALUの出力をどのレジスタに入力するか1命令目
 		8'h55: load_reg_1 = 4'h1;//esp
 		8'h89: load_reg_1 = 4'h2;//ebp
 		8'hb8: load_reg_1 = 4'h3;//eax
@@ -49,7 +49,7 @@ endfunction
 function [3:0] load_reg_2;
 input [7:0]ope;
 begin
-	case(ope)
+	case(ope)//ALUの出力をどのレジスタに入力するか2命令目
 		8'h55: load_reg_2 = 4'h1;//espの指すアドレスバス
 		8'h89: load_reg_2 = 4'hx;//
 		8'hb8: load_reg_2 = 4'hx;//
@@ -64,7 +64,7 @@ endfunction
 function [3:0] select_input_2;
 input [7:0]ope;
 begin
-	case(ope)
+	case(ope)//ALUの入力にはどのレジスタの出力を使うか2命令目
 		8'h55: select_input_2 = 4'h1;//ebp
 		8'h89: select_input_2 = 4'hx;//
 		8'hb8: select_input_2 = 4'hx;//

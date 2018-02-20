@@ -38,6 +38,9 @@ always @(posedge clock_8)begin
 	else if (num_of_ope == 4'd4) begin
 		eip <= eip + 4;
 	end
+	else if (num_of_ope == 4'd5) begin
+		eip <= eip + 5;
+	end
 end
 
 

@@ -21,8 +21,8 @@ always @(posedge clock_4) begin
 		alu_result_bus <= {8'h00, ope[7:0], ope[15:8], ope[23:16]};
 	end
 	if (ope_31_24 == 8'h5d) begin 
-		alu_result_bus <= 32'h4;
-		//pop.ebp。
+		alu_result_bus <= registor_in;
+		//popの1サイクル目 mov ebp, [esp]
 	end
 	if (ope_31_24 == 8'hc3) begin 
 		alu_result_bus <= 32'h5;
@@ -45,7 +45,7 @@ always @(posedge clock_6) begin
 		alu_result_bus <= 32'h3;
 	end
 	if (ope_31_24 == 8'h5d) begin 
-		alu_result_bus <= 32'h4;
+		alu_result_bus <= registor_in - 32'h1;
 		//pop.ebp。
 	end
 	if (ope_31_24 == 8'hc3) begin 

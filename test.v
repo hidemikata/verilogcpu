@@ -40,13 +40,11 @@ decode decode(reset, clock_2, ope, reg_load_1, select_1, reg_load_2, select_2, n
 
 eip_register eip_register(clock_4, clock_8, num_of_ope, reset, selected_reg_load, alu_result_bus, eip);
 ebp_register ebp_register(clock_4, reset, selected_reg_load, alu_result_bus, ebp);
-esp_register esp_register(clock_4, reset, selected_reg_load, alu_result_bus, esp);
+esp_register esp_register(clock_4, clock_6, reset, selected_reg_load, alu_result_bus, esp);
 eax_register eax_register(clock_4, reset, selected_reg_load, alu_result_bus, eax);
 stack_memory stack_memory(clock_4, clock_6, reset, selected_reg_load, alu_result_bus, esp, stack);
-selector selector(clock_3, clock_5, select_1, select_2, eip, ebp, esp, selected_registor_output);//aluに入力するレジスタを選択する。
+selector selector(clock_3, clock_5, select_1, select_2, eip, ebp, esp, stack, selected_registor_output);//aluに入力するレジスタを選択する。
 
-//wire immidiate_data;
-//immidiator(ope, eip,immidiate_data);//こいつはもしかしたら2クロック目かもしれん。eipはすすんだらだめ。
 alu alu(clock_4, clock_6, ope, 32'h0000, selected_registor_output, alu_result_bus);
 alu_result_selector alu_result_selector(clock_4, clock_6, reg_load_1, reg_load_2, selected_reg_load);//1命令目か2命令目かでalu->のレジスタがちがうのでセレクタをかます。
 
@@ -56,12 +54,10 @@ initial begin
 	reset = 1;
 	#(STEP);
 	reset = 0;
-	#(STEP*70);
+	#(STEP*80);
 	$finish;
 end
-//initial $monitor("1:[%d],2:[%d],3:[%d],4:[%d],5:[%d],6:[%d],7:[%d],8:[%d]fetch.eip[%h]fetch.data[%h], ope[%h], numope[%d]",
-//	clock_1, clock_2, clock_3, clock_4, clock_5, clock_6, clock_7, clock_8,
-//	fetch.eip, fetch.data[31:24], ope, num_of_ope);
+
 initial $monitor("%d%d%d%d_%d%d%d%d,fetch.eip[%h]fetch.data[%h],ope[%h],numope[%d],select_1[%d],sel2[%d],reg_l1[%d],reg_l2[%d]sel_reg_out[%h],alu_result_bus[%h],sel_reg_load[%d],esp[%h],ebp[%h],eax,[%h],stack[%h]",
 	clock_1, clock_2, clock_3, clock_4, clock_5, clock_6, clock_7, clock_8,
 	fetch.eip, fetch.data[31:24], ope, num_of_ope,
@@ -84,6 +80,8 @@ endmodule
 // →変わらない。decodeのselect_input_2で2個目違うやつが入るようにしてあげないとダメ。でも
 // fibondisasemをみると長さが3のやつもあるな。。。
 // メ。
-// そのまえにb8おわったのでそのつぎのやつをやる。5Dか。。。
+// 5Dか.
+// add esp, 0xZZをやりたいけど、esp[00000999になる。しかもその後のstack[]の値はただし
+// いのか？
 //
 //

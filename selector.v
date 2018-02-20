@@ -1,4 +1,4 @@
-module selector(clock_3, clock_5, select_1, select_2, eip, ebp, esp, registor_output);
+module selector(clock_3, clock_5, select_1, select_2, eip, ebp, esp, stack, registor_output);
 input clock_3;
 input clock_5;
 input [3:0]select_1;
@@ -6,6 +6,7 @@ input [3:0]select_2;
 input [31:0]eip;
 input [31:0]ebp;
 input [31:0]esp;
+input [31:0]stack;
 output [31:0]registor_output;
 
 assign registor_output = select(clock_3, clock_5,select_1, select_2, eip, ebp);
@@ -24,12 +25,12 @@ if (clock_3 == 1)begin
 		4'h1:select = esp;
 		4'h2:select = esp;
 		4'h3:select = 4'h0;//出力なし（immidiate_data使用のため）;
-		4'h4:select = esp;
+		4'h4:select = stack;
 	endcase	 
 end else if (clock_5 == 1)begin//2クロック目
 	case(sel2)
 		4'h1:select = ebp;
-		4'h2:select = 4'h0;
+		4'h2:select = esp;
 		4'h3:select = 4'h0;//NIY
 		4'h4:select = esp;//NIY
 	endcase
