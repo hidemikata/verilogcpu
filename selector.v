@@ -25,7 +25,7 @@ if (clock_3 == 1)begin
 		4'h1:select = esp;
 		4'h2:select = esp;
 		4'h3:select = 4'h0;//出力なし（immidiate_data使用のため）;
-		4'h4:select = stack;
+		4'h4:select = stack;//これ、esp指すところの値になってないきがする。
 	endcase	 
 end else if (clock_5 == 1)begin//2クロック目
 	case(sel2)
