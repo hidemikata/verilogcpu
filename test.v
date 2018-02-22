@@ -22,7 +22,8 @@ wire [31:0]alu_result_bus;
 wire [31:0]ebp;
 wire [31:0]esp;
 wire [31:0]eax;
-wire [31:0]stack;
+wire [31:0]stack_current;
+wire [31:0]stack_esp;
 wire [31:0]selected_registor_output;
 
 parameter STEP = 1000;
@@ -42,8 +43,8 @@ eip_register eip_register(clock_4, clock_8, num_of_ope, reset, selected_reg_load
 ebp_register ebp_register(clock_4, reset, selected_reg_load, alu_result_bus, ebp);
 esp_register esp_register(clock_4, clock_6, reset, selected_reg_load, alu_result_bus, esp);
 eax_register eax_register(clock_4, reset, selected_reg_load, alu_result_bus, eax);
-stack_memory stack_memory(clock_4, clock_6, reset, selected_reg_load, alu_result_bus, esp, stack);
-selector selector(clock_3, clock_5, select_1, select_2, eip, ebp, esp, stack, selected_registor_output);//aluに入力するレジスタを選択する。
+stack_memory stack_memory(clock_4, clock_6, reset, selected_reg_load, alu_result_bus, esp, stack_current, stack_esp);
+selector selector(clock_3, clock_5, select_1, select_2, eip, ebp, esp, stack_current, selected_registor_output);//aluに入力するレジスタを選択する。
 
 alu alu(clock_4, clock_6, ope, 32'h0000, selected_registor_output, alu_result_bus);
 alu_result_selector alu_result_selector(clock_4, clock_6, reg_load_1, reg_load_2, selected_reg_load);//1命令目か2命令目かでalu->のレジスタがちがうのでセレクタをかます。
@@ -58,7 +59,7 @@ initial begin
 	$finish;
 end
 
-initial $monitor("%d%d%d%d_%d%d%d%d,fetch.eip[%h]fetch.data[%h],ope[%h],numope[%d],select_1[%d],sel2[%d],reg_l1[%d],reg_l2[%d]sel_reg_out[%h],alu_result_bus[%h],sel_reg_load[%d],esp[%h],ebp[%h],eax,[%h],stack[%h]",
+initial $monitor("%d%d%d%d_%d%d%d%d,fetch.eip[%h]fetch.data[%h],ope[%h],numope[%d],select_1[%d],sel2[%d],reg_l1[%d],reg_l2[%d]sel_reg_out[%h],alu_result_bus[%h],sel_reg_load[%d],esp[%h],ebp[%h],eax,[%h],st_cur[%h],st_esp[%h]",
 	clock_1, clock_2, clock_3, clock_4, clock_5, clock_6, clock_7, clock_8,
 	fetch.eip, fetch.data[31:24], ope, num_of_ope,
 	select_1,
@@ -66,7 +67,7 @@ initial $monitor("%d%d%d%d_%d%d%d%d,fetch.eip[%h]fetch.data[%h],ope[%h],numope[%
 	reg_load_1,
 	reg_load_2,
 	selected_registor_output, alu_result_bus,
-	selected_reg_load,esp, ebp,eax,stack);
+	selected_reg_load,esp, ebp,eax,stack_current,stack_esp);
 
 
 //initial $monitor("reg_load_1[%h], select_1[%h], reg_load_2[%h], select_2[%h]",reg_load_1, select_1, reg_load_2, select_2);
@@ -80,9 +81,5 @@ endmodule
 // →変わらない。decodeのselect_input_2で2個目違うやつが入るようにしてあげないとダメ。でも
 // fibondisasemをみると長さが3のやつもあるな。。。
 // メ。
-// 5Dか.
-// add esp, 0xZZをやりたいけど、esp[00000999になる。しかもその後のstack[]の値はただし
-// いのか？
-//		4'h4:select = stack;//これ、esp指すところの値になってないきがする。
-//
+//stack_espをつくったのでpopをそっちを使うように変更する。
 //
