@@ -54,7 +54,7 @@ begin
 		8'h89: load_reg_2 = 4'hx;//
 		8'hb8: load_reg_2 = 4'hx;//
 		8'h5d: load_reg_2 = 4'h2;//esp
-		8'hc3: load_reg_2 = 4'h3;//eip
+		8'hc3: load_reg_2 = 4'h2;//eip
 		8'he8: load_reg_2 = 4'h1;//espの指すアドレスバス
 		default load_reg_2 = 4'hx;
 	endcase

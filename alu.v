@@ -25,7 +25,7 @@ always @(posedge clock_4) begin
 		//popの1サイクル目 mov ebp, [esp]
 	end
 	if (ope_31_24 == 8'hc3) begin 
-		alu_result_bus <= 32'h5;
+		alu_result_bus <= registor_in - 32'h1;//インクリされるので-1しておく
 		//ret (pop.eip)。
 	end
 	if (ope_31_24 == 8'he8) begin 
@@ -49,7 +49,7 @@ always @(posedge clock_6) begin
 		//pop.ebp。
 	end
 	if (ope_31_24 == 8'hc3) begin 
-		alu_result_bus <= 32'h5;
+		alu_result_bus <= registor_in - 32'h1;
 		//ret (pop.eip)。
 	end
 	if (ope_31_24 == 8'he8) begin 

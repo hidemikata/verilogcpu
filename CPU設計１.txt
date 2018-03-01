@@ -72,5 +72,7 @@ ebp、esp、アドレスからデータを引いてくるバス。immidiateデータと同様？
 00000009  C3                ret            pop eipとおなじ
 
 
+mov eip, [esp]　アドレスから取り出し
+add esp, 0xZZ（スタックポインタZZ分移動）
 
 

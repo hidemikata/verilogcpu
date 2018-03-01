@@ -44,7 +44,7 @@ ebp_register ebp_register(clock_4, reset, selected_reg_load, alu_result_bus, ebp
 esp_register esp_register(clock_4, clock_6, reset, selected_reg_load, alu_result_bus, esp);
 eax_register eax_register(clock_4, reset, selected_reg_load, alu_result_bus, eax);
 stack_memory stack_memory(clock_4, clock_6, reset, selected_reg_load, alu_result_bus, esp, stack_current, stack_esp);
-selector selector(clock_3, clock_5, select_1, select_2, eip, ebp, esp, stack_current, selected_registor_output);//aluに入力するレジスタを選択する。
+selector selector(clock_3, clock_5, select_1, select_2, eip, ebp, esp, stack_esp, selected_registor_output);//aluに入力するレジスタを選択する。
 
 alu alu(clock_4, clock_6, ope, 32'h0000, selected_registor_output, alu_result_bus);
 alu_result_selector alu_result_selector(clock_4, clock_6, reg_load_1, reg_load_2, selected_reg_load);//1命令目か2命令目かでalu->のレジスタがちがうのでセレクタをかます。
@@ -55,7 +55,7 @@ initial begin
 	reset = 1;
 	#(STEP);
 	reset = 0;
-	#(STEP*80);
+	#(STEP*95);
 	$finish;
 end
 
@@ -81,5 +81,5 @@ endmodule
 // →変わらない。decodeのselect_input_2で2個目違うやつが入るようにしてあげないとダメ。でも
 // fibondisasemをみると長さが3のやつもあるな。。。
 // メ。
-//stack_espをつくったのでpopをそっちを使うように変更する。
+// 次call
 //
