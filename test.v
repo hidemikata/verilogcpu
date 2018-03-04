@@ -7,11 +7,17 @@ wire clock_5;
 wire clock_6;
 wire clock_7;
 wire clock_8;
+wire clock_9;
+wire clock_10;
+wire clock_11;
+wire clock_12;
 
 wire [3:0]reg_load_1; //LOAD1,LOAD2,LOAD3,LOAD4の1サイクル目の命令用
 wire [3:0]select_1;
 wire [3:0]reg_load_2;
 wire [3:0]select_2;
+wire [3:0]reg_load_3;
+wire [3:0]select_3;
 
 reg clk;
 reg reset;
@@ -33,21 +39,24 @@ always begin
 	clk = 1;#(STEP/2);
 end
 
-cpu_clock clock(clk, reset, clock_1, clock_2, clock_3, clock_4, clock_5, clock_6, clock_7, clock_8);
+cpu_clock clock(clk, reset, 
+	clock_1, clock_2, clock_3, clock_4,
+	clock_5, clock_6, clock_7, clock_8,
+	clock_9, clock_10, clock_11, clock_12);
 
 fetch fetch(reset, clock_1, ope, eip);//32bitのopeが手に入る
 wire [3:0]num_of_ope;
-decode decode(reset, clock_2, ope, reg_load_1, select_1, reg_load_2, select_2, num_of_ope);
+decode decode(reset, clock_2, ope, reg_load_1, select_1, reg_load_2, select_2, reg_load_3, select_3, num_of_ope);
 
-eip_register eip_register(clock_4, clock_8, num_of_ope, reset, selected_reg_load, alu_result_bus, eip);
+eip_register eip_register(clock_4, clock_12, num_of_ope, reset, selected_reg_load, alu_result_bus, eip);
 ebp_register ebp_register(clock_4, reset, selected_reg_load, alu_result_bus, ebp);
 esp_register esp_register(clock_4, clock_6, reset, selected_reg_load, alu_result_bus, esp);
 eax_register eax_register(clock_4, reset, selected_reg_load, alu_result_bus, eax);
 stack_memory stack_memory(clock_4, clock_6, reset, selected_reg_load, alu_result_bus, esp, stack_current, stack_esp);
-selector selector(clock_3, clock_5, select_1, select_2, eip, ebp, esp, stack_esp, selected_registor_output);//aluに入力するレジスタを選択する。
+selector selector(clock_3, clock_5, clock_7, select_1, select_2, select_3, eip, ebp, esp, stack_esp, selected_registor_output);//aluに入力するレジスタを選択する。
 
-alu alu(clock_4, clock_6, ope, 32'h0000, selected_registor_output, alu_result_bus);
-alu_result_selector alu_result_selector(clock_4, clock_6, reg_load_1, reg_load_2, selected_reg_load);//1命令目か2命令目かでalu->のレジスタがちがうのでセレクタをかます。
+alu alu(clock_4, clock_6, clock_8, ope, 32'h0000, selected_registor_output, alu_result_bus);
+alu_result_selector alu_result_selector(clock_4, clock_6, clock_8, reg_load_1, reg_load_2, reg_load_3, selected_reg_load);//1命令目か2命令目かでalu->のレジスタがちがうのでセレクタをかます。
 
 
 initial begin
@@ -55,22 +64,23 @@ initial begin
 	reset = 1;
 	#(STEP);
 	reset = 0;
-	#(STEP*95);
+	#(STEP*146);
 	$finish;
 end
 
-initial $monitor("%d%d%d%d_%d%d%d%d,fetch.eip[%h]fetch.data[%h],ope[%h],numope[%d],select_1[%d],sel2[%d],reg_l1[%d],reg_l2[%d]sel_reg_out[%h],alu_result_bus[%h],sel_reg_load[%d],esp[%h],ebp[%h],eax,[%h],st_cur[%h],st_esp[%h]",
+initial $monitor("%d%d%d%d_%d%d%d%d_%d%d%d%d,fetch.eip[%h]fetch.data[%h],ope[%h],numope[%d],sel1[%d],sel2[%d],sel3[%d],reg_l1[%d],reg_l2[%d],reg_l3[%d],sel_reg_out[%h],alu_result_bus[%h],sel_reg_load[%d],esp[%h],ebp[%h],eax,[%h],st_cur[%h],st_esp[%h]",
 	clock_1, clock_2, clock_3, clock_4, clock_5, clock_6, clock_7, clock_8,
+	clock_9, clock_10, clock_11, clock_12,
 	fetch.eip, fetch.data[31:24], ope, num_of_ope,
 	select_1,
 	select_2,
+	select_3,
 	reg_load_1,
 	reg_load_2,
+	reg_load_3,
 	selected_registor_output, alu_result_bus,
 	selected_reg_load,esp, ebp,eax,stack_current,stack_esp);
 
-
-//initial $monitor("reg_load_1[%h], select_1[%h], reg_load_2[%h], select_2[%h]",reg_load_1, select_1, reg_load_2, select_2);
 endmodule
 
 // 2018/02/08
@@ -81,5 +91,8 @@ endmodule
 // →変わらない。decodeのselect_input_2で2個目違うやつが入るようにしてあげないとダメ。でも
 // fibondisasemをみると長さが3のやつもあるな。。。
 // メ。
-// 次call
+// call実装中。8クロックを12クロックにした。
+// 前半のpush処理は多分大丈夫なんだが、
+// ジャンプするところができていない。alu.vのコメントを考えながら作る。多分、2
+// ノ歩数を割り出すfunctionを作らなあかん気がする。
 //

@@ -1,6 +1,6 @@
-module eip_register(clock_4, clock_8, num_of_ope, reset, read_or_write, write_data, eip);
+module eip_register(clock_4, clock_12, num_of_ope, reset, read_or_write, write_data, eip);
 input wire clock_4;
-input wire clock_8;
+input wire clock_12;
 input wire [3:0]num_of_ope;
 input wire reset;
 input wire [3:0]read_or_write;
@@ -27,7 +27,7 @@ end
 //end
 
 //次の命令用にインクリメントするけどここでやるか微妙。
-always @(posedge clock_8)begin
+always @(posedge clock_12)begin
 	//ジャンプ命令の時どうなるか考えること。
 	if (num_of_ope == 4'd1) begin
 		eip <= eip + 1;

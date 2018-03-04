@@ -1,6 +1,7 @@
-module alu(clock_4, clock_6, ope, immidiate_data, registor_in, alu_result_bus);
+module alu(clock_4, clock_6, clock_8, ope, immidiate_data, registor_in, alu_result_bus);
 input clock_4;
 input clock_6;
+input clock_8;
 input [31:0]ope;
 input [31:0]immidiate_data;
 input [31:0]registor_in;
@@ -29,8 +30,7 @@ always @(posedge clock_4) begin
 		//ret (pop.eip)。
 	end
 	if (ope_31_24 == 8'he8) begin 
-		alu_result_bus <= 32'h6;
-		//call xxx pop.eip。
+		alu_result_bus <= registor_in + 32'h1;//本当はマイナスだがプラスで実装。
 	end
 end
 
@@ -53,8 +53,13 @@ always @(posedge clock_6) begin
 		//ret (pop.eip)。
 	end
 	if (ope_31_24 == 8'he8) begin 
-		alu_result_bus <= 32'h6;
-		//call xxx pop.eip。
+		alu_result_bus <= registor_in;
+	end
+end
+
+always @(posedge clock_8) begin
+	if (ope_31_24 == 8'he8) begin 
+		alu_result_bus <= 32'h0;//プログラムの2の歩数と現在のregistor_in(eip)の値を足してどうこうしたやつをここに入れる。と{8'h00, ope[7:0], ope[15:8], ope[23:16]};
 	end
 end
 
