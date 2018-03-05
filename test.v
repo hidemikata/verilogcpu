@@ -48,7 +48,7 @@ fetch fetch(reset, clock_1, ope, eip);//32bitのopeが手に入る
 wire [3:0]num_of_ope;
 decode decode(reset, clock_2, ope, reg_load_1, select_1, reg_load_2, select_2, reg_load_3, select_3, num_of_ope);
 
-eip_register eip_register(clock_4, clock_12, num_of_ope, reset, selected_reg_load, alu_result_bus, eip);
+eip_register eip_register(clock_4, clock_8, clock_12, num_of_ope, reset, selected_reg_load, alu_result_bus, eip);
 ebp_register ebp_register(clock_4, reset, selected_reg_load, alu_result_bus, ebp);
 esp_register esp_register(clock_4, clock_6, reset, selected_reg_load, alu_result_bus, esp);
 eax_register eax_register(clock_4, reset, selected_reg_load, alu_result_bus, eax);
@@ -68,7 +68,7 @@ initial begin
 	$finish;
 end
 
-initial $monitor("%d%d%d%d_%d%d%d%d_%d%d%d%d,fetch.eip[%h]fetch.data[%h],ope[%h],numope[%d],sel1[%d],sel2[%d],sel3[%d],reg_l1[%d],reg_l2[%d],reg_l3[%d],sel_reg_out[%h],alu_result_bus[%h],sel_reg_load[%d],esp[%h],ebp[%h],eax,[%h],st_cur[%h],st_esp[%h]",
+initial $monitor("%d%d%d%d_%d%d%d%d_%d%d%d%d,eip[%h],data[%h],ope[%h],numope[%d],sel1[%d],sel2[%d],sel3[%d],reg_l1[%d],reg_l2[%d],reg_l3[%d],sel_reg_out[%h],alu_result_bus[%h],sel_reg_load[%d],esp[%h],ebp[%h],eax,[%h],st_cur[%h],st_esp[%h]",
 	clock_1, clock_2, clock_3, clock_4, clock_5, clock_6, clock_7, clock_8,
 	clock_9, clock_10, clock_11, clock_12,
 	fetch.eip, fetch.data[31:24], ope, num_of_ope,
@@ -90,9 +90,5 @@ endmodule
 //b802から。そのまえに89e5のe5は機能しているのかしらべる。e5じゃなかったら別のレジスタにちゃんとかわるのか。
 // →変わらない。decodeのselect_input_2で2個目違うやつが入るようにしてあげないとダメ。でも
 // fibondisasemをみると長さが3のやつもあるな。。。
-// メ。
-// call実装中。8クロックを12クロックにした。
-// 前半のpush処理は多分大丈夫なんだが、
-// ジャンプするところができていない。alu.vのコメントを考えながら作る。多分、2
-// ノ歩数を割り出すfunctionを作らなあかん気がする。
-//
+//いちおうそれっぽい動きをしている。
+// eipが11f5担ってしまうところから見る。ログにaluの数値をださないとわからん。

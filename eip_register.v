@@ -1,5 +1,6 @@
-module eip_register(clock_4, clock_12, num_of_ope, reset, read_or_write, write_data, eip);
+module eip_register(clock_4, clock_8, clock_12, num_of_ope, reset, read_or_write, write_data, eip);
 input wire clock_4;
+input wire clock_8;
 input wire clock_12;
 input wire [3:0]num_of_ope;
 input wire reset;
@@ -10,7 +11,7 @@ output reg [31:0]eip;
 
 always @(*)begin
 	if (reset == 1'b1) begin
-		eip <= 32'h00000000;//ここで初期値のアドレスを入れる。
+		eip <= 32'h0000000a;//ここで初期値のアドレスを入れる。
 	end
 end
 
@@ -19,12 +20,18 @@ always @(negedge clock_4)begin//2クロック目はここに足す
 		eip <= write_data;
 	end
 end
-//NIY
-//always @(clock_7)begin
+
+//always @(negedge clock_6)begin
 //	if (read_or_write == 4'h4) begin
 //		eip <= write_data;
 //	end
 //end
+always @(negedge clock_8)begin
+	if (read_or_write == 4'h4) begin
+		eip <= write_data;
+	end
+end
+
 
 //次の命令用にインクリメントするけどここでやるか微妙。
 always @(posedge clock_12)begin

@@ -29,7 +29,7 @@ always @(posedge clock_4) begin
 		alu_result_bus <= registor_in - 32'h1;//インクリされるので-1しておく
 		//ret (pop.eip)。
 	end
-	if (ope_31_24 == 8'he8) begin 
+	if (ope_31_24 == 8'he2) begin 
 		alu_result_bus <= registor_in + 32'h1;//本当はマイナスだがプラスで実装。
 	end
 end
@@ -52,14 +52,15 @@ always @(posedge clock_6) begin
 		alu_result_bus <= registor_in - 32'h1;
 		//ret (pop.eip)。
 	end
-	if (ope_31_24 == 8'he8) begin 
+	if (ope_31_24 == 8'he2) begin 
 		alu_result_bus <= registor_in;
 	end
 end
 
 always @(posedge clock_8) begin
-	if (ope_31_24 == 8'he8) begin 
-		alu_result_bus <= 32'h0;//プログラムの2の歩数と現在のregistor_in(eip)の値を足してどうこうしたやつをここに入れる。と{8'h00, ope[7:0], ope[15:8], ope[23:16]};
+	if (ope_31_24 == 8'he2) begin 
+		alu_result_bus <= registor_in + {8'h00, ~ope[7:0], ~ope[15:8], ~ope[23:16]} + 1;
+		//プログラムの2の歩数と現在のregistor_in(eip)の値を足してどうこうしたやつをここに入れる。と;
 	end
 end
 
