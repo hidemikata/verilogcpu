@@ -55,7 +55,7 @@ eax_register eax_register(clock_4, reset, selected_reg_load, alu_result_bus, eax
 stack_memory stack_memory(clock_4, clock_6, reset, selected_reg_load, alu_result_bus, esp, stack_current, stack_esp);
 selector selector(clock_3, clock_5, clock_7, select_1, select_2, select_3, eip, ebp, esp, stack_esp, selected_registor_output);//aluに入力するレジスタを選択する。
 
-alu alu(clock_4, clock_6, clock_8, ope, 32'h0000, selected_registor_output, alu_result_bus);
+alu alu(clock_4, clock_6, clock_8, ope, 32'h0000, selected_registor_output, num_of_ope, alu_result_bus);
 alu_result_selector alu_result_selector(clock_4, clock_6, clock_8, reg_load_1, reg_load_2, reg_load_3, selected_reg_load);//1命令目か2命令目かでalu->のレジスタがちがうのでセレクタをかます。
 
 
@@ -79,16 +79,14 @@ initial $monitor("%d%d%d%d_%d%d%d%d_%d%d%d%d,eip[%h],data[%h],ope[%h],numope[%d]
 	reg_load_2,
 	reg_load_3,
 	selected_registor_output, alu_result_bus,
-	selected_reg_load,esp, ebp,eax,stack_current,stack_esp);
-
+	selected_reg_load,esp, ebp,eax,stack_current,stack_esp,
+);
 endmodule
 
-// 2018/02/08
+// 2018/03/11
 // stackはアドレスが増えていく感じになっている。
 // iverilog.exe .\test.v .\cpu_clock.v .\eip_register.v .\fetch.v .\memory.v .\decode.v .\ebp_register.v .\selector.v .\alu.v alu_result_selector.v .\esp_register.v .\stack_memory.v .\eax_register.v
 //vvp .\a.out
-//b802から。そのまえに89e5のe5は機能しているのかしらべる。e5じゃなかったら別のレジスタにちゃんとかわるのか。
-// →変わらない。decodeのselect_input_2で2個目違うやつが入るようにしてあげないとダメ。でも
-// fibondisasemをみると長さが3のやつもあるな。。。
-//いちおうそれっぽい動きをしている。
-// eipが11f5担ってしまうところから見る。ログにaluの数値をださないとわからん。
+//
+//
+//

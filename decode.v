@@ -129,7 +129,7 @@ begin
 		8'hb8: calc_ope = 4'h5;
 		8'h5d: calc_ope = 4'h1;
 		8'hc3: calc_ope = 4'h1;
-		8'he2: calc_ope = 4'h6;
+		8'he2: calc_ope = 4'h5;
 		default calc_ope = 4'hx;
 	endcase
 end
