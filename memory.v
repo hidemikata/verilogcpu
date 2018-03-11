@@ -29,9 +29,8 @@ always @(posedge reset)begin
 		mem[16] <= 8'hff;
 		         
 		mem[17] <= 8'hff;
-		mem[18] <= 8'hff;
-		mem[19] <= 8'h5d;
-		mem[20] <= 8'hc3;
+		mem[18] <= 8'h5d;
+		mem[19] <= 8'hc3;
 	end
 end
 
