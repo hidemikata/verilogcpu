@@ -61,7 +61,10 @@ always @(posedge clock_6) begin
 		//ret (pop.eip)ÅB
 	end
 	if (ope_31_24 == 8'he2) begin 
-		alu_result_bus <= registor_in;
+		//alu_result_bus <= registor_in;//Å©åªç›ÇÃeipÇpushÇ∑ÇÈÇ≈Ç‡Ç±
+		//ÇÍÇæÇ∆ñﬂÇ¡ÇƒÇ´ÇΩÇ∆Ç´Ç…callÇÃÇ∆Ç±ÇÎÇ…ñﬂÇ¡ÇƒÇ≠ÇÈÇ»ÇÃÇ≈opeÇÃÇ»
+		//Ç™Ç≥ÇæÇØë´ÇµÇƒÇ®Ç≠ÅB
+		alu_result_bus <= registor_in + num_of_ope;
 	end
 end
 
