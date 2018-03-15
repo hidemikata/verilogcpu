@@ -40,6 +40,9 @@ always @(posedge clock_4) begin
 	if (ope_31_24 == 8'he2) begin 
 		alu_result_bus <= registor_in + 32'h1;//本当はマイナスだがプラスで実装。
 	end
+	if (ope_31_24 == 8'h6a) begin 
+		alu_result_bus <= registor_in + 32'h1;//本当はマイナスだがプラスで実装。
+	end
 end
 
 always @(posedge clock_6) begin
@@ -48,9 +51,6 @@ always @(posedge clock_6) begin
 	end
 	if (ope_31_24 == 8'h89) begin 
 		//2サイクル目なし
-	end
-	if (ope_31_24 == 8'hb8) begin 
-		alu_result_bus <= 32'h3;
 	end
 	if (ope_31_24 == 8'h5d) begin 
 		alu_result_bus <= registor_in - 32'h1;
@@ -65,6 +65,9 @@ always @(posedge clock_6) begin
 		//れだと戻ってきたときにcallのところに戻ってくるなのでopeのな
 		//がさだけ足しておく。
 		alu_result_bus <= registor_in + num_of_ope;
+	end
+	if (ope_31_24 == 8'h6a) begin 
+		alu_result_bus <= {8'h00, 8'h00, 8'h00, ope[23:16]};
 	end
 end
 

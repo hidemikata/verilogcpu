@@ -11,7 +11,7 @@ output reg [31:0]eip;
 
 always @(*)begin
 	if (reset == 1'b1) begin
-		eip <= 32'h0000000a;//ここで初期値のアドレスを入れる。
+		eip <= 32'h0000000b;//ここで初期値のアドレスを入れる。
 	end
 end
 

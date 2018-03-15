@@ -37,11 +37,11 @@ always @(posedge reset)begin
 	if (reset == 1'b1) begin
 		mem[0] <= 32'h10;
 		mem[1] <= 32'h20;
-		mem[2] <= 32'h00;
-		mem[3] <= 32'h00;
-		mem[4] <= 32'h00;
-		mem[5] <= 32'h00;
-		mem[6] <= 32'h00;
+		mem[2] <= 32'h30;
+		mem[3] <= 32'h40;
+		mem[4] <= 32'h50;
+		mem[5] <= 32'h60;
+		mem[6] <= 32'h70;
 		mem[7] <= 32'h00;
 		mem[8] <= 32'h00;
 		mem[9] <= 32'h00;

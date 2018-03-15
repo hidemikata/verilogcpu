@@ -30,6 +30,7 @@ begin
 		8'h5d: load_reg_1 = 4'h2;//ebp
 		8'hc3: load_reg_1 = 4'h4;//eip
 		8'he2: load_reg_1 = 4'h1;//esp
+		8'h6a: load_reg_1 = 4'h1;//esp
 		default load_reg_1 = 4'hx;
 	endcase
 end
@@ -45,6 +46,7 @@ begin
 		8'h5d: select_input_1 = 4'h4;//espの指すアドレスバス
 		8'hc3: select_input_1 = 4'h4;//espの指すアドレスバス
 		8'he2: select_input_1 = 4'h2;//固定値？(スタック移動分かアドレス)
+		8'h6a: select_input_1 = 4'h2;//固定値？(スタック移動分かアドレス)
 		default select_input_1 = 4'hx;
 	endcase
 end
@@ -56,10 +58,10 @@ begin
 	case(ope)//ALUの出力をどのレジスタに入力するか2命令目
 		8'h55: load_reg_2 = 4'h1;//espの指すアドレスバス
 		8'h89: load_reg_2 = 4'hx;//
-		8'hb8: load_reg_2 = 4'hx;//
 		8'h5d: load_reg_2 = 4'h2;//esp
 		8'hc3: load_reg_2 = 4'h2;//eip
 		8'he2: load_reg_2 = 4'h1;//espの指すアドレスバス
+		8'h6a: load_reg_2 = 4'h1;//espの指すアドレスバス
 		default load_reg_2 = 4'hx;
 	endcase
 end
@@ -71,10 +73,10 @@ begin
 	case(ope)//ALUの入力にはどのレジスタの出力を使うか2命令目
 		8'h55: select_input_2 = 4'h1;//ebp
 		8'h89: select_input_2 = 4'hx;//
-		8'hb8: select_input_2 = 4'hx;//
 		8'h5d: select_input_2 = 4'h2;//固定値？(スタック移動分かアドレス)
 		8'hc3: select_input_2 = 4'h2;//固定値？(スタック移動分かアドレス)
 		8'he2: select_input_2 = 4'h3;//eip
+		8'h6a: select_input_2 = 4'h4;//immidiate data
 		default select_input_2 = 4'hx;
 	endcase
 end
@@ -130,6 +132,7 @@ begin
 		8'h5d: calc_ope = 4'h1;
 		8'hc3: calc_ope = 4'h1;
 		8'he2: calc_ope = 4'h5;
+		8'h6a: calc_ope = 4'h2;
 		default calc_ope = 4'hx;
 	endcase
 end

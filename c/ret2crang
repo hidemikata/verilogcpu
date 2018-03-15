@@ -1,0 +1,10 @@
+00000000  55                push ebp
+00000001  89E5              mov ebp,esp
+00000003  B802000000        mov eax,0x2
+00000008  5D                pop ebp
+00000009  C3                ret
+0000000A  55                push ebp
+0000000B  89E5              mov ebp,esp
+0000000D  E8EEFFFFFF        call dword 0x0
+00000012  5D                pop ebp
+00000013  C3                ret

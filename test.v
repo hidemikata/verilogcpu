@@ -64,7 +64,7 @@ initial begin
 	reset = 1;
 	#(STEP);
 	reset = 0;
-	#(STEP*256);
+	#(STEP*100);
 	$finish;
 end
 
@@ -87,6 +87,5 @@ endmodule
 // stackはアドレスが増えていく感じになっている。
 // iverilog.exe .\test.v .\cpu_clock.v .\eip_register.v .\fetch.v .\memory.v .\decode.v .\ebp_register.v .\selector.v .\alu.v alu_result_selector.v .\esp_register.v .\stack_memory.v .\eax_register.v
 //vvp .\a.out
-//次、簡単な足し算のプログラムをCで書いてやってみる。
-//
+// 6aできたので次のやつをやる。
 //

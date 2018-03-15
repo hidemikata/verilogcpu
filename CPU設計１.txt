@@ -1,3 +1,13 @@
+virtualBOXのubuntuのほうで。(/home/mikata/hoge)
+
+int fib(){
+	return 2;
+}
+int func(){
+	fib();
+}
+
+
 00000000  55                push ebp
 00000001  89E5              mov ebp,esp
 00000003  B802000000        mov eax,0x2
@@ -8,6 +18,7 @@
 0000000D  E218EEFFFFFF        call dword 0x0
 00000012  5D                pop ebp
 00000013  C3                ret
+
 
 
 1バイト目プレフィックス

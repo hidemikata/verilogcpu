@@ -1,0 +1,5 @@
+ gcc -Wl,--entry=func,--oformat=binary -nostdlib -fno-asynchronous-unwind-tables -m32 -o fibo.o fibo.c
+ndisasm -b 32 fibo.o > ndisasm_fibo
+
+
+objdump -b 32 fibo.o
