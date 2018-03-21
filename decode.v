@@ -35,8 +35,26 @@ begin
 		load_reg_1 = 4'h4;//eip
         end else if (ope[15:8] == 8'he2) begin
 		load_reg_1 = 4'h1;//esp
+        end else if (ope[15:8] == 8'he8) begin
+		load_reg_1 = 4'h1;//esp
         end else if (ope[15:8] == 8'h6a) begin
 		load_reg_1 = 4'h1;//esp
+        end else if (ope[15:8] == 8'h8b) begin
+		if ( 8'h40 <=ope[7:0] && ope[7:0] <= 8'h47 ) begin//1byte
+			load_reg_1 = 4'h5;//stack_accessレジスタ
+		end else if (8'h80 <=ope[7:0] && ope[7:0] <= 8'h87 ) begin//4byte
+			load_reg_1 = 4'h5;//stack_accessレジスタ
+		end else begin
+			load_reg_1 = 4'hx;
+		end
+        end else if (ope[15:8] == 8'h83) begin//sub add
+		if ( ope[7:0] == 8'he8) begin//sub
+			load_reg_1 = 4'h3;//eax
+		end else if ( ope[7:0] == 8'hc4) begin//add
+			load_reg_1 = 4'h1;//esp
+		end else begin
+			load_reg_1 = 4'hx;
+		end
         end else begin
 		load_reg_1 = 4'hx;
         end;
@@ -69,8 +87,36 @@ begin
 		select_input_1 = 4'h4;//espの指すアドレスバス
         end else if (ope[15:8] == 8'he2) begin
 		select_input_1 = 4'h2;//固定値？(スタック移動分かアドレス)
+        end else if (ope[15:8] == 8'he8) begin
+		select_input_1 = 4'h2;//固定値？(スタック移動分かアドレス)
         end else if (ope[15:8] == 8'h6a) begin
 		select_input_1 = 4'h2;//固定値？(スタック移動分かアドレス)
+        end else if (ope[15:8] == 8'h8b) begin
+		if (ope[7:0] == 8'h45) begin//1byte
+			select_input_1 = 4'h5;//ebp
+//		end else if (ope[7:0] == 8'h41) begin//1byte
+//			select_input_1 = 4'h;//ecx
+//		end else if (ope[7:0] == 8'h42) begin//1byte
+//			select_input_1 = 4'h;//edx
+//		end else if (ope[7:0] == 8'h43) begin//1byte
+//			select_input_1 = 4'h;//ebx
+//		end else if (ope[7:0] == 8'h45) begin//1byte
+//			select_input_1 = 4'h;//ebp
+//		end else if (ope[7:0] == 8'h46) begin//1byte
+//			select_input_1 = 4'h;//esi
+//		end else if (ope[7:0] == 8'h47) begin//1byte
+//			select_input_1 = 4'h;//edi
+		end else begin
+			select_input_1 = 4'hx;
+		end
+        end else if (ope[15:8] == 8'h83) begin
+		if ( ope[7:0] == 8'he8) begin//sub
+			select_input_1 = 4'h6;//eax
+		end else if ( ope[7:0] == 8'hc4) begin //beginadd
+			select_input_1 = 4'h2;//esp 
+		end else begin
+			select_input_1 = 4'hx;
+		end
         end else begin
 		select_input_1 = 4'hx;
         end;
@@ -99,11 +145,21 @@ begin
         end else if (ope[15:8] == 8'h5d) begin
 		load_reg_2 = 4'h2;//esp
         end else if (ope[15:8] == 8'hc3) begin
-		load_reg_2 = 4'h2;//eip
+		load_reg_2 = 4'h2;//esp
         end else if (ope[15:8] == 8'he2) begin
+		load_reg_2 = 4'h1;//espの指すアドレスバス
+        end else if (ope[15:8] == 8'he8) begin
 		load_reg_2 = 4'h1;//espの指すアドレスバス
         end else if (ope[15:8] == 8'h6a) begin
 		load_reg_2 = 4'h1;//espの指すアドレスバス
+        end else if (ope[15:8] == 8'h8b) begin
+		if ( 8'h40 <=ope[7:0] && ope[7:0] <= 8'h47 ) begin//1byte
+			load_reg_2 = 4'h3;//eax
+		end else if (8'h80 <=ope[7:0] && ope[7:0] <= 8'h87 ) begin//4byte
+			load_reg_2 = 4'h3;//eax
+		end else begin
+			load_reg_2 = 4'hx;
+		end
         end else begin
 		load_reg_2 = 4'hx;
         end;
@@ -133,8 +189,28 @@ begin
 		select_input_2 = 4'h2;//固定値？(スタック移動分かアドレス)
         end else if (ope[15:8] == 8'he2) begin
 		select_input_2 = 4'h3;//eip
+        end else if (ope[15:8] == 8'he8) begin
+		select_input_2 = 4'h3;//eip
         end else if (ope[15:8] == 8'h6a) begin
 		select_input_2 = 4'h4;//immidiate data
+        end else if (ope[15:8] == 8'h8b) begin
+		if (ope[7:0] == 8'h45) begin//1byte
+			select_input_2 = 4'h6;//stack_addr_access
+//		end else if (ope[7:0] == 8'h41) begin//1byte
+//			select_input_2 = 4'h;//ecx
+//		end else if (ope[7:0] == 8'h42) begin//1byte
+//			select_input_2 = 4'h;//edx
+//		end else if (ope[7:0] == 8'h43) begin//1byte
+//			select_input_2 = 4'h;//ebx
+//		end else if (ope[7:0] == 8'h45) begin//1byte
+//			select_input_2 = 4'h;//ebp
+//		end else if (ope[7:0] == 8'h46) begin//1byte
+//			select_input_2 = 4'h;//esi
+//		end else if (ope[7:0] == 8'h47) begin//1byte
+//			select_input_2 = 4'h;//edi
+		end else begin
+			select_input_2 = 4'hx;
+		end
         end else begin
 		select_input_2 = 4'hx;
         end;
@@ -155,30 +231,28 @@ endfunction
 function [3:0] load_reg_3;
 input [15:0]ope;
 begin
-	case(ope)//ALUの出力をどのレジスタに入力するか2命令目
-//		8'h55: load_reg_3 = 4'h1;//espの指すアドレスバス
-//		8'h89: load_reg_3 = 4'hx;//
-//		8'hb8: load_reg_3 = 4'hx;//
-//		8'h5d: load_reg_3 = 4'h2;//esp
-//		8'hc3: load_reg_3 = 4'h2;//eip
-		8'he2: load_reg_3 = 4'h4;//espの指すアドレスバス
-		default load_reg_3 = 4'hx;
-	endcase
+	if (ope[15:8] == 8'he2) begin
+		load_reg_3 = 4'h4;
+        end else if (ope[15:8] == 8'he8) begin
+		load_reg_3 = 4'h4;
+        end else begin
+		load_reg_3 = 4'hx;
+        end;
+
 end
 endfunction
 
 function [3:0] select_input_3;
 input [15:0]ope;
 begin
-	case(ope)//ALUの入力にはどのレジスタの出力を使うか2命令目
-//		8'h55: select_input_3 = 4'h1;//ebp
-//		8'h89: select_input_3 = 4'hx;//
-//		8'hb8: select_input_3 = 4'hx;//
-//		8'h5d: select_input_3 = 4'h2;//固定値？(スタック移動分かアドレス)
-//		8'hc3: select_input_3 = 4'h2;//固定値？(スタック移動分かアドレス)
-		8'he2: select_input_3 = 4'h2;//eipこの値から足し算する
-		default select_input_3 = 4'hx;
-	endcase
+	if (ope[15:8] == 8'he2) begin
+		select_input_3 = 4'h2;
+        end else if (ope[15:8] == 8'he8) begin
+		select_input_3 = 4'h2;
+        end else begin
+		select_input_3 = 4'hx;
+        end;
+
 end
 endfunction
 
@@ -207,8 +281,26 @@ begin
 		calc_ope = 4'h1;
         end else if (ope[15:8] == 8'he2) begin
 		calc_ope = 4'h5;
+        end else if (ope[15:8] == 8'he8) begin
+		calc_ope = 4'h5;
         end else if (ope[15:8] == 8'h6a) begin
 		calc_ope = 4'h2;
+        end else if (ope[15:8] == 8'h8b) begin
+		if ( 8'h40 <=ope[7:0] && ope[7:0] <= 8'h47 ) begin//1byte
+			calc_ope = 4'h3;//eax
+		end else if (8'h80 <=ope[7:0] && ope[7:0] <= 8'h87 ) begin//4byte
+			calc_ope = 4'h6;//eax
+		end else begin
+			calc_ope = 4'hx;
+		end
+        end else if (ope[15:8] == 8'h83) begin
+		if ( ope[7:0] == 8'he8) begin//sub
+			calc_ope = 4'h3;
+		end else if ( ope[7:0] == 8'hc4) begin//add
+			calc_ope = 4'h3;
+		end else begin
+			calc_ope = 4'hx;
+		end
         end else begin
 		calc_ope = 4'hx;
         end;

@@ -1,5 +1,6 @@
-module eip_register(clock_4, clock_8, clock_12, num_of_ope, reset, read_or_write, write_data, eip);
+module eip_register(clock_4, clock_6, clock_8, clock_12, num_of_ope, reset, read_or_write, write_data, eip);
 input wire clock_4;
+input wire clock_6;
 input wire clock_8;
 input wire clock_12;
 input wire [3:0]num_of_ope;
@@ -21,11 +22,11 @@ always @(negedge clock_4)begin//2ƒNƒƒbƒN–Ú‚Í‚±‚±‚É‘«‚·
 	end
 end
 
-//always @(negedge clock_6)begin
-//	if (read_or_write == 4'h4) begin
-//		eip <= write_data;
-//	end
-//end
+always @(negedge clock_6)begin
+	if (read_or_write == 4'h4) begin
+		eip <= write_data;
+	end
+end
 always @(negedge clock_8)begin
 	if (read_or_write == 4'h4) begin
 		eip <= write_data;
@@ -42,11 +43,17 @@ always @(posedge clock_12)begin
 	else if (num_of_ope == 4'd2) begin
 		eip <= eip + 2;
 	end
+	else if (num_of_ope == 4'd3) begin
+		eip <= eip + 3;
+	end
 	else if (num_of_ope == 4'd4) begin
 		eip <= eip + 4;
 	end
 	else if (num_of_ope == 4'd5) begin
 		eip <= eip + 5;
+	end
+	else if (num_of_ope == 4'd6) begin
+		eip <= eip + 6;
 	end
 end
 

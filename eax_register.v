@@ -1,5 +1,6 @@
-module eax_register(clock_4, reset, read_or_write, write_data, eax);
+module eax_register(clock_4, clock_6,reset, read_or_write, write_data, eax);
 input wire clock_4;
+input wire clock_6;
 input wire reset;
 input wire [3:0]read_or_write;
 input wire [31:0]write_data;
@@ -15,12 +16,11 @@ always @(negedge clock_4)begin
 		eax <= write_data;
 	end
 end
-//NIY
-//always @(clock_7)begin
-//	if (read_or_write == 4'h2) begin
-//		eax <= write_data;
-//	end
-//end
+always @(clock_6)begin
+	if (read_or_write == 4'h3) begin
+		eax <= write_data;
+	end
+end
 
 
 endmodule

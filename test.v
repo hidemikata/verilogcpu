@@ -29,8 +29,10 @@ wire [31:0]ebp;
 wire [31:0]esp;
 wire [31:0]eax;
 wire [31:0]stack_current;
+wire [31:0]stack_addr_access;
 wire [31:0]stack_esp;
 wire [31:0]selected_registor_output;
+wire [31:0]stack_addr;//ebpみたいな感じ
 
 parameter STEP = 1000;
 
@@ -48,15 +50,16 @@ fetch fetch(reset, clock_1, ope, eip);//32bitのopeが手に入る
 wire [3:0]num_of_ope;
 decode decode(reset, clock_2, ope, reg_load_1, select_1, reg_load_2, select_2, reg_load_3, select_3, num_of_ope);
 
-eip_register eip_register(clock_4, clock_8, clock_12, num_of_ope, reset, selected_reg_load, alu_result_bus, eip);
+eip_register eip_register(clock_4, clock_6, clock_8, clock_12, num_of_ope, reset, selected_reg_load, alu_result_bus, eip);
 ebp_register ebp_register(clock_4, reset, selected_reg_load, alu_result_bus, ebp);
+stack_addr_register stack_addr_register(clock_4, reset, selected_reg_load, alu_result_bus, stack_addr);
 esp_register esp_register(clock_4, clock_6, reset, selected_reg_load, alu_result_bus, esp);
-eax_register eax_register(clock_4, reset, selected_reg_load, alu_result_bus, eax);
-stack_memory stack_memory(clock_4, clock_6, reset, selected_reg_load, alu_result_bus, esp, stack_current, stack_esp);
-selector selector(clock_3, clock_5, clock_7, select_1, select_2, select_3, eip, ebp, esp, stack_esp, selected_registor_output);//aluに入力するレジスタを選択する。
+eax_register eax_register(clock_4, clock_6, reset, selected_reg_load, alu_result_bus, eax);
+stack_memory stack_memory(clock_4, clock_6, reset, selected_reg_load, alu_result_bus, esp, stack_addr, stack_current, stack_addr_access, stack_esp);
+selector selector(clock_3, clock_5, clock_7, select_1, select_2, select_3, eip, ebp,esp, eax, stack_esp, stack_addr_access, selected_registor_output);//aluに入力するレジスタを選択する。
 
 alu alu(clock_4, clock_6, clock_8, ope, 32'h0000, selected_registor_output, num_of_ope, alu_result_bus);
-alu_result_selector alu_result_selector(clock_4, clock_6, clock_8, reg_load_1, reg_load_2, reg_load_3, selected_reg_load);//1命令目か2命令目かでalu->のレジスタがちがうのでセレクタをかます。
+alu_result_selector alu_result_selector(clock_4, clock_6, clock_8, reg_load_1, reg_load_2, reg_load_3, selected_reg_load);
 
 
 initial begin
@@ -64,11 +67,11 @@ initial begin
 	reset = 1;
 	#(STEP);
 	reset = 0;
-	#(STEP*1000);
+	#(STEP*300);
 	$finish;
 end
 
-initial $monitor("%d%d%d%d_%d%d%d%d_%d%d%d%d,eip[%h],data[%h],ope[%h],numope[%d],sel1[%d],sel2[%d],sel3[%d],reg_l1[%d],reg_l2[%d],reg_l3[%d],sel_reg_out[%h],alu_result_bus[%h],sel_reg_load[%d],esp[%h],ebp[%h],eax,[%h],st_cur[%h],st_esp[%h]",
+initial $monitor("%d%d%d%d_%d%d%d%d_%d%d%d%deip[%h]data[%h]ope[%h]numope[%d]sel1[%d]sel2[%d]sel3[%d]reg_l1[%d]reg_l2[%d]reg_l3[%d]aluin[%h]aluout[%h]ret[%h]esp[%h]ebp[%h]eax[%h]st_cur[%h]st_esp[%h]",
 	clock_1, clock_2, clock_3, clock_4, clock_5, clock_6, clock_7, clock_8,
 	clock_9, clock_10, clock_11, clock_12,
 	fetch.eip, fetch.data[31:24], ope, num_of_ope,
@@ -78,15 +81,15 @@ initial $monitor("%d%d%d%d_%d%d%d%d_%d%d%d%d,eip[%h],data[%h],ope[%h],numope[%d]
 	reg_load_1,
 	reg_load_2,
 	reg_load_3,
-	selected_registor_output, alu_result_bus,
-	selected_reg_load,esp, ebp,eax,stack_current,stack_esp,
+	selected_registor_output,
+	selected_reg_load,alu_result_bus,esp, ebp,eax,stack_current,stack_esp
 );
 endmodule
 
 // 2018/03/11
 // stackはアドレスが増えていく感じになっている。
-// iverilog.exe .\test.v .\cpu_clock.v .\eip_register.v .\fetch.v .\memory.v .\decode.v .\ebp_register.v .\selector.v .\alu.v alu_result_selector.v .\esp_register.v .\stack_memory.v .\eax_register.v
-//vvp .\a.out
-// 6aできたので次のやつをやる。
-// 8bをやろうと思うが、2バイト見ないとダメなので、ifに書き直し中。
-//debug_diff.txtとdiffをとること。
+//  iverilog.exe .\test.v .\cpu_clock.v .\eip_register.v .\fetch.v .\memory.v .\decode.v .\ebp_register.v .\selector.v .\alu.v alu_result_selector.v .\esp_register.v .\stack_memory.v .\eax_register.v .\stack_addr_register.v
+//  //vvp .\a.out
+//  課題。スタックを4バイト１で実装してしまっているので、add esp,byte +0x4をし
+//  ても１の移動にならない。のでaluで4で割ってる。
+// 次ｃ９の実装から。

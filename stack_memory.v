@@ -1,17 +1,20 @@
-module stack_memory(clock_4, clock_6, reset, read_or_write, write_data, esp, stack_current, stack_esp);
+module stack_memory(clock_4, clock_6, reset, read_or_write, write_data, esp, stack_addr, stack_current, stack_addr_access,stack_esp);
 input wire clock_4;
 input wire clock_6;
 input wire reset;
 input wire [3:0]read_or_write;
 input wire [31:0]write_data;
 input wire [31:0]esp;//アドレス
+input wire [31:0]stack_addr;//アドレス
 output reg [31:0]stack_current;
+output reg [31:0]stack_addr_access;
 output wire [31:0]stack_esp;
 reg [31:0]mem[0:31];//8bit 256個
 
 always @(*)begin
 	if (reset == 1'b1) begin
-		stack_current <= 32'h0000_0000;//debugの為333
+		stack_current <= 32'h0000_0000;
+		stack_addr_access <= 32'h0000_0000;
 	end
 end
 
@@ -32,6 +35,10 @@ always @(negedge clock_6)begin//2クロック目
 end
 
 assign stack_esp = mem[esp];
+
+always @(*)begin
+	stack_addr_access <= mem[stack_addr];
+end
 
 always @(posedge reset)begin
 	if (reset == 1'b1) begin

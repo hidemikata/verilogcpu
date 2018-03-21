@@ -28,12 +28,12 @@ always @(posedge reset)begin
 		mem[17] <= 8'hEB;
 		mem[18] <= 8'hFF;
 		mem[19] <= 8'hFF;
-		mem[19] <= 8'hFF;
-		mem[19] <= 8'h83;
-		mem[19] <= 8'hC4;
-		mem[19] <= 8'h04;
-		mem[19] <= 8'hC9;
-		mem[19] <= 8'hC3;
+		mem[20] <= 8'hFF;
+		mem[21] <= 8'h83;
+		mem[22] <= 8'hC4;
+		mem[23] <= 8'h04;
+		mem[24] <= 8'hC9;
+		mem[25] <= 8'hC3;
 	end
 end
 
