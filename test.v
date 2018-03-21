@@ -64,7 +64,7 @@ initial begin
 	reset = 1;
 	#(STEP);
 	reset = 0;
-	#(STEP*100);
+	#(STEP*1000);
 	$finish;
 end
 
@@ -88,4 +88,5 @@ endmodule
 // iverilog.exe .\test.v .\cpu_clock.v .\eip_register.v .\fetch.v .\memory.v .\decode.v .\ebp_register.v .\selector.v .\alu.v alu_result_selector.v .\esp_register.v .\stack_memory.v .\eax_register.v
 //vvp .\a.out
 // 6aできたので次のやつをやる。
-//
+// 8bをやろうと思うが、2バイト見ないとダメなので、ifに書き直し中。
+//debug_diff.txtとdiffをとること。

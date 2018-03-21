@@ -1,3 +1,45 @@
+
+int fib(int n){
+return n-1;
+}
+int func() {
+	return fib(10);
+}
+
+
+
+済00000000  55                push ebp
+済00000001  89E5              mov ebp,esp
+00000003  8B4508            mov eax,[ebp+0x8]
+00000006  83E801            sub eax,byte +0x1
+済00000009  5D                pop ebp
+済0000000A  C3                ret
+済0000000B  55                push ebp
+済0000000C  89E5              mov ebp,esp
+済0000000E  6A0A              push byte +0xa
+済00000010  E8EBFFFFFF        call dword 0x0
+00000015  83C404            add esp,byte +0x4
+00000018  C9                leave
+済00000019  C3                ret
+
+
+
+
+8B45
+8B movの
+45 modREGR/M
+01000101=45
+なので固定で3バイト目をとっていれるとよいかも。
+
+
+
+
+
+
+
+
+
+
 virtualBOXのubuntuのほうで。(/home/mikata/hoge)
 
 int fib(){
