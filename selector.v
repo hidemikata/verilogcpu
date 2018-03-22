@@ -44,6 +44,7 @@ end else if (clock_5 == 1)begin//2クロック目
 	endcase
 end else if (clock_7 == 1)begin//3クロック目
 	case(sel3)
+		4'h1:select = esp;
 		4'h2:select = eip;
 	endcase
 end

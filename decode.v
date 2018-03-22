@@ -55,20 +55,11 @@ begin
 		end else begin
 			load_reg_1 = 4'hx;
 		end
+        end else if (ope[15:8] == 8'hc9) begin
+		load_reg_1 = 4'h1;//esp
         end else begin
 		load_reg_1 = 4'hx;
         end;
-////	case(ope)//ALUの出力をどのレジスタに入力するか1命令目
-////		8'h55: load_reg_1 = 4'h1;//esp
-////		8'h89: load_reg_1 = 4'h2;//ebp
-////		8'hb8: load_reg_1 = 4'h3;//eax
-////		8'h5d: load_reg_1 = 4'h2;//ebp
-////		8'hc3: load_reg_1 = 4'h4;//eip
-////		8'he2: load_reg_1 = 4'h1;//esp
-////		8'h6a: load_reg_1 = 4'h1;//esp
-//////		8'h8b: load_reg_1 = 4'h3;//eax
-//		default load_reg_1 = 4'hx;
-//	endcase
 end
 endfunction
 
@@ -94,18 +85,6 @@ begin
         end else if (ope[15:8] == 8'h8b) begin
 		if (ope[7:0] == 8'h45) begin//1byte
 			select_input_1 = 4'h5;//ebp
-//		end else if (ope[7:0] == 8'h41) begin//1byte
-//			select_input_1 = 4'h;//ecx
-//		end else if (ope[7:0] == 8'h42) begin//1byte
-//			select_input_1 = 4'h;//edx
-//		end else if (ope[7:0] == 8'h43) begin//1byte
-//			select_input_1 = 4'h;//ebx
-//		end else if (ope[7:0] == 8'h45) begin//1byte
-//			select_input_1 = 4'h;//ebp
-//		end else if (ope[7:0] == 8'h46) begin//1byte
-//			select_input_1 = 4'h;//esi
-//		end else if (ope[7:0] == 8'h47) begin//1byte
-//			select_input_1 = 4'h;//edi
 		end else begin
 			select_input_1 = 4'hx;
 		end
@@ -117,21 +96,12 @@ begin
 		end else begin
 			select_input_1 = 4'hx;
 		end
+        end else if (ope[15:8] == 8'hc9) begin
+		select_input_1 = 4'h5;//ebp
         end else begin
 		select_input_1 = 4'hx;
         end;
 
-//	case(ope)//ALUの入力にはどのレジスタの出力を使うか2命令目
-//		8'h55: select_input_1 = 4'h2;//固定値？(スタック移動分かアドレス)
-//		8'h89: select_input_1 = 4'h2;//esp
-//		8'hb8: select_input_1 = 4'h3;//immidiate data
-//		8'h5d: select_input_1 = 4'h4;//espの指すアドレスバス
-//		8'hc3: select_input_1 = 4'h4;//espの指すアドレスバス
-//		8'he2: select_input_1 = 4'h2;//固定値？(スタック移動分かアドレス)
-//		8'h6a: select_input_1 = 4'h2;//固定値？(スタック移動分かアドレス)
-////		8'h8b: select_input_1 = 4'h3;
-//		default select_input_1 = 4'hx;
-//	endcase
 end
 endfunction
 
@@ -160,19 +130,11 @@ begin
 		end else begin
 			load_reg_2 = 4'hx;
 		end
+        end else if (ope[15:8] == 8'hc9) begin
+		load_reg_2 = 4'h3;//ebp
         end else begin
 		load_reg_2 = 4'hx;
         end;
-
-//	case(ope)//ALUの出力をどのレジスタに入力するか2命令目
-//		8'h55: load_reg_2 = 4'h1;//espの指すアドレスバス
-//		8'h89: load_reg_2 = 4'hx;//
-//		8'h5d: load_reg_2 = 4'h2;//esp
-//		8'hc3: load_reg_2 = 4'h2;//eip
-//		8'he2: load_reg_2 = 4'h1;//espの指すアドレスバス
-//		8'h6a: load_reg_2 = 4'h1;//espの指すアドレスバス
-//		default load_reg_2 = 4'hx;
-//	endcase
 end
 endfunction
 
@@ -196,35 +158,14 @@ begin
         end else if (ope[15:8] == 8'h8b) begin
 		if (ope[7:0] == 8'h45) begin//1byte
 			select_input_2 = 4'h6;//stack_addr_access
-//		end else if (ope[7:0] == 8'h41) begin//1byte
-//			select_input_2 = 4'h;//ecx
-//		end else if (ope[7:0] == 8'h42) begin//1byte
-//			select_input_2 = 4'h;//edx
-//		end else if (ope[7:0] == 8'h43) begin//1byte
-//			select_input_2 = 4'h;//ebx
-//		end else if (ope[7:0] == 8'h45) begin//1byte
-//			select_input_2 = 4'h;//ebp
-//		end else if (ope[7:0] == 8'h46) begin//1byte
-//			select_input_2 = 4'h;//esi
-//		end else if (ope[7:0] == 8'h47) begin//1byte
-//			select_input_2 = 4'h;//edi
 		end else begin
 			select_input_2 = 4'hx;
 		end
+        end else if (ope[15:8] == 8'hc9) begin
+		select_input_2 = 4'h6;
         end else begin
 		select_input_2 = 4'hx;
         end;
-
-
-//	case(ope)//ALUの入力にはどのレジスタの出力を使うか2命令目
-//		8'h55: select_input_2 = 4'h1;//ebp
-//		8'h89: select_input_2 = 4'hx;//
-//		8'h5d: select_input_2 = 4'h2;//固定値？(スタック移動分かアドレス)
-//		8'hc3: select_input_2 = 4'h2;//固定値？(スタック移動分かアドレス)
-//		8'he2: select_input_2 = 4'h3;//eip
-//		8'h6a: select_input_2 = 4'h4;//immidiate data
-//		default select_input_2 = 4'hx;
-//	endcase
 end
 endfunction
 
@@ -235,6 +176,8 @@ begin
 		load_reg_3 = 4'h4;
         end else if (ope[15:8] == 8'he8) begin
 		load_reg_3 = 4'h4;
+        end else if (ope[15:8] == 8'hc9) begin
+		load_reg_3 = 4'h2;//esp
         end else begin
 		load_reg_3 = 4'hx;
         end;
@@ -246,9 +189,11 @@ function [3:0] select_input_3;
 input [15:0]ope;
 begin
 	if (ope[15:8] == 8'he2) begin
-		select_input_3 = 4'h2;
+		select_input_3 = 4'h2;//eip
         end else if (ope[15:8] == 8'he8) begin
-		select_input_3 = 4'h2;
+		select_input_3 = 4'h2;//eip
+        end else if (ope[15:8] == 8'hc9) begin
+		select_input_3 = 4'h1;//esp
         end else begin
 		select_input_3 = 4'hx;
         end;
@@ -301,19 +246,11 @@ begin
 		end else begin
 			calc_ope = 4'hx;
 		end
+        end else if (ope[15:8] == 8'hc9) begin
+		calc_ope = 4'h1;
         end else begin
 		calc_ope = 4'hx;
         end;
-//	case(ope)
-//		8'h55: calc_ope = 4'h1;
-//		8'h89: calc_ope = 4'h2;
-//		8'hb8: calc_ope = 4'h5;
-//		8'h5d: calc_ope = 4'h1;
-//		8'hc3: calc_ope = 4'h1;
-//		8'he2: calc_ope = 4'h5;
-//		8'h6a: calc_ope = 4'h2;
-//		default calc_ope = 4'hx;
-//	endcase
 end
 endfunction
 endmodule

@@ -51,9 +51,9 @@ wire [3:0]num_of_ope;
 decode decode(reset, clock_2, ope, reg_load_1, select_1, reg_load_2, select_2, reg_load_3, select_3, num_of_ope);
 
 eip_register eip_register(clock_4, clock_6, clock_8, clock_12, num_of_ope, reset, selected_reg_load, alu_result_bus, eip);
-ebp_register ebp_register(clock_4, reset, selected_reg_load, alu_result_bus, ebp);
+ebp_register ebp_register(clock_4, clock_6, reset, selected_reg_load, alu_result_bus, ebp);
 stack_addr_register stack_addr_register(clock_4, reset, selected_reg_load, alu_result_bus, stack_addr);
-esp_register esp_register(clock_4, clock_6, reset, selected_reg_load, alu_result_bus, esp);
+esp_register esp_register(clock_4, clock_6, clock_8, reset, selected_reg_load, alu_result_bus, esp);
 eax_register eax_register(clock_4, clock_6, reset, selected_reg_load, alu_result_bus, eax);
 stack_memory stack_memory(clock_4, clock_6, reset, selected_reg_load, alu_result_bus, esp, stack_addr, stack_current, stack_addr_access, stack_esp);
 selector selector(clock_3, clock_5, clock_7, select_1, select_2, select_3, eip, ebp,esp, eax, stack_esp, stack_addr_access, selected_registor_output);//aluに入力するレジスタを選択する。
@@ -67,11 +67,11 @@ initial begin
 	reset = 1;
 	#(STEP);
 	reset = 0;
-	#(STEP*300);
+	#(STEP*320);
 	$finish;
 end
 
-initial $monitor("%d%d%d%d_%d%d%d%d_%d%d%d%deip[%h]data[%h]ope[%h]numope[%d]sel1[%d]sel2[%d]sel3[%d]reg_l1[%d]reg_l2[%d]reg_l3[%d]aluin[%h]aluout[%h]ret[%h]esp[%h]ebp[%h]eax[%h]st_cur[%h]st_esp[%h]",
+initial $monitor("%d%d%d%d_%d%d%d%d_%d%d%d%deip[%h]data[%h]ope[%h]numope[%d]sel1[%d]sel2[%d]sel3[%d]reg_l1[%d]reg_l2[%d]reg_l3[%d]aluin[%h]aluout[%h]ret[%h]esp[%h]ebp[%h]eax[%h]st_cur[%h]st_esp[%h],%h",
 	clock_1, clock_2, clock_3, clock_4, clock_5, clock_6, clock_7, clock_8,
 	clock_9, clock_10, clock_11, clock_12,
 	fetch.eip, fetch.data[31:24], ope, num_of_ope,
@@ -82,7 +82,7 @@ initial $monitor("%d%d%d%d_%d%d%d%d_%d%d%d%deip[%h]data[%h]ope[%h]numope[%d]sel1
 	reg_load_2,
 	reg_load_3,
 	selected_registor_output,
-	selected_reg_load,alu_result_bus,esp, ebp,eax,stack_current,stack_esp
+	selected_reg_load,alu_result_bus,esp, ebp,eax,stack_current,stack_esp,alu.a
 );
 endmodule
 
@@ -92,4 +92,5 @@ endmodule
 //  //vvp .\a.out
 //  課題。スタックを4バイト１で実装してしまっているので、add esp,byte +0x4をし
 //  ても１の移動にならない。のでaluで4で割ってる。
-// 次ｃ９の実装から。
+// ｃ９多分できた。
+// 全体確認をする。

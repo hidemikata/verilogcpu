@@ -39,7 +39,9 @@ int func() {
 
 
 
-
+00000018  C9                leave
+mov esp, ebp
+pop ebp
 
 
 

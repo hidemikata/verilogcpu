@@ -63,6 +63,9 @@ always @(posedge clock_4) begin
 			alu_result_bus <= registor_in + (ope[15:8]/4);//espへの代入は4でわる。
 		end
 	end
+	if (ope_31_24 == 8'hc9) begin 
+		alu_result_bus <= registor_in;
+	end
 end
 
 always @(posedge clock_6) begin
@@ -98,6 +101,9 @@ always @(posedge clock_6) begin
 	if (ope_31_24 == 8'h8b) begin 
 		alu_result_bus <= registor_in;//Mod/Rmでとれた値をそのまま出力。
 	end
+	if (ope_31_24 == 8'hc9) begin 
+		alu_result_bus <= registor_in;
+	end
 end
 
 always @(posedge clock_8) begin
@@ -118,6 +124,9 @@ always @(posedge clock_8) begin
 		//register_in eip
 		//-5はcall命令が5なので5分引いておく。
 		//
+	end
+	if (ope_31_24 == 8'hc9) begin 
+		alu_result_bus <= registor_in - 1;
 	end
 end
 assign debug2 = ({8'h00 , ~ope[7:0], ~ope[15:8], ~ope[23:16]} + 1);
