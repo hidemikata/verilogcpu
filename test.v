@@ -67,7 +67,7 @@ initial begin
 	reset = 1;
 	#(STEP);
 	reset = 0;
-	#(STEP*320);
+	#(STEP*350);
 	$finish;
 end
 

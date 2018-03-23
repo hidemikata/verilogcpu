@@ -162,7 +162,7 @@ begin
 			select_input_2 = 4'hx;
 		end
         end else if (ope[15:8] == 8'hc9) begin
-		select_input_2 = 4'h6;
+		select_input_2 = 4'h5;
         end else begin
 		select_input_2 = 4'hx;
         end;
