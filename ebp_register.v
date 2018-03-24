@@ -18,7 +18,7 @@ always @(negedge clock_4)begin
 end
 
 always @(negedge clock_6)begin
-	if (read_or_write == 4'h3) begin
+	if (read_or_write == 4'h5) begin
 		ebp <= write_data;
 	end
 end

@@ -63,7 +63,7 @@ int func(){
 00000009  C3                ret            pop eip‚Æ‚¨‚È‚¶
 0000000A  55                push ebp
 0000000B  89E5              mov ebp,esp
-0000000D  E218EEFFFFFF        call dword 0x0
+0000000D  E8EEFFFFFF        call dword 0x0
 00000012  5D                pop ebp
 00000013  C3                ret
 

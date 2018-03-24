@@ -33,8 +33,8 @@ begin
 		load_reg_1 = 4'h2;//ebp
         end else if (ope[15:8] == 8'hc3) begin
 		load_reg_1 = 4'h4;//eip
-        end else if (ope[15:8] == 8'he2) begin
-		load_reg_1 = 4'h1;//esp
+//        end else if (ope[15:8] == 8'he2) begin
+//		load_reg_1 = 4'h1;//esp
         end else if (ope[15:8] == 8'he8) begin
 		load_reg_1 = 4'h1;//esp
         end else if (ope[15:8] == 8'h6a) begin
@@ -76,8 +76,8 @@ begin
 		select_input_1 = 4'h4;//espの指すアドレスバス
         end else if (ope[15:8] == 8'hc3) begin
 		select_input_1 = 4'h4;//espの指すアドレスバス
-        end else if (ope[15:8] == 8'he2) begin
-		select_input_1 = 4'h2;//固定値？(スタック移動分かアドレス)
+//        end else if (ope[15:8] == 8'he2) begin
+//		select_input_1 = 4'h2;//固定値？(スタック移動分かアドレス)
         end else if (ope[15:8] == 8'he8) begin
 		select_input_1 = 4'h2;//固定値？(スタック移動分かアドレス)
         end else if (ope[15:8] == 8'h6a) begin
@@ -116,8 +116,8 @@ begin
 		load_reg_2 = 4'h2;//esp
         end else if (ope[15:8] == 8'hc3) begin
 		load_reg_2 = 4'h2;//esp
-        end else if (ope[15:8] == 8'he2) begin
-		load_reg_2 = 4'h1;//espの指すアドレスバス
+//        end else if (ope[15:8] == 8'he2) begin
+//		load_reg_2 = 4'h1;//espの指すアドレスバス
         end else if (ope[15:8] == 8'he8) begin
 		load_reg_2 = 4'h1;//espの指すアドレスバス
         end else if (ope[15:8] == 8'h6a) begin
@@ -131,7 +131,7 @@ begin
 			load_reg_2 = 4'hx;
 		end
         end else if (ope[15:8] == 8'hc9) begin
-		load_reg_2 = 4'h3;//ebp
+		load_reg_2 = 4'h5;//ebp
         end else begin
 		load_reg_2 = 4'hx;
         end;
@@ -149,8 +149,8 @@ begin
 		select_input_2 = 4'h2;//固定値？(スタック移動分かアドレス)
         end else if (ope[15:8] == 8'hc3) begin
 		select_input_2 = 4'h2;//固定値？(スタック移動分かアドレス)
-        end else if (ope[15:8] == 8'he2) begin
-		select_input_2 = 4'h3;//eip
+//        end else if (ope[15:8] == 8'he2) begin
+//		select_input_2 = 4'h3;//eip
         end else if (ope[15:8] == 8'he8) begin
 		select_input_2 = 4'h3;//eip
         end else if (ope[15:8] == 8'h6a) begin
@@ -172,9 +172,9 @@ endfunction
 function [3:0] load_reg_3;
 input [15:0]ope;
 begin
-	if (ope[15:8] == 8'he2) begin
-		load_reg_3 = 4'h4;
-        end else if (ope[15:8] == 8'he8) begin
+//	if (ope[15:8] == 8'he2) begin
+//		load_reg_3 = 4'h4;
+        if (ope[15:8] == 8'he8) begin
 		load_reg_3 = 4'h4;
         end else if (ope[15:8] == 8'hc9) begin
 		load_reg_3 = 4'h2;//esp
@@ -188,9 +188,9 @@ endfunction
 function [3:0] select_input_3;
 input [15:0]ope;
 begin
-	if (ope[15:8] == 8'he2) begin
-		select_input_3 = 4'h2;//eip
-        end else if (ope[15:8] == 8'he8) begin
+//	if (ope[15:8] == 8'he2) begin
+//		select_input_3 = 4'h2;//eip
+        if (ope[15:8] == 8'he8) begin
 		select_input_3 = 4'h2;//eip
         end else if (ope[15:8] == 8'hc9) begin
 		select_input_3 = 4'h1;//esp
@@ -224,8 +224,8 @@ begin
 		calc_ope = 4'h1;
         end else if (ope[15:8] == 8'hc3) begin
 		calc_ope = 4'h1;
-        end else if (ope[15:8] == 8'he2) begin
-		calc_ope = 4'h5;
+//        end else if (ope[15:8] == 8'he2) begin
+//		calc_ope = 4'h5;
         end else if (ope[15:8] == 8'he8) begin
 		calc_ope = 4'h5;
         end else if (ope[15:8] == 8'h6a) begin

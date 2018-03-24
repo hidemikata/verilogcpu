@@ -32,7 +32,7 @@ wire [31:0]stack_current;
 wire [31:0]stack_addr_access;
 wire [31:0]stack_esp;
 wire [31:0]selected_registor_output;
-wire [31:0]stack_addr;//ebpみたいな感じ
+wire [31:0]stack_addr;//stackにアクセスする際にespからたどらない場合に使用する。
 
 parameter STEP = 1000;
 
@@ -71,7 +71,7 @@ initial begin
 	$finish;
 end
 
-initial $monitor("%d%d%d%d_%d%d%d%d_%d%d%d%deip[%h]data[%h]ope[%h]numope[%d]sel1[%d]sel2[%d]sel3[%d]reg_l1[%d]reg_l2[%d]reg_l3[%d]aluin[%h]aluout[%h]ret[%h]esp[%h]ebp[%h]eax[%h]st_cur[%h]st_esp[%h],%h",
+initial $monitor("%d%d%d%d_%d%d%d%d_%d%d%d%deip[%h]data[%h]ope[%h]numope[%d]sel1[%d]sel2[%d]sel3[%d]reg_l1[%d]reg_l2[%d]reg_l3[%d]aluin[%h]aluout[%h]ret[%h]esp[%h]ebp[%h]eax[%h]st_cur[%h]st_esp[%h],%h,%h,%h,%h,%h",
 	clock_1, clock_2, clock_3, clock_4, clock_5, clock_6, clock_7, clock_8,
 	clock_9, clock_10, clock_11, clock_12,
 	fetch.eip, fetch.data[31:24], ope, num_of_ope,
@@ -82,7 +82,7 @@ initial $monitor("%d%d%d%d_%d%d%d%d_%d%d%d%deip[%h]data[%h]ope[%h]numope[%d]sel1
 	reg_load_2,
 	reg_load_3,
 	selected_registor_output,
-	selected_reg_load,alu_result_bus,esp, ebp,eax,stack_current,stack_esp,alu.a
+	selected_reg_load,alu_result_bus,esp, ebp,eax,stack_current,stack_esp,alu.debug2, alu.debug2a, alu.debug1, alu.debug1a,alu.a
 );
 endmodule
 
@@ -93,4 +93,3 @@ endmodule
 //  課題。スタックを4バイト１で実装してしまっているので、add esp,byte +0x4をし
 //  ても１の移動にならない。のでaluで4で割ってる。
 // ｃ９多分できた。
-// 全体確認をする。
