@@ -52,6 +52,8 @@ begin
 			load_reg_1 = 4'h3;//eax
 		end else if ( ope[7:0] == 8'hc4) begin//add
 			load_reg_1 = 4'h1;//esp
+		end else if ( ope[7:0] == 8'hec) begin//sub
+			load_reg_1 = 4'h1;//esp
 		end else begin
 			load_reg_1 = 4'hx;
 		end
@@ -90,8 +92,10 @@ begin
 		end
         end else if (ope[15:8] == 8'h83) begin
 		if ( ope[7:0] == 8'he8) begin//sub
-			select_input_1 = 4'h6;//eax
-		end else if ( ope[7:0] == 8'hc4) begin //beginadd
+			select_input_1 = 4'h6;
+		end else if ( ope[7:0] == 8'hc4) begin
+			select_input_1 = 4'h2;//esp 
+		end else if ( ope[7:0] == 8'hec) begin
 			select_input_1 = 4'h2;//esp 
 		end else begin
 			select_input_1 = 4'hx;
@@ -242,6 +246,8 @@ begin
 		if ( ope[7:0] == 8'he8) begin//sub
 			calc_ope = 4'h3;
 		end else if ( ope[7:0] == 8'hc4) begin//add
+			calc_ope = 4'h3;
+		end else if ( ope[7:0] == 8'hec) begin//sub
 			calc_ope = 4'h3;
 		end else begin
 			calc_ope = 4'hx;

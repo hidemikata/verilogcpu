@@ -60,7 +60,10 @@ always @(posedge clock_4) begin
 			alu_result_bus <= registor_in - ope[15:8];
 		end
 		if (ope_23_16 == 8'hc4) begin
-			alu_result_bus <= registor_in + (ope[15:8]/4);//espへの代入は4でわる。
+			alu_result_bus <= registor_in - (ope[15:8]/4);//espへの代入は4でわる。しかもスタックがーと＋がちがうので逆にする。
+		end
+		if (ope_23_16 == 8'hec) begin
+			alu_result_bus <= registor_in + (ope[15:8]/4);//espへの代入は4でわる。しかもスタックがーと＋がちがうので逆にする。
 		end
 	end
 	if (ope_31_24 == 8'hc9) begin 
@@ -126,7 +129,7 @@ always @(posedge clock_8) begin
 		//
 	end
 	if (ope_31_24 == 8'hc9) begin 
-		alu_result_bus <= registor_in;
+		alu_result_bus <= registor_in - 1;
 	end
 end
 assign debug2 = ({8'h00 ,8'h00 , ~ope[7:0], ~ope[15:8] } + 1);
