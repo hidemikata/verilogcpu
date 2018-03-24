@@ -1,4 +1,4 @@
-module selector(clock_3, clock_5, clock_7, select_1, select_2, select_3, eip, ebp, esp,eax, stack, stack_addr_access, registor_output);
+module selector(clock_3, clock_5, clock_7, select_1, select_2, select_3, eip, ebp, esp,eax, ebx,stack, stack_addr_access, registor_output);
 input clock_3;
 input clock_5;
 input clock_7;
@@ -9,6 +9,7 @@ input [31:0]eip;
 input [31:0]ebp;
 input [31:0]esp;
 input [31:0]eax;
+input [31:0]ebx;
 input [31:0]stack;
 input [31:0]stack_addr_access;
 output [31:0]registor_output;
@@ -42,6 +43,7 @@ end else if (clock_5 == 1)begin//2クロック目
 		4'h4:select = esp;//NIY
 		4'h5:select = stack;
 		4'h6:select = stack_addr_access;
+		4'h7:select = ebx;
 	endcase
 end else if (clock_7 == 1)begin//3クロック目
 	case(sel3)

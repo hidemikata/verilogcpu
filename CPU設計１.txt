@@ -9,8 +9,9 @@ int func() {
 }
 çœ00000000  55                push ebp
 çœ00000001  89E5              mov ebp,esp
-00000003  53                push ebx
+çœ00000003  53                push ebx
 çœ00000004  83EC04            sub esp,byte +0x4
+ìÆäm
 00000007  837D0800          cmp dword [ebp+0x8],byte +0x0
 0000000B  7507              jnz 0x14
 çœ0000000D  B801000000        mov eax,0x1
@@ -21,7 +22,7 @@ int func() {
 0000001D  50                push eax
 çœ0000001E  E8DDFFFFFF        call dword 0x0
 çœ00000023  83C410            add esp,byte +0x10
-çœ00000026  89C3              mov ebx,eax
+00000026  89C3              mov ebx,eax
 çœ00000028  8B4508            mov eax,[ebp+0x8]
 0000002B  83E801            sub eax,byte +0x1
 çœ0000002E  83EC0C            sub esp,byte +0xc

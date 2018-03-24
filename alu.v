@@ -29,6 +29,9 @@ always @(posedge clock_4) begin
 		//espのアドレスを１バイト上に移動させる
 		alu_result_bus <= registor_in + 32'h1;//本当はマイナスだがプラスで実装。
 	end
+	if (ope_31_24 == 8'h53) begin 
+		alu_result_bus <= registor_in + 32'h1;//本当はマイナスだがプラスで実装。
+	end
 	if (ope_31_24 == 8'h89) begin 
 		alu_result_bus <= registor_in;
 	end
@@ -43,9 +46,6 @@ always @(posedge clock_4) begin
 		alu_result_bus <= registor_in - 32'h1;//インクリされるので-1しておく
 		//ret (pop.eip)。
 	end
-//	if (ope_31_24 == 8'he2) begin 
-//		alu_result_bus <= registor_in + 32'h1;//本当はマイナスだがプラスで実装。
-//	end
 	if (ope_31_24 == 8'he8) begin 
 		alu_result_bus <= registor_in + 32'h1;//本当はマイナスだがプラスで実装。
 	end
@@ -73,6 +73,9 @@ end
 
 always @(posedge clock_6) begin
 	if (ope_31_24 == 8'h55) begin 
+		alu_result_bus <= registor_in;
+	end
+	if (ope_31_24 == 8'h53) begin 
 		alu_result_bus <= registor_in;
 	end
 	if (ope_31_24 == 8'h89) begin 
