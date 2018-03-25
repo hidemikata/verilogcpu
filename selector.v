@@ -1,4 +1,4 @@
-module selector(clock_3, clock_5, clock_7, select_1, select_2, select_3, eip, ebp, esp,eax, ebx,stack, stack_addr_access, registor_output);
+module selector(clock_3, clock_5, clock_7, select_1, select_2, select_3, eip, ebp, esp,eax, edi, ebx,stack, stack_addr_access, registor_output);
 input clock_3;
 input clock_5;
 input clock_7;
@@ -9,6 +9,7 @@ input [31:0]eip;
 input [31:0]ebp;
 input [31:0]esp;
 input [31:0]eax;
+input [31:0]edi;
 input [31:0]ebx;
 input [31:0]stack;
 input [31:0]stack_addr_access;

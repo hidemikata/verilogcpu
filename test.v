@@ -28,6 +28,7 @@ wire [31:0]alu_result_bus;
 wire [31:0]ebp;
 wire [31:0]esp;
 wire [31:0]eax;
+wire [31:0]edi;
 wire [31:0]ebx;
 wire [31:0]stack_current;
 wire [31:0]stack_addr_access;
@@ -56,9 +57,10 @@ ebp_register ebp_register(clock_4, clock_6, reset, selected_reg_load, alu_result
 stack_addr_register stack_addr_register(clock_4, reset, selected_reg_load, alu_result_bus, stack_addr);
 esp_register esp_register(clock_4, clock_6, clock_8, reset, selected_reg_load, alu_result_bus, esp);
 eax_register eax_register(clock_4, clock_6, reset, selected_reg_load, alu_result_bus, eax);
+edi_register edi_register(clock_4, clock_6, reset, selected_reg_load, alu_result_bus, edi);
 ebx_register ebx_register(clock_4, clock_6, reset, selected_reg_load, alu_result_bus, ebx);
 stack_memory stack_memory(clock_4, clock_6, reset, selected_reg_load, alu_result_bus, esp, stack_addr, stack_current, stack_addr_access, stack_esp);
-selector selector(clock_3, clock_5, clock_7, select_1, select_2, select_3, eip, ebp,esp, eax, ebx, stack_esp, stack_addr_access, selected_registor_output);//aluに入力するレジスタを選択する。
+selector selector(clock_3, clock_5, clock_7, select_1, select_2, select_3, eip, ebp,esp, eax, edi,ebx, stack_esp, stack_addr_access, selected_registor_output);//aluに入力するレジスタを選択する。
 
 alu alu(clock_4, clock_6, clock_8, ope, 32'h0000, selected_registor_output, num_of_ope, alu_result_bus);
 alu_result_selector alu_result_selector(clock_4, clock_6, clock_8, reg_load_1, reg_load_2, reg_load_3, selected_reg_load);
@@ -90,9 +92,9 @@ endmodule
 
 // 2018/03/11
 // stackはアドレスが増えていく感じになっている。
-//   iverilog.exe .\test.v .\cpu_clock.v .\eip_register.v .\fetch.v .\memory.v .\decode.v .\ebp_register.v .\selector.v .\alu.v alu_result_selector.v .\esp_register.v .\stack_memory.v .\eax_register.v .\stack_addr_register.v .\ebx_register.v
+//   iverilog.exe .\test.v .\cpu_clock.v .\eip_register.v .\fetch.v .\memory.v .\decode.v .\ebp_register.v .\selector.v .\alu.v alu_result_selector.v .\esp_register.v .\stack_memory.v .\eax_register.v .\stack_addr_register.v .\ebx_register.v .\edi_register.v
 //  vvp .\a.out
 //  課題。スタックを4バイト１で実装してしまっているので、add esp,byte +0x4をし
 //  ても１の移動にならない。のでaluで4で割ってる。
-//動確から。83から
-//
+//動確から。
+//837Dの動確。ediにちゃんとはいってるか。

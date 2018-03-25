@@ -65,6 +65,9 @@ always @(posedge clock_4) begin
 		if (ope_23_16 == 8'hec) begin
 			alu_result_bus <= registor_in + (ope[15:8]/4);//espへの代入は4でわる。しかもスタックがーと＋がちがうので逆にする。
 		end
+		if (ope_23_16 == 8'h7d) begin
+			alu_result_bus <= registor_in + (ope[15:8]/4);//espへの代入は4でわる。しかもスタックがーと＋がちがうので逆にする。
+		end
 	end
 	if (ope_31_24 == 8'hc9) begin 
 		alu_result_bus <= registor_in;
@@ -89,12 +92,6 @@ always @(posedge clock_6) begin
 		alu_result_bus <= registor_in - 32'h1;
 		//ret (pop.eip)。
 	end
-//	if (ope_31_24 == 8'he2) begin 
-//		//alu_result_bus <= registor_in;//←現在のeipをpushするでもこ
-//		//れだと戻ってきたときにcallのところに戻ってくるなのでopeのな
-//		//がさだけ足しておく。
-//		alu_result_bus <= registor_in + num_of_ope;
-//	end
 	if (ope_31_24 == 8'he8) begin 
 		//alu_result_bus <= registor_in;//←現在のeipをpushするでもこ
 		//れだと戻ってきたときにcallのところに戻ってくるなのでopeのな
@@ -110,18 +107,14 @@ always @(posedge clock_6) begin
 	if (ope_31_24 == 8'hc9) begin 
 		alu_result_bus <= registor_in;
 	end
+	if (ope_31_24 == 8'h83) begin 
+		if (ope_23_16 == 8'h7d) begin
+			alu_result_bus <= registor_in - ope_07_00;
+		end
+	end
 end
 
 always @(posedge clock_8) begin
-//	if (ope_31_24 == 8'he2) begin 
-//		alu_result_bus <= (registor_in + num_of_ope) - ({8'h00 , 8'h00 ,~ope[7:0], ~ope[15:8]} + 1) -5;
-//		//プログラムの2の歩数と現在のregistor_in(eip)の値を足してどうこうしたやつをここに入れる。と;
-//		//eeff->ffee->ee->1110,1110->2の補数->00010010->0x12。0x12はcallの次の
-//		//命令。なのでcallの次の命令とこれを引き算して0番地に飛ぶこと
-//		//register_in eip
-//		//-5はcall命令が5なので5分引いておく。
-//		//
-//	end
 	if (ope_31_24 == 8'he8) begin 
 		alu_result_bus <= (registor_in + num_of_ope) - ({8'h00 , ~ope[7:0], ~ope[15:8], ~ope[23:16]} + 1) -5;
 		//プログラムの2の歩数と現在のregistor_in(eip)の値を足してどうこうしたやつをここに入れる。と;

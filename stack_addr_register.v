@@ -15,12 +15,5 @@ always @(negedge clock_4)begin
 		stack_addr <= write_data;
 	end
 end
-//NIY
-//always @(clock_7)begin
-//	if (read_or_write == 4'h2) begin
-//		ebp <= write_data;
-//	end
-//end
-
 
 endmodule
