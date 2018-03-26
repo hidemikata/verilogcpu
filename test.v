@@ -30,6 +30,7 @@ wire [31:0]esp;
 wire [31:0]eax;
 wire [31:0]edi;
 wire [31:0]ebx;
+wire [31:0]zero;
 wire [31:0]stack_current;
 wire [31:0]stack_addr_access;
 wire [31:0]stack_esp;
@@ -59,8 +60,9 @@ esp_register esp_register(clock_4, clock_6, clock_8, reset, selected_reg_load, a
 eax_register eax_register(clock_4, clock_6, reset, selected_reg_load, alu_result_bus, eax);
 edi_register edi_register(clock_4, clock_6, reset, selected_reg_load, alu_result_bus, edi);
 ebx_register ebx_register(clock_4, clock_6, reset, selected_reg_load, alu_result_bus, ebx);
+zero_register zero_register(clock_4, clock_6, reset, selected_reg_load, alu_result_bus, zero);
 stack_memory stack_memory(clock_4, clock_6, reset, selected_reg_load, alu_result_bus, esp, stack_addr, stack_current, stack_addr_access, stack_esp);
-selector selector(clock_3, clock_5, clock_7, select_1, select_2, select_3, eip, ebp,esp, eax, edi,ebx, stack_esp, stack_addr_access, selected_registor_output);//aluに入力するレジスタを選択する。
+selector selector(clock_3, clock_5, clock_7, select_1, select_2, select_3, eip, ebp,esp, eax, edi,ebx, zero, stack_esp, stack_addr_access, selected_registor_output);//aluに入力するレジスタを選択する。
 
 alu alu(clock_4, clock_6, clock_8, ope, 32'h0000, selected_registor_output, num_of_ope, alu_result_bus);
 alu_result_selector alu_result_selector(clock_4, clock_6, clock_8, reg_load_1, reg_load_2, reg_load_3, selected_reg_load);
@@ -75,10 +77,10 @@ initial begin
 	$finish;
 end
 
-initial $monitor("%d%d%d%d_%d%d%d%d_%d%d%d%deip[%h]data[%h]ope[%h]numope[%d]sel1[%d]sel2[%d]sel3[%d]reg_l1[%d]reg_l2[%d]reg_l3[%d]aluin[%h]aluout[%h]ret[%h]esp[%h]ebp[%h]eax[%h]st_cur[%h]st_esp[%h],%h,%h,%h,%h,%h",
+initial $monitor("%d%d%d%d_%d%d%d%d_%d%d%d%deip[%h]ope[%h]sel1[%d]sel2[%d]sel3[%d]reg_l1[%d]reg_l2[%d]reg_l3[%d]ali[%h]alo[%h]ret[%h]sp[%h]bp[%h]ax[%h]di[%h]z[%h]st_cur[%h]st_esp[%h]st_acc[%h]%h,%h,%h,%h,%h",
 	clock_1, clock_2, clock_3, clock_4, clock_5, clock_6, clock_7, clock_8,
 	clock_9, clock_10, clock_11, clock_12,
-	fetch.eip, fetch.data[31:24], ope, num_of_ope,
+	fetch.eip,  ope, 
 	select_1,
 	select_2,
 	select_3,
@@ -86,7 +88,8 @@ initial $monitor("%d%d%d%d_%d%d%d%d_%d%d%d%deip[%h]data[%h]ope[%h]numope[%d]sel1
 	reg_load_2,
 	reg_load_3,
 	selected_registor_output,
-	selected_reg_load,alu_result_bus,esp, ebp,eax,stack_current,stack_esp,alu.debug2, alu.debug2a, alu.debug1, alu.debug1a,alu.a
+	selected_reg_load,alu_result_bus,esp, ebp,eax,edi,zero,
+	stack_current,stack_esp,stack_addr_access,alu.debug2, alu.debug2a, alu.debug1, alu.debug1a,alu.a
 );
 endmodule
 
@@ -97,4 +100,4 @@ endmodule
 //  課題。スタックを4バイト１で実装してしまっているので、add esp,byte +0x4をし
 //  ても１の移動にならない。のでaluで4で割ってる。
 //動確から。
-//837Dの動確。ediにちゃんとはいってるか。
+//zeroレジスタを実装した。jnzの実装から。
