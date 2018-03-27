@@ -36,6 +36,7 @@ if (clock_3 == 1)begin
 		4'h4:select = stack;//これ、esp指すところの値になってないきがする。
 		4'h5:select = ebp;
 		4'h6:select = eax;
+		4'h7:select = eip;
 	endcase	 
 end else if (clock_5 == 1)begin//2クロック目
 	case(sel2)

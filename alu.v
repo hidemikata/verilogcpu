@@ -1,4 +1,4 @@
-module alu(clock_4, clock_6, clock_8, ope, immidiate_data, registor_in, num_of_ope,  alu_result_bus);
+module alu(clock_4, clock_6, clock_8, ope, immidiate_data, registor_in, num_of_ope,  alu_result_bus, zero);
 input clock_4;
 input clock_6;
 input clock_8;
@@ -6,6 +6,7 @@ input [31:0]ope;
 input [31:0]immidiate_data;
 input [31:0]registor_in;
 input [3:0]num_of_ope;
+input [31:0]zero;
 output reg [31:0]alu_result_bus;
 wire [31:0]ope_31_24;
 wire [31:0]ope_23_16;
@@ -72,6 +73,16 @@ always @(posedge clock_4) begin
 	if (ope_31_24 == 8'hc9) begin 
 		alu_result_bus <= registor_in;
 	end
+	if (ope_31_24 == 8'h75) begin 
+		if (zero == 8'h01) begin
+			alu_result_bus <= registor_in + ope_23_16;
+		end else begin
+			alu_result_bus <= registor_in;
+		end
+	end
+	if (ope_31_24 == 8'heb) begin
+		alu_result_bus <= registor_in + ope_23_16;
+	end
 end
 
 always @(posedge clock_6) begin
@@ -128,10 +139,10 @@ always @(posedge clock_8) begin
 		alu_result_bus <= registor_in - 1;
 	end
 end
-assign debug2 = ({8'h00 ,8'h00 , ~ope[7:0], ~ope[15:8] } + 1);
+assign debug2 = alu_result_bus;
 assign debug2a = registor_in;
-assign debug1 =  ope_07_00;
-assign debug1a = (registor_in + num_of_ope) - ({8'h00 , ~ope[7:0], ~ope[15:8], ~ope[23:16]} + 1);
+assign debug1 =  ope_15_08;
+assign debug1a = ope_15_08/4;
 assign a = alu_result_bus;
 //00000015,00000010,00000006,00000014,0000000f
 endmodule

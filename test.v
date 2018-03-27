@@ -64,7 +64,7 @@ zero_register zero_register(clock_4, clock_6, reset, selected_reg_load, alu_resu
 stack_memory stack_memory(clock_4, clock_6, reset, selected_reg_load, alu_result_bus, esp, stack_addr, stack_current, stack_addr_access, stack_esp);
 selector selector(clock_3, clock_5, clock_7, select_1, select_2, select_3, eip, ebp,esp, eax, edi,ebx, zero, stack_esp, stack_addr_access, selected_registor_output);//aluに入力するレジスタを選択する。
 
-alu alu(clock_4, clock_6, clock_8, ope, 32'h0000, selected_registor_output, num_of_ope, alu_result_bus);
+alu alu(clock_4, clock_6, clock_8, ope, 32'h0000, selected_registor_output, num_of_ope, alu_result_bus, zero);
 alu_result_selector alu_result_selector(clock_4, clock_6, clock_8, reg_load_1, reg_load_2, reg_load_3, selected_reg_load);
 
 
@@ -73,7 +73,7 @@ initial begin
 	reset = 1;
 	#(STEP);
 	reset = 0;
-	#(STEP*350);
+	#(STEP*450);
 	$finish;
 end
 
@@ -99,5 +99,5 @@ endmodule
 //  vvp .\a.out
 //  課題。スタックを4バイト１で実装してしまっているので、add esp,byte +0x4をし
 //  ても１の移動にならない。のでaluで4で割ってる。
-//動確から。
-//zeroレジスタを実装した。jnzの実装から。
+//8b5dがなんやらおかしいところから。fcを4で割って同行しようとしてるからおかし
+//い。

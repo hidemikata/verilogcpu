@@ -48,6 +48,8 @@ begin
 			load_reg_1 = 4'h5;//stack_accessレジスタ
 		end else if (8'h80 <=ope[7:0] && ope[7:0] <= 8'h87 ) begin//4byte
 			load_reg_1 = 4'h5;//stack_accessレジスタ
+		end else if (8'h58 <=ope[7:0] && ope[7:0] <= 8'h5f ) begin//4byte
+			load_reg_1 = 4'h5;//stack_accessレジスタ
 		end else begin
 			load_reg_1 = 4'hx;
 		end
@@ -65,6 +67,10 @@ begin
 		end
         end else if (ope[15:8] == 8'hc9) begin
 		load_reg_1 = 4'h1;//esp
+        end else if (ope[15:8] == 8'h75) begin
+		load_reg_1 = 4'h4;//eip
+        end else if (ope[15:8] == 8'heb) begin
+		load_reg_1 = 4'h4;//eip
         end else begin
 		load_reg_1 = 4'hx;
         end;
@@ -97,6 +103,8 @@ begin
         end else if (ope[15:8] == 8'h8b) begin
 		if (ope[7:0] == 8'h45) begin//1byte
 			select_input_1 = 4'h5;//ebp
+		end else if (ope[7:0] == 8'h5d) begin//1byte
+			select_input_1 = 4'h5;//ebp
 		end else begin
 			select_input_1 = 4'hx;
 		end
@@ -114,6 +122,10 @@ begin
 		end
         end else if (ope[15:8] == 8'hc9) begin
 		select_input_1 = 4'h5;//ebp
+        end else if (ope[15:8] == 8'h75) begin
+		select_input_1 = 4'h7;//eip
+        end else if (ope[15:8] == 8'heb) begin
+		select_input_1 = 4'h7;//eip
         end else begin
 		select_input_1 = 4'hx;
         end;
@@ -141,6 +153,8 @@ begin
 			load_reg_2 = 4'h3;//eax
 		end else if (8'h80 <=ope[7:0] && ope[7:0] <= 8'h87 ) begin//4byte
 			load_reg_2 = 4'h3;//eax
+		end else if (8'h58 <=ope[7:0] && ope[7:0] <= 8'h5f ) begin//4byte
+			load_reg_2 = 4'h5;//ebp
 		end else begin
 			load_reg_2 = 4'hx;
 		end
@@ -173,6 +187,8 @@ begin
 		select_input_2 = 4'h4;//immidiate data
         end else if (ope[15:8] == 8'h8b) begin
 		if (ope[7:0] == 8'h45) begin//1byte
+			select_input_2 = 4'h6;//stack_addr_access
+		end else if (ope[7:0] == 8'h5d) begin//1byte
 			select_input_2 = 4'h6;//stack_addr_access
 		end else begin
 			select_input_2 = 4'hx;
@@ -250,11 +266,15 @@ begin
 		calc_ope = 4'h5;
         end else if (ope[15:8] == 8'h6a) begin
 		calc_ope = 4'h2;
+        end else if (ope[15:8] == 8'h75) begin
+		calc_ope = 4'h2;
         end else if (ope[15:8] == 8'h8b) begin
 		if ( 8'h40 <=ope[7:0] && ope[7:0] <= 8'h47 ) begin//1byte
 			calc_ope = 4'h3;//eax
 		end else if (8'h80 <=ope[7:0] && ope[7:0] <= 8'h87 ) begin//4byte
 			calc_ope = 4'h6;//eax
+		end else if (8'h58 <=ope[7:0] && ope[7:0] <= 8'h5f ) begin//4byte
+			calc_ope = 4'h3;
 		end else begin
 			calc_ope = 4'hx;
 		end
@@ -272,6 +292,8 @@ begin
 		end
         end else if (ope[15:8] == 8'hc9) begin
 		calc_ope = 4'h1;
+        end else if (ope[15:8] == 8'heb) begin
+		calc_ope = 4'h2;
         end else begin
 		calc_ope = 4'hx;
         end;
