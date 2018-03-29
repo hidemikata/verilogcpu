@@ -28,10 +28,10 @@ always @(posedge clock_4) begin
 	if (ope_31_24 == 8'h55) begin 
 		//1回目の命令sub esp, 0xZZ
 		//espのアドレスを１バイト上に移動させる
-		alu_result_bus <= registor_in + 32'h1;//本当はマイナスだがプラスで実装。
+		alu_result_bus <= registor_in + 32'h4;//本当はマイナスだがプラスで実装。
 	end
 	if (ope_31_24 == 8'h53) begin 
-		alu_result_bus <= registor_in + 32'h1;//本当はマイナスだがプラスで実装。
+		alu_result_bus <= registor_in + 32'h4;//本当はマイナスだがプラスで実装。
 	end
 	if (ope_31_24 == 8'h89) begin 
 		alu_result_bus <= registor_in;
@@ -44,30 +44,30 @@ always @(posedge clock_4) begin
 		//popの1サイクル目 mov ebp, [esp]
 	end
 	if (ope_31_24 == 8'hc3) begin 
-		alu_result_bus <= registor_in - 32'h1;//インクリされるので-1しておく
+		alu_result_bus <= registor_in - 32'h4;//インクリされるので-1しておく
 		//ret (pop.eip)。
 	end
 	if (ope_31_24 == 8'he8) begin 
-		alu_result_bus <= registor_in + 32'h1;//本当はマイナスだがプラスで実装。
+		alu_result_bus <= registor_in + 32'h4;//本当はマイナスだがプラスで実装。
 	end
 	if (ope_31_24 == 8'h6a) begin 
-		alu_result_bus <= registor_in + 32'h1;//本当はマイナスだがプラスで実装。
+		alu_result_bus <= registor_in + 32'h4;//本当はマイナスだがプラスで実装。
 	end
 	if (ope_31_24 == 8'h8b) begin 
-		alu_result_bus <= registor_in - (ope_15_08/4); //4:4で32bit//ebpの値に移動するポインタの値を引く。足す。
+		alu_result_bus <= registor_in - (ope_15_08); //4:4で32bit//ebpの値に移動するポインタの値を引く。足す。
 	end
 	if (ope_31_24 == 8'h83) begin 
 		if (ope_23_16 == 8'he8) begin
 			alu_result_bus <= registor_in - ope[15:8];
 		end
 		if (ope_23_16 == 8'hc4) begin
-			alu_result_bus <= registor_in - (ope[15:8]/4);//espへの代入は4でわる。しかもスタックがーと＋がちがうので逆にする。
+			alu_result_bus <= registor_in - (ope[15:8]);//espへの代入は4でわる。しかもスタックがーと＋がちがうので逆にする。
 		end
 		if (ope_23_16 == 8'hec) begin
-			alu_result_bus <= registor_in + (ope[15:8]/4);//espへの代入は4でわる。しかもスタックがーと＋がちがうので逆にする。
+			alu_result_bus <= registor_in + (ope[15:8]);//espへの代入は4でわる。しかもスタックがーと＋がちがうので逆にする。
 		end
 		if (ope_23_16 == 8'h7d) begin
-			alu_result_bus <= registor_in - (ope[15:8]/4);//espへの代入は4でわる。しかもスタックがーと＋がちがうので逆にする。
+			alu_result_bus <= registor_in - (ope[15:8]);//espへの代入は4でわる。しかもスタックがーと＋がちがうので逆にする。
 		end
 	end
 	if (ope_31_24 == 8'hc9) begin 
@@ -96,11 +96,11 @@ always @(posedge clock_6) begin
 		//2サイクル目なし
 	end
 	if (ope_31_24 == 8'h5d) begin 
-		alu_result_bus <= registor_in - 32'h1;
+		alu_result_bus <= registor_in - 32'h4;
 		//pop.ebp。
 	end
 	if (ope_31_24 == 8'hc3) begin 
-		alu_result_bus <= registor_in - 32'h1;
+		alu_result_bus <= registor_in - 32'h4;
 		//ret (pop.eip)。
 	end
 	if (ope_31_24 == 8'he8) begin 
@@ -136,13 +136,13 @@ always @(posedge clock_8) begin
 		//
 	end
 	if (ope_31_24 == 8'hc9) begin 
-		alu_result_bus <= registor_in - 1;
+		alu_result_bus <= registor_in - 32'h4;
 	end
 end
 assign debug2 = alu_result_bus;
 assign debug2a = registor_in;
 assign debug1 =  ope_15_08;
-assign debug1a = ope_15_08/4;
+assign debug1a = ope_15_08;
 assign a = alu_result_bus;
 //00000015,00000010,00000006,00000014,0000000f
 endmodule

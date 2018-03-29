@@ -13,7 +13,7 @@ int func() {
 çœ00000004  83EC04            sub esp,byte +0x4
 ìÆäm
 çœ00000007  837D0800          cmp dword [ebp+0x8],byte +0x0
-0000000B  7507              jnz 0x14
+çœ0000000B  7507              jnz 0x14
 çœ0000000D  B801000000        mov eax,0x1
 00000012  EB28              jmp short 0x3c
 çœ00000014  8B4508            mov eax,[ebp+0x8]
