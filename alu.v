@@ -54,7 +54,7 @@ always @(posedge clock_4) begin
 		alu_result_bus <= registor_in + 32'h4;//本当はマイナスだがプラスで実装。
 	end
 	if (ope_31_24 == 8'h8b) begin 
-		alu_result_bus <= registor_in - (ope_15_08); //4:4で32bit//ebpの値に移動するポインタの値を引く。足す。
+		alu_result_bus <= registor_in + (ope_15_08); //4:4で32bit//ebpの値に移動するポインタの値を引く。足す。
 	end
 	if (ope_31_24 == 8'h83) begin 
 		if (ope_23_16 == 8'he8) begin
