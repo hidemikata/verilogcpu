@@ -16,7 +16,7 @@ wire [31:0]debug3;
 wire [31:0]debug3a;
 wire [31:0]debug2;
 wire [31:0]debug2a;
-wire [31:0]debug1;
+wire [7:0]debug1;
 wire [31:0]debug1a;
 wire [31:0]a;
 
@@ -54,7 +54,11 @@ always @(posedge clock_4) begin
 		alu_result_bus <= registor_in + 32'h4;//本当はマイナスだがプラスで実装。
 	end
 	if (ope_31_24 == 8'h8b) begin 
-		alu_result_bus <= registor_in + (ope_15_08); //4:4で32bit//ebpの値に移動するポインタの値を引く。足す。
+		if(ope[15:15] == 1'b1) begin
+				alu_result_bus <= registor_in - {8'h00,8'h00,8'h00, (~ope[15:8] + 8'h01)}; //4:4で32bit//ebpの値に移動するポインタの値を引く。足す。
+		end else begin
+				alu_result_bus <= registor_in + (ope_15_08); //4:4で32bit//ebpの値に移動するポインタの値を引く。足す。
+		end
 	end
 	if (ope_31_24 == 8'h83) begin 
 		if (ope_23_16 == 8'he8) begin
@@ -142,7 +146,7 @@ end
 assign debug2 = alu_result_bus;
 assign debug2a = registor_in;
 assign debug1 =  ope_15_08;
-assign debug1a = ope_15_08;
-assign a = alu_result_bus;
+assign debug1a = {8'h00,8'h00,8'h00, (~ope[15:8] + 8'h01)};//ope_15_08};//((~ope_15_08) + 8'h01)};
+assign a = registor_in - {8'h00,8'h00,8'h00, (~ope[15:8] + 8'h01)};
 //00000015,00000010,00000006,00000014,0000000f
 endmodule
