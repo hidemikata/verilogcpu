@@ -73,11 +73,11 @@ initial begin
 	reset = 1;
 	#(STEP);
 	reset = 0;
-	#(STEP*450);
+	#(STEP*500);
 	$finish;
 end
 
-initial $monitor("%d%d%d%d_%d%d%d%d_%d%d%d%deip[%h]ope[%h]sel1[%d]sel2[%d]sel3[%d]reg_l1[%d]reg_l2[%d]reg_l3[%d]ali[%h]alo[%h]ret[%h]sp[%h]bp[%h]ax[%h]di[%h]z[%h]st_cur[%h]st_esp[%h]st_acc[%h]%h,%h,%h,%h,%h",
+initial $monitor("%d%d%d%d_%d%d%d%d_%d%d%d%deip[%h]ope[%h]sel1[%d]sel2[%d]sel3[%d]reg_l1[%d]reg_l2[%d]reg_l3[%d]ali[%h]alo[%h]ret[%h]sp[%h]bp[%h]ax[%h]bx[%h]di[%h]z[%h]st_cur[%h]st_esp[%h]st_acc[%h]",//%h,%h,%h,%h,%h",
 	clock_1, clock_2, clock_3, clock_4, clock_5, clock_6, clock_7, clock_8,
 	clock_9, clock_10, clock_11, clock_12,
 	fetch.eip,  ope, 
@@ -88,8 +88,8 @@ initial $monitor("%d%d%d%d_%d%d%d%d_%d%d%d%deip[%h]ope[%h]sel1[%d]sel2[%d]sel3[%
 	reg_load_2,
 	reg_load_3,
 	selected_registor_output,
-	selected_reg_load,alu_result_bus,esp, ebp,eax,edi,zero,
-	stack_current,stack_esp,stack_addr_access,alu.debug2, alu.debug2a, alu.debug1, alu.debug1a,alu.a
+	selected_reg_load,alu_result_bus,esp, ebp,eax,ebx,edi,zero,
+	stack_current,stack_esp,stack_addr_access,//alu.debug2, alu.debug2a, alu.debug1, alu.debug1a,alu.a
 );
 endmodule
 
@@ -97,8 +97,8 @@ endmodule
 // stackはアドレスが増えていく感じになっている。
 //   iverilog.exe .\test.v .\cpu_clock.v .\eip_register.v .\fetch.v .\memory.v .\decode.v .\ebp_register.v .\selector.v .\alu.v alu_result_selector.v .\esp_register.v .\stack_memory.v .\eax_register.v .\stack_addr_register.v .\ebx_register.v .\edi_register.v
 //  vvp .\a.out
-//  課題。スタックを4バイト１で実装してしまっているので、add esp,byte +0x4をし
-//  ても１の移動にならない。のでaluで4で割ってる。
 //8b5d実装中。
-//なんかebpにいれてしまってるぞ？ebxをつくるところから。
 ////あと、スタックをそろそろ上げていく感じに直さないとつじつまがあわんくなる。
+//
+//
+//

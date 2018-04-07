@@ -30,6 +30,11 @@ always @(posedge clock_4) begin
 		//espのアドレスを１バイト上に移動させる
 		alu_result_bus <= registor_in + 32'h4;//本当はマイナスだがプラスで実装。
 	end
+	if (ope_31_24 == 8'h50) begin 
+		//1回目の命令sub esp, 0xZZ
+		//espのアドレスを１バイト上に移動させる
+		alu_result_bus <= registor_in + 32'h4;//本当はマイナスだがプラスで実装。
+	end
 	if (ope_31_24 == 8'h53) begin 
 		alu_result_bus <= registor_in + 32'h4;//本当はマイナスだがプラスで実装。
 	end
@@ -44,7 +49,7 @@ always @(posedge clock_4) begin
 		//popの1サイクル目 mov ebp, [esp]
 	end
 	if (ope_31_24 == 8'hc3) begin 
-		alu_result_bus <= registor_in - 32'h4;//インクリされるので-1しておく
+		alu_result_bus <= registor_in - 32'h1;//eipがインクリされるので-1しておく
 		//ret (pop.eip)。
 	end
 	if (ope_31_24 == 8'he8) begin 
@@ -93,6 +98,9 @@ always @(posedge clock_6) begin
 	if (ope_31_24 == 8'h55) begin 
 		alu_result_bus <= registor_in;
 	end
+	if (ope_31_24 == 8'h50) begin 
+		alu_result_bus <= registor_in;
+	end
 	if (ope_31_24 == 8'h53) begin 
 		alu_result_bus <= registor_in;
 	end
@@ -120,6 +128,9 @@ always @(posedge clock_6) begin
 		alu_result_bus <= registor_in;//Mod/Rmでとれた値をそのまま出力。
 	end
 	if (ope_31_24 == 8'hc9) begin 
+		alu_result_bus <= registor_in;
+	end
+	if (ope_31_24 == 8'h01) begin 
 		alu_result_bus <= registor_in;
 	end
 	if (ope_31_24 == 8'h83) begin 

@@ -25,6 +25,8 @@ input [15:0]ope;
 begin
 	if (ope[15:8] == 8'h55) begin
 		load_reg_1 = 4'h1;//esp
+	end else if (ope[15:8] == 8'h50) begin
+		load_reg_1 = 4'h1;//esp
 	end else if (ope[15:8] == 8'h53) begin
 		load_reg_1 = 4'h1;//esp
         end else if (ope[15:8] == 8'h89) begin
@@ -71,6 +73,8 @@ begin
 		load_reg_1 = 4'h4;//eip
         end else if (ope[15:8] == 8'heb) begin
 		load_reg_1 = 4'h4;//eip
+        end else if (ope[15:8] == 8'h01) begin
+		load_reg_1 = 4'h3;//eax
         end else begin
 		load_reg_1 = 4'hx;
         end;
@@ -81,6 +85,8 @@ function [3:0] select_input_1;
 input [15:0]ope;
 begin
 	if (ope[15:8] == 8'h55) begin
+		select_input_1 = 4'h2;//固定値？(スタック移動分かアドレス)
+	end else if (ope[15:8] == 8'h50) begin
 		select_input_1 = 4'h2;//固定値？(スタック移動分かアドレス)
 	end else if (ope[15:8] == 8'h53) begin
 		select_input_1 = 4'h2;//固定値？(スタック移動分かアドレス)
@@ -126,6 +132,8 @@ begin
 		select_input_1 = 4'h7;//eip
         end else if (ope[15:8] == 8'heb) begin
 		select_input_1 = 4'h7;//eip
+        end else if (ope[15:8] == 8'h01) begin
+		select_input_1 = 4'h8;//ebx
         end else begin
 		select_input_1 = 4'hx;
         end;
@@ -137,6 +145,8 @@ function [3:0] load_reg_2;
 input [15:0]ope;
 begin
 	if (ope[15:8] == 8'h55) begin
+		load_reg_2 = 4'h1;//espの指すアドレスバス
+	end else if (ope[15:8] == 8'h50) begin
 		load_reg_2 = 4'h1;//espの指すアドレスバス
 	end else if (ope[15:8] == 8'h53) begin
 		load_reg_2 = 4'h1;//espの指すアドレスバス
@@ -154,7 +164,7 @@ begin
 		end else if (8'h80 <=ope[7:0] && ope[7:0] <= 8'h87 ) begin//4byte
 			load_reg_2 = 4'h3;//eax
 		end else if (8'h58 <=ope[7:0] && ope[7:0] <= 8'h5f ) begin//4byte
-			load_reg_2 = 4'h5;//ebp
+			load_reg_2 = 4'h7;//ebx
 		end else begin
 			load_reg_2 = 4'hx;
 		end
@@ -175,6 +185,8 @@ input [15:0]ope;
 begin
 	if (ope[15:8] == 8'h55) begin
 		select_input_2 = 4'h1;//ebp
+	end else if (ope[15:8] == 8'h50) begin
+		select_input_2 = 4'h8;//eax
 	end else if (ope[15:8] == 8'h53) begin
 		select_input_2 = 4'h7;//ebx
         end else if (ope[15:8] == 8'h5d) begin
@@ -247,6 +259,8 @@ function [3:0] calc_ope;
 input [15:0]ope;
 begin
 	if (ope[15:8] == 8'h55) begin
+		calc_ope = 4'h1;
+	end else if (ope[15:8] == 8'h50) begin
 		calc_ope = 4'h1;
 	end else if (ope[15:8] == 8'h53) begin
 		calc_ope = 4'h1;

@@ -7,6 +7,8 @@ int fib(int n){
 int func() {
 	return fib(5);
 }
+“š‚¦32
+
 Ï00000000  55                push ebp
 Ï00000001  89E5              mov ebp,esp
 Ï00000003  53                push ebx
@@ -16,19 +18,19 @@ int func() {
 Ï0000000D  B801000000        mov eax,0x1
 Ï00000012  EB28              jmp short 0x3c
 Ï00000014  8B4508            mov eax,[ebp+0x8]
-00000017  83E801            sub eax,byte +0x1
+Ï00000017  83E801            sub eax,byte +0x1
 Ï0000001A  83EC0C            sub esp,byte +0xc
-0000001D  50                push eax
+Ï0000001D  50                push eax
 Ï0000001E  E8DDFFFFFF        call dword 0x0
 Ï00000023  83C410            add esp,byte +0x10
-00000026  89C3              mov ebx,eax
+Ï00000026  89C3              mov ebx,eax
 Ï00000028  8B4508            mov eax,[ebp+0x8]
 0000002B  83E801            sub eax,byte +0x1
 Ï0000002E  83EC0C            sub esp,byte +0xc
-00000031  50                push eax
+Ï00000031  50                push eax
 00000032  E8C9FFFFFF        call dword 0x0
 Ï00000037  83C410            add esp,byte +0x10
-0000003A  01D8              add eax,ebx
+Ï0000003A  01D8              add eax,ebx
 Ï0000003C  8B5DFC            mov ebx,[ebp-0x4]
 Ï0000003F  C9                leave
 Ï00000040  C3                ret
@@ -36,7 +38,7 @@ int func() {
 Ï00000042  89E5              mov ebp,esp
 Ï00000044  83EC08            sub esp,byte +0x8
 Ï00000047  83EC0C            sub esp,byte +0xc
-Ï0000004A  6A05              push byte +0x5
+Ï0000004A  6A05              push byte +0x5@©‚±‚±‚ğ5->a‚É•Ï‚¦‚½‚ç“ü—Í‚ª10(10i)‚É‚È‚é
 Ï0000004C  E8AFFFFFFF        call dword 0x0
 Ï00000051  83C410            add esp,byte +0x10
 Ï00000054  C9                leave

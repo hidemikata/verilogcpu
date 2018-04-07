@@ -37,6 +37,7 @@ if (clock_3 == 1)begin
 		4'h5:select = ebp;
 		4'h6:select = eax;
 		4'h7:select = eip;
+		4'h8:select = ebx;
 	endcase	 
 end else if (clock_5 == 1)begin//2クロック目
 	case(sel2)
@@ -47,6 +48,7 @@ end else if (clock_5 == 1)begin//2クロック目
 		4'h5:select = stack;
 		4'h6:select = stack_addr_access;
 		4'h7:select = ebx;
+		4'h8:select = eax;
 	endcase
 end else if (clock_7 == 1)begin//3クロック目
 	case(sel3)
