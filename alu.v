@@ -62,7 +62,7 @@ always @(posedge clock_4) begin
 		if(ope[15:15] == 1'b1) begin
 				alu_result_bus <= registor_in - {8'h00,8'h00,8'h00, (~ope[15:8] + 8'h01)}; //4:4で32bit//ebpの値に移動するポインタの値を引く。足す。
 		end else begin
-				alu_result_bus <= registor_in + (ope_15_08); //4:4で32bit//ebpの値に移動するポインタの値を引く。足す。
+				alu_result_bus <= registor_in - (ope_15_08); //4:4で32bit//ebpの値に移動するポインタの値を引く。足す。
 		end
 	end
 	if (ope_31_24 == 8'h83) begin 
@@ -83,7 +83,7 @@ always @(posedge clock_4) begin
 		alu_result_bus <= registor_in;
 	end
 	if (ope_31_24 == 8'h75) begin 
-		if (zero == 8'h01) begin
+		if (zero == 8'h00) begin
 			alu_result_bus <= registor_in + ope_23_16;
 		end else begin
 			alu_result_bus <= registor_in;

@@ -173,6 +173,8 @@ begin
         end else if (ope[15:8] == 8'h83) begin
 		if (8'h78 <=ope[7:0] && ope[7:0] <= 8'h7f ) begin
 			load_reg_2 = 4'h6;//edi
+		end else begin
+			load_reg_2 = 4'hx;
 		end
         end else begin
 		load_reg_2 = 4'hx;
@@ -210,6 +212,8 @@ begin
         end else if (ope[15:8] == 8'h83) begin
 		if (8'h78 <=ope[7:0] && ope[7:0] <= 8'h7f ) begin
 			select_input_2 = 4'h6;//stack_addr_access
+		end else  begin
+			select_input_2 = 4'hx;
 		end
         end else begin
 		select_input_2 = 4'hx;

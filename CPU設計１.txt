@@ -1,4 +1,41 @@
 int fib(int n){
+if(n == 0){
+	return 5;
+}
+return fib(n-1);
+}
+int func() {
+	return fib(3);
+}
+//“š‚¦5
+00000000  55                push ebp
+00000001  89E5              mov ebp,esp
+00000003  83EC08            sub esp,byte +0x8
+00000006  837D0800          cmp dword [ebp+0x8],byte +0x0
+0000000A  7507              jnz 0x13
+0000000C  B805000000        mov eax,0x5
+00000011  EB12              jmp short 0x25
+00000013  8B4508            mov eax,[ebp+0x8]
+00000016  83E801            sub eax,byte +0x1
+00000019  83EC0C            sub esp,byte +0xc
+0000001C  50                push eax
+0000001D  E8DEFFFFFF        call dword 0x0
+00000022  83C410            add esp,byte +0x10
+00000025  C9                leave
+00000026  C3                ret
+00000027  55                push ebp
+00000028  89E5              mov ebp,esp
+0000002A  83EC08            sub esp,byte +0x8
+0000002D  83EC0C            sub esp,byte +0xc
+00000030  6A03              push byte +0x3
+00000032  E8C9FFFFFF        call dword 0x0
+00000037  83C410            add esp,byte +0x10
+0000003A  C9                leave
+0000003B  C3                ret
+
+
+
+int fib(int n){
 	if(n == 0){
 		return 1;
 	}
