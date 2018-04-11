@@ -1,4 +1,4 @@
-module alu(clock_4, clock_6, clock_8, ope, immidiate_data, registor_in, num_of_ope,  alu_result_bus, zero);
+module alu(clock_4, clock_6, clock_8, ope, immidiate_data, registor_in, num_of_ope,  alu_result_bus, zero, eax);
 input clock_4;
 input clock_6;
 input clock_8;
@@ -7,6 +7,7 @@ input [31:0]immidiate_data;
 input [31:0]registor_in;
 input [3:0]num_of_ope;
 input [31:0]zero;
+input [31:0]eax;
 output reg [31:0]alu_result_bus;
 wire [31:0]ope_31_24;
 wire [31:0]ope_23_16;
@@ -60,7 +61,7 @@ always @(posedge clock_4) begin
 	end
 	if (ope_31_24 == 8'h8b) begin 
 		if(ope[15:15] == 1'b1) begin
-				alu_result_bus <= registor_in - {8'h00,8'h00,8'h00, (~ope[15:8] + 8'h01)}; //4:4で32bit//ebpの値に移動するポインタの値を引く。足す。
+				alu_result_bus <= registor_in + {8'h00,8'h00,8'h00, (~ope[15:8] + 8'h01)}; //4:4で32bit//ebpの値に移動するポインタの値を引く。足す。
 		end else begin
 				alu_result_bus <= registor_in - (ope_15_08); //4:4で32bit//ebpの値に移動するポインタの値を引く。足す。
 		end
@@ -91,6 +92,9 @@ always @(posedge clock_4) begin
 	end
 	if (ope_31_24 == 8'heb) begin
 		alu_result_bus <= registor_in + ope_23_16;
+	end
+	if (ope_31_24 == 8'h01) begin 
+		alu_result_bus <= registor_in + eax;
 	end
 end
 
@@ -128,9 +132,6 @@ always @(posedge clock_6) begin
 		alu_result_bus <= registor_in;//Mod/Rmでとれた値をそのまま出力。
 	end
 	if (ope_31_24 == 8'hc9) begin 
-		alu_result_bus <= registor_in;
-	end
-	if (ope_31_24 == 8'h01) begin 
 		alu_result_bus <= registor_in;
 	end
 	if (ope_31_24 == 8'h83) begin 

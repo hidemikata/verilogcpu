@@ -33,7 +33,7 @@ begin
 		if ( 8'he5 <=ope[7:0] ) begin//1byte
 			load_reg_1 = 4'h2;//ebp
 		end else if ( 8'hc3 <=ope[7:0] )begin
-			load_reg_1 = 4'h2;//ebx
+			load_reg_1 = 4'h6;//ebx
 		end
         end else if (ope[15:8] == 8'hb8) begin
 		load_reg_1 = 4'h3;//eax
@@ -285,6 +285,8 @@ begin
         end else if (ope[15:8] == 8'h6a) begin
 		calc_ope = 4'h2;
         end else if (ope[15:8] == 8'h75) begin
+		calc_ope = 4'h2;
+        end else if (ope[15:8] == 8'h01) begin
 		calc_ope = 4'h2;
         end else if (ope[15:8] == 8'h8b) begin
 		if ( 8'h40 <=ope[7:0] && ope[7:0] <= 8'h47 ) begin//1byte

@@ -9,17 +9,6 @@ output wire [31:0]stack_data;
 stack_memory stack_memory(1'h0, read_or_write, stack_connect_address, write_data, stack_data, clock_6);
 
 
-//always @(posedge reset or posedge clk1)begin
-//	if (reset == 1'b1) begin
-//		eip <= 8'b0000_0000;
-//	end
-//	else begin
-//		if (read_or_write == 1'b1) begin
-//			eip <= write_data;
-//		end
-//	end
-//	
-//end
 
 
 endmodule
