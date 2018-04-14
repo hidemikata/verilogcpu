@@ -1,4 +1,79 @@
 int fib(int n){
+	switch(n){
+		case 0: return 0;
+		case 1: return 1;
+		default:
+			return fib(n-2)+fib(n-1);
+	}
+}
+int func() {
+	int ans = fib(20);
+	return ans;
+}
+
+
+x00000000  55                push ebp
+x00000001  89E5              mov ebp,esp
+x00000003  53                push ebx
+x00000004  83EC04            sub esp,byte +0x4
+x00000007  8B4508            mov eax,[ebp+0x8]
+ŽÀ0000000A  85C0              test eax,eax
+ŽÀ0000000C  7407              jz 0x15
+ŽÀ0000000E  83F801            cmp eax,byte +0x1
+ŽÀ00000011  7409              jz 0x1c
+x00000013  EB0E              jmp short 0x23
+x00000015  B800000000        mov eax,0x0
+x0000001A  EB2F              jmp short 0x4b
+x0000001C  B801000000        mov eax,0x1
+x00000021  EB28              jmp short 0x4b
+x00000023  8B4508            mov eax,[ebp+0x8]
+x00000026  83E802            sub eax,byte +0x2
+x00000029  83EC0C            sub esp,byte +0xc
+x0000002C  50                push eax
+x0000002D  E8CEFFFFFF        call dword 0x0
+x00000032  83C410            add esp,byte +0x10
+x00000035  89C3              mov ebx,eax
+x00000037  8B4508            mov eax,[ebp+0x8]
+x0000003A  83E801            sub eax,byte +0x1
+x0000003D  83EC0C            sub esp,byte +0xc
+x00000040  50                push eax
+x00000041  E8BAFFFFFF        call dword 0x0
+x00000046  83C410            add esp,byte +0x10
+x00000049  01D8              add eax,ebx
+x0000004B  8B5DFC            mov ebx,[ebp-0x4]
+x0000004E  C9                leave
+x0000004F  C3                ret
+x00000050  55                push ebp
+x00000051  89E5              mov ebp,esp
+x00000053  83EC18            sub esp,byte +0x18
+x00000056  83EC0C            sub esp,byte +0xc
+x00000059  6A14              push byte +0x14
+x0000005B  E8A0FFFFFF        call dword 0x0
+x00000060  83C410            add esp,byte +0x10
+ŽÀ00000063  8945F4            mov [ebp-0xc],eax
+x00000066  8B45F4            mov eax,[ebp-0xc]
+x00000069  C9                leave
+x0000006A  C3                ret
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int fib(int n){
 if(n == 0){
 	return 5;
 }

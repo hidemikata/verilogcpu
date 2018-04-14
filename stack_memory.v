@@ -32,6 +32,10 @@ always @(negedge clock_6)begin//2クロック目
 		stack_current <= write_data;
 //		mem[esp] <= write_data;
 		{mem[esp + 3],mem[esp + 2], mem[esp + 1],mem[esp]} <= write_data;
+	end else if (read_or_write == 4'h8) begin
+		//stack_addrのアドレスのところに書く。
+//		mem[esp] <= write_data;
+		{mem[stack_addr + 3],mem[stack_addr + 2], mem[stack_addr + 1],mem[stack_addr]} <= write_data;
 	end
 end
 

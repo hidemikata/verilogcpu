@@ -29,12 +29,16 @@ begin
 		load_reg_1 = 4'h1;//esp
 	end else if (ope[15:8] == 8'h53) begin
 		load_reg_1 = 4'h1;//esp
+	end else if (ope[15:8] == 8'h85) begin
+		load_reg_1 = 4'hx;//
         end else if (ope[15:8] == 8'h89) begin
-		if ( 8'he5 <=ope[7:0] ) begin//1byte
+		if ( 8'he5 == ope[7:0] ) begin//1byte
 			load_reg_1 = 4'h2;//ebp
-		end else if ( 8'hc3 <=ope[7:0] )begin
+		end else if ( 8'hc3 == ope[7:0] )begin
 			load_reg_1 = 4'h6;//ebx
-		end
+		end else if ( 8'h45 == ope[7:0] )begin
+			load_reg_1 = 4'h5;//stack_access register
+		end 
         end else if (ope[15:8] == 8'hb8) begin
 		load_reg_1 = 4'h3;//eax
         end else if (ope[15:8] == 8'h5d) begin
@@ -60,6 +64,8 @@ begin
 			load_reg_1 = 4'h3;//eax
 		end else if ( ope[7:0] == 8'hc4) begin//add
 			load_reg_1 = 4'h1;//esp
+		end else if ( ope[7:0] == 8'hf8) begin//sub
+			load_reg_1 = 4'h3;//eax
 		end else if ( ope[7:0] == 8'hec) begin//sub
 			load_reg_1 = 4'h1;//esp
 		end else if (8'h78 <=ope[7:0] && ope[7:0] <= 8'h7f ) begin//4byte
@@ -70,6 +76,8 @@ begin
         end else if (ope[15:8] == 8'hc9) begin
 		load_reg_1 = 4'h1;//esp
         end else if (ope[15:8] == 8'h75) begin
+		load_reg_1 = 4'h4;//eip
+        end else if (ope[15:8] == 8'h74) begin
 		load_reg_1 = 4'h4;//eip
         end else if (ope[15:8] == 8'heb) begin
 		load_reg_1 = 4'h4;//eip
@@ -90,11 +98,15 @@ begin
 		select_input_1 = 4'h2;//固定値？(スタック移動分かアドレス)
 	end else if (ope[15:8] == 8'h53) begin
 		select_input_1 = 4'h2;//固定値？(スタック移動分かアドレス)
+	end else if (ope[15:8] == 8'h85) begin
+		select_input_1 = 4'h2;//eax
         end else if (ope[15:8] == 8'h89) begin
-		if ( 8'he5 <=ope[7:0] ) begin//1byte
+		if ( 8'he5 == ope[7:0] ) begin//1byte
 			select_input_1 = 4'h2;//esp
-		end else if ( 8'hc3 <=ope[7:0] )begin
-			select_input_1 = 4'h6;
+		end else if ( 8'hc3 == ope[7:0] )begin
+			select_input_1 = 4'h6;//eax
+		end else if ( 8'h45 == ope[7:0] )begin
+			select_input_1 = 4'h5;//ebp
 		end
         end else if (ope[15:8] == 8'hb8) begin
 		select_input_1 = 4'h3;//immidiate data
@@ -119,6 +131,8 @@ begin
 			select_input_1 = 4'h6;
 		end else if ( ope[7:0] == 8'hc4) begin
 			select_input_1 = 4'h2;//esp 
+		end else if ( ope[7:0] == 8'hf8) begin
+			select_input_1 = 4'h6;//eax
 		end else if ( ope[7:0] == 8'hec) begin
 			select_input_1 = 4'h2;//esp 
 		end else if (8'h78 <=ope[7:0] && ope[7:0] <= 8'h7f ) begin//4byte
@@ -129,6 +143,8 @@ begin
         end else if (ope[15:8] == 8'hc9) begin
 		select_input_1 = 4'h5;//ebp
         end else if (ope[15:8] == 8'h75) begin
+		select_input_1 = 4'h7;//eip
+        end else if (ope[15:8] == 8'h74) begin
 		select_input_1 = 4'h7;//eip
         end else if (ope[15:8] == 8'heb) begin
 		select_input_1 = 4'h7;//eip
@@ -148,6 +164,8 @@ begin
 		load_reg_2 = 4'h1;//espの指すアドレスバス
 	end else if (ope[15:8] == 8'h50) begin
 		load_reg_2 = 4'h1;//espの指すアドレスバス
+	end else if (ope[15:8] == 8'h85) begin
+		load_reg_2 = 4'hx;//
 	end else if (ope[15:8] == 8'h53) begin
 		load_reg_2 = 4'h1;//espの指すアドレスバス
         end else if (ope[15:8] == 8'h5d) begin
@@ -176,6 +194,12 @@ begin
 		end else begin
 			load_reg_2 = 4'hx;
 		end
+        end else if (ope[15:8] == 8'h89) begin
+		if ( 8'h45 == ope[7:0] ) begin//1byte
+			load_reg_2 = 4'h8; //stackaccessが指すところ
+		end else begin
+			load_reg_2 = 4'hx;
+		end
         end else begin
 		load_reg_2 = 4'hx;
         end;
@@ -191,6 +215,8 @@ begin
 		select_input_2 = 4'h8;//eax
 	end else if (ope[15:8] == 8'h53) begin
 		select_input_2 = 4'h7;//ebx
+	end else if (ope[15:8] == 8'h85) begin
+		select_input_2 = 4'h8;//eax
         end else if (ope[15:8] == 8'h5d) begin
 		select_input_2 = 4'h2;//固定値？(スタック移動分かアドレス)
         end else if (ope[15:8] == 8'hc3) begin
@@ -213,6 +239,12 @@ begin
 		if (8'h78 <=ope[7:0] && ope[7:0] <= 8'h7f ) begin
 			select_input_2 = 4'h6;//stack_addr_access
 		end else  begin
+			select_input_2 = 4'hx;
+		end
+	end else if (ope[15:8] == 8'h89) begin
+		if (8'h45 ==ope[7:0]) begin
+			select_input_2 = 4'h8;
+		end else begin
 			select_input_2 = 4'hx;
 		end
         end else begin
@@ -268,12 +300,17 @@ begin
 		calc_ope = 4'h1;
 	end else if (ope[15:8] == 8'h53) begin
 		calc_ope = 4'h1;
+	end else if (ope[15:8] == 8'h85) begin
+		calc_ope = 4'h2;
         end else if (ope[15:8] == 8'h89) begin
-		if ( 8'he5 <=ope[7:0] ) begin//1byte
+		if ( 8'he5 ==ope[7:0] ) begin//1byte
 			calc_ope = 4'h2;
-		end else if ( 8'hc3 <=ope[7:0] )begin
+		end else if ( 8'hc3 ==ope[7:0] )begin
 			calc_ope = 4'h2;
+		end else if ( 8'h45 ==ope[7:0] )begin
+			calc_ope = 4'h3;
 		end
+
         end else if (ope[15:8] == 8'hb8) begin
 		calc_ope = 4'h5;
         end else if (ope[15:8] == 8'h5d) begin
@@ -285,6 +322,8 @@ begin
         end else if (ope[15:8] == 8'h6a) begin
 		calc_ope = 4'h2;
         end else if (ope[15:8] == 8'h75) begin
+		calc_ope = 4'h2;
+        end else if (ope[15:8] == 8'h74) begin
 		calc_ope = 4'h2;
         end else if (ope[15:8] == 8'h01) begin
 		calc_ope = 4'h2;
@@ -307,6 +346,8 @@ begin
 			calc_ope = 4'h3;
 		end else if ( ope[7:0] == 8'h7d) begin//sub
 			calc_ope = 4'h4;
+		end else if ( ope[7:0] == 8'hf8) begin//sub
+			calc_ope = 4'h3;
 		end else begin
 			calc_ope = 4'hx;
 		end

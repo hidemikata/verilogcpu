@@ -39,8 +39,24 @@ always @(posedge clock_4) begin
 	if (ope_31_24 == 8'h53) begin 
 		alu_result_bus <= registor_in + 32'h4;//本当はマイナスだがプラスで実装。
 	end
+	if (ope_31_24 == 8'h85) begin 
+		alu_result_bus <= registor_in & registor_in;//AND演算
+	end
 	if (ope_31_24 == 8'h89) begin 
-		alu_result_bus <= registor_in;
+		if (ope_23_16 == 8'he5) begin
+			alu_result_bus <= registor_in;
+		end else if (ope_23_16 == 8'hc3) begin
+			alu_result_bus <= registor_in;
+		end else if (ope_23_16 == 8'h45) begin
+
+			if(ope[15:15] == 1'b1) begin
+					alu_result_bus <= registor_in + {8'h00,8'h00,8'h00, (~ope[15:8] + 8'h01)};
+			end else begin
+					alu_result_bus <= registor_in - (ope_15_08);
+			end
+		end else  begin
+			//なし
+		end
 	end
 	if (ope_31_24 == 8'hb8) begin 
 		alu_result_bus <= {8'h00, ope[7:0], ope[15:8], ope[23:16]};
@@ -79,12 +95,22 @@ always @(posedge clock_4) begin
 		if (ope_23_16 == 8'h7d) begin
 			alu_result_bus <= registor_in - (ope[15:8]);//espへの代入は4でわる。しかもスタックがーと＋がちがうので逆にする。
 		end
+		if (ope_23_16 == 8'hf8) begin
+			alu_result_bus <= registor_in - (ope[15:8]);
+		end
 	end
 	if (ope_31_24 == 8'hc9) begin 
 		alu_result_bus <= registor_in;
 	end
 	if (ope_31_24 == 8'h75) begin 
 		if (zero == 8'h00) begin
+			alu_result_bus <= registor_in + ope_23_16;
+		end else begin
+			alu_result_bus <= registor_in;
+		end
+	end
+	if (ope_31_24 == 8'h74) begin 
+		if (zero == 8'h01) begin
 			alu_result_bus <= registor_in + ope_23_16;
 		end else begin
 			alu_result_bus <= registor_in;
@@ -108,12 +134,18 @@ always @(posedge clock_6) begin
 	if (ope_31_24 == 8'h53) begin 
 		alu_result_bus <= registor_in;
 	end
-	if (ope_31_24 == 8'h89) begin 
+	if (ope_31_24 == 8'h89) begin
+		if (ope_23_16 == 8'h45) begin
+			alu_result_bus <= registor_in;
+		end
 		//2サイクル目なし
 	end
 	if (ope_31_24 == 8'h5d) begin 
 		alu_result_bus <= registor_in - 32'h4;
 		//pop.ebp。
+	end
+	if (ope_31_24 == 8'h85) begin 
+		alu_result_bus <= registor_in & registor_in;//不要だがzeroフラグが落ちるので同じ2回目も演算をする。
 	end
 	if (ope_31_24 == 8'hc3) begin 
 		alu_result_bus <= registor_in - 32'h4;

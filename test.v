@@ -37,7 +37,7 @@ wire [31:0]stack_esp;
 wire [31:0]selected_registor_output;
 wire [31:0]stack_addr;//stackにアクセスする際にespからたどらない場合に使用する。
 
-parameter STEP = 1000;
+parameter STEP = 2;
 
 always begin
 	clk = 0;#(STEP/2);
@@ -69,11 +69,13 @@ alu_result_selector alu_result_selector(clock_4, clock_6, clock_8, reg_load_1, r
 
 
 initial begin
+	$dumpfile("test.vcd");
+	$dumpvars(0, test);
 	#(STEP);
 	reset = 1;
 	#(STEP);
 	reset = 0;
-	#(STEP*20000);
+	#(STEP*50000);
 	$finish;
 end
 
@@ -97,7 +99,9 @@ endmodule
 // stackはアドレスが増えていく感じになっている。
 //   iverilog.exe .\test.v .\cpu_clock.v .\eip_register.v .\fetch.v .\memory.v .\decode.v .\ebp_register.v .\selector.v .\alu.v alu_result_selector.v .\esp_register.v .\stack_memory.v .\eax_register.v .\stack_addr_register.v .\ebx_register.v .\edi_register.v
 //  vvp .\a.out
+//gtkwave.exe .\test.vcd
+//波形は一回vvpで実行したらvcdが出てくる。
+//
 //8b5d実装中。
 ////あと、スタックをそろそろ上げていく感じに直さないとつじつまがあわんくなる。
-//とりあえずfuncaddはできたっぽい。4を引数で渡したときのものはできた。
-//
+//フィボナッチがとりあえずできた。
