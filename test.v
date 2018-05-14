@@ -67,6 +67,14 @@ selector selector(clock_3, clock_5, clock_7, select_1, select_2, select_3, eip, 
 alu alu(clock_4, clock_6, clock_8, ope, 32'h0000, selected_registor_output, num_of_ope, alu_result_bus, zero, eax);
 alu_result_selector alu_result_selector(clock_4, clock_6, clock_8, reg_load_1, reg_load_2, reg_load_3, selected_reg_load);
 
+wire [7:0]seg7_1FPGA;
+wire [7:0]seg7_2FPGA;
+wire [7:0]seg7_3FPGA;
+wire [7:0]seg7_4FPGA;
+SevenSegmentDec seg7_1(eax[3:0], seg7_1FPGA);//右の7seg
+SevenSegmentDec seg7_2(eax[7:4], seg7_2FPGA);
+SevenSegmentDec seg7_3(eax[11:8], seg7_3FPGA);
+SevenSegmentDec seg7_4(eax[15:12], seg7_4FPGA);//左
 
 initial begin
 	$dumpfile("test.vcd");
@@ -97,7 +105,7 @@ endmodule
 
 // 2018/03/11
 // stackはアドレスが増えていく感じになっている。
-//   iverilog.exe .\test.v .\cpu_clock.v .\eip_register.v .\fetch.v .\memory.v .\decode.v .\ebp_register.v .\selector.v .\alu.v alu_result_selector.v .\esp_register.v .\stack_memory.v .\eax_register.v .\stack_addr_register.v .\ebx_register.v .\edi_register.v
+//   iverilog.exe .\test.v .\cpu_clock.v .\eip_register.v .\fetch.v .\memory.v .\decode.v .\ebp_register.v .\selector.v .\alu.v alu_result_selector.v .\esp_register.v .\stack_memory.v .\eax_register.v .\stack_addr_register.v .\ebx_register.v .\edi_register.v .\zero_register.v
 //  vvp .\a.out
 //gtkwave.exe .\test.vcd
 //波形は一回vvpで実行したらvcdが出てくる。

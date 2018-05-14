@@ -2,7 +2,7 @@ module SevenSegmentDec(sw, led);
 input [3:0]sw;
 output[7:0]led;
 
-functionp[7:0] LedDec;
+function[7:0] LedDec;
  input [3:0]num;
  begin
  case(num)
@@ -25,7 +25,7 @@ functionp[7:0] LedDec;
 default:LedDec = 8'b11111111;
 endcase;
 end
-endfunction;
+endfunction
 
 assign led=LedDec(sw);
 endmodule
