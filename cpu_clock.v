@@ -1,24 +1,24 @@
-module cpu_clock(input clk, input reset,
-	output clock_1, output clock_2, output clock_3, output clock_4,clock_4_2,
-	output clock_5, output clock_6, clock_6_2, output clock_7, output clock_8, clock_8_2,
-	output clock_9, output clock_10, output clock_11, output clock_12);
-wire clk;
-wire reset;
-reg clock_1;
-reg clock_2;
-reg clock_3;
-reg clock_4;
-reg clock_4_2;
-reg clock_5;
-reg clock_6;
-reg clock_6_2;
-reg clock_7;
-reg clock_8;
-reg clock_8_2;
-reg clock_9;
-reg clock_10;
-reg clock_11;
-reg clock_12;
+module cpu_clock( clk,  reset,
+	 clock_1,  clock_2,  clock_3,  clock_4,clock_4_2,
+	 clock_5,  clock_6, clock_6_2,  clock_7,  clock_8, clock_8_2,
+	 clock_9,  clock_10,  clock_11,  clock_12);
+input wire clk;
+input wire reset;
+output reg clock_1;
+output reg clock_2;
+output reg clock_3;
+output reg clock_4;
+output reg clock_4_2;
+output reg clock_5;
+output reg clock_6;
+output reg clock_6_2;
+output reg clock_7;
+output reg clock_8;
+output reg clock_8_2;
+output reg clock_9;
+output reg clock_10;
+output reg clock_11;
+output reg clock_12;
 reg clock_1_t;
 reg clock_2_t;
 reg clock_3_t;

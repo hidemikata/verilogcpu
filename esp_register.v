@@ -5,7 +5,6 @@ input wire clock_8;
 input wire reset;
 input wire [3:0]read_or_write;
 input wire [31:0]alu_result_bus;
-input wire clk1;
 output reg [31:0]esp;
 
 
