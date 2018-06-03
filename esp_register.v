@@ -8,30 +8,54 @@ input wire [31:0]alu_result_bus;
 input wire clk1;
 output reg [31:0]esp;
 
-always @(posedge reset)begin
+
+
+
+always @(posedge reset or posedge clock_4 or posedge clock_6 or posedge clock_8)begin
 	if (reset == 1'b1) begin
 		esp <= 32'h00000000;//本当は全部fだが、0からインクリするようにする
-	end
-end
-always @(posedge clock_4)begin
-	if (read_or_write == 4'h1) begin
-		esp <= alu_result_bus;
-	end
-end
-
-always @(clock_6)begin
-	if (read_or_write == 4'h2) begin
-		esp <= alu_result_bus;
-	end
-end
-
-always @(clock_8)begin
-	if (read_or_write == 4'h2) begin
-		esp <= alu_result_bus;
+	end else if (clock_4) begin 
+		if (read_or_write == 4'h1) begin
+			esp <= alu_result_bus;
+		end
+	end else if (clock_6) begin 
+		if (read_or_write == 4'h2) begin
+			esp <= alu_result_bus;
+		end
+	end else if (clock_8) begin 
+		if (read_or_write == 4'h2) begin
+			esp <= alu_result_bus;
+		end
 	end
 end
 
 
+
+
+//always @(posedge reset)begin
+//	if (reset == 1'b1) begin
+//		esp <= 32'h00000000;//本当は全部fだが、0からインクリするようにする
+//	end
+//end
+//always @(posedge clock_4)begin
+//	if (read_or_write == 4'h1) begin
+//		esp <= alu_result_bus;
+//	end
+//end
+//
+//always @(clock_6)begin
+//	if (read_or_write == 4'h2) begin
+//		esp <= alu_result_bus;
+//	end
+//end
+//
+//always @(clock_8)begin
+//	if (read_or_write == 4'h2) begin
+//		esp <= alu_result_bus;
+//	end
+//end
+//
+//
 
 endmodule
 

@@ -6,15 +6,26 @@ input wire [3:0]read_or_write;
 input wire [31:0]write_data;
 output reg [31:0]edi;
 
-always @(*)begin
+always @(posedge reset or posedge clock_6)begin
 	if (reset == 1'b1) begin
 		edi <= 32'h0000_0888;
-	end
-end
-always @(posedge clock_6)begin
-	if (read_or_write == 4'h6) begin
-		edi <= write_data;
+	end else if (clock_6) begin
+		if (read_or_write == 4'h6) begin
+			edi <= write_data;
+		end
 	end
 end
 
+
+//always @(*)begin
+//	if (reset == 1'b1) begin
+//		edi <= 32'h0000_0888;
+//	end
+//end
+//always @(posedge clock_6)begin
+//	if (read_or_write == 4'h6) begin
+//		edi <= write_data;
+//	end
+//end
+//
 endmodule

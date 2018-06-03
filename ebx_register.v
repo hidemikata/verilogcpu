@@ -6,22 +6,38 @@ input wire [3:0]read_or_write;
 input wire [31:0]write_data;
 output reg [31:0]ebx;
 
-always @(*)begin
+always @(posedge reset or posedge clock_4 or posedge clock_6) begin
 	if (reset == 1'b1) begin
 		ebx <= 32'h0000_0888;
-end
-end
-always @(posedge clock_4)begin
-	if (read_or_write == 4'h6) begin
-		ebx <= write_data;
+	end if (clock_4) begin 
+		if (read_or_write == 4'h6) begin
+			ebx <= write_data;
+		end
+	end if (clock_6) begin 
+		if (read_or_write == 4'h7) begin
+			ebx <= write_data;
+		end
 	end
 end
 
-always @(posedge clock_6)begin
-	if (read_or_write == 4'h7) begin
-		ebx <= write_data;
-	end
-end
+
+
+//always @(*)begin
+//	if (reset == 1'b1) begin
+//		ebx <= 32'h0000_0888;
+//	end
+//end
+//always @(posedge clock_4)begin
+//	if (read_or_write == 4'h6) begin
+//		ebx <= write_data;
+//	end
+//end
+//
+//always @(posedge clock_6)begin
+//	if (read_or_write == 4'h7) begin
+//		ebx <= write_data;
+//	end
+//end
 
 
 

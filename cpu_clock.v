@@ -79,40 +79,70 @@ always @(posedge clk or posedge reset) begin
 			clock_1 <= 8'b0000_0001;
 		else
 			clock_1 <= 8'b0000_0000;
+
+		clock_12_t <= clock_12;
+		clock_12 <= clock_11_t;
+		clock_11_t <= clock_11;
+		clock_11 <= clock_10_t;
+		clock_10_t <= clock_10;
+		clock_10 <= clock_9_t;
+		clock_9_t <= clock_9;
+		clock_9 <= clock_8_2_t;
+		clock_8_2_t <= clock_8_2;
+		clock_8_2 <= clock_8_t;
+		clock_8_t <= clock_8;
+		clock_8 <= clock_7_t;
+		clock_7_t <= clock_7;
+		clock_7 <= clock_6_2_t;
+		clock_6_2_t <= clock_6_2;
+		clock_6_2 <= clock_6_t;
+		clock_6_t <= clock_6;
+		clock_6 <= clock_5_t;
+		clock_5_t <= clock_5;
+		clock_5 <= clock_4_2_t;
+		clock_4_2_t <= clock_4_2;
+		clock_4_2 <= clock_4_t;
+		clock_4_t <= clock_4;
+		clock_4 <= clock_3_t;
+		clock_3_t <= clock_3;
+		clock_3 <= clock_2_t;
+		clock_2_t <= clock_2;
+		clock_2 <= clock_1_t;
+		clock_1_t <= clock_1;
 	end
 end
 
-always @(posedge clk) begin
-	clock_12_t <= clock_12;
-	clock_12 <= clock_11_t;
-	clock_11_t <= clock_11;
-	clock_11 <= clock_10_t;
-	clock_10_t <= clock_10;
-	clock_10 <= clock_9_t;
-	clock_9_t <= clock_9;
-	clock_9 <= clock_8_2_t;
-	clock_8_2_t <= clock_8_2;
-	clock_8_2 <= clock_8_t;
-	clock_8_t <= clock_8;
-	clock_8 <= clock_7_t;
-	clock_7_t <= clock_7;
-	clock_7 <= clock_6_2_t;
-	clock_6_2_t <= clock_6_2;
-	clock_6_2 <= clock_6_t;
-	clock_6_t <= clock_6;
-	clock_6 <= clock_5_t;
-	clock_5_t <= clock_5;
-	clock_5 <= clock_4_2_t;
-	clock_4_2_t <= clock_4_2;
-	clock_4_2 <= clock_4_t;
-	clock_4_t <= clock_4;
-	clock_4 <= clock_3_t;
-	clock_3_t <= clock_3;
-	clock_3 <= clock_2_t;
-	clock_2_t <= clock_2;
-	clock_2 <= clock_1_t;
-	clock_1_t <= clock_1;
-end
+//always @(posedge clk) begin
+//	clock_12_t <= clock_12;
+//	clock_12 <= clock_11_t;
+//	clock_11_t <= clock_11;
+//	clock_11 <= clock_10_t;
+//	clock_10_t <= clock_10;
+//	clock_10 <= clock_9_t;
+//	clock_9_t <= clock_9;
+//	clock_9 <= clock_8_2_t;
+//	clock_8_2_t <= clock_8_2;
+//	clock_8_2 <= clock_8_t;
+//	clock_8_t <= clock_8;
+//	clock_8 <= clock_7_t;
+//	clock_7_t <= clock_7;
+//	clock_7 <= clock_6_2_t;
+//	clock_6_2_t <= clock_6_2;
+//	clock_6_2 <= clock_6_t;
+//	clock_6_t <= clock_6;
+//	clock_6 <= clock_5_t;
+//	clock_5_t <= clock_5;
+//	clock_5 <= clock_4_2_t;
+//	clock_4_2_t <= clock_4_2;
+//	clock_4_2 <= clock_4_t;
+//	clock_4_t <= clock_4;
+//	clock_4 <= clock_3_t;
+//	clock_3_t <= clock_3;
+//	clock_3 <= clock_2_t;
+//	clock_2_t <= clock_2;
+//	clock_2 <= clock_1_t;
+//	clock_1_t <= clock_1;
+//end
 
 endmodule
 
