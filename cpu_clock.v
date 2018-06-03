@@ -1,6 +1,6 @@
 module cpu_clock(input clk, input reset,
-	output clock_1, output clock_2, output clock_3, output clock_4,
-	output clock_5, output clock_6, output clock_7, output clock_8,
+	output clock_1, output clock_2, output clock_3, output clock_4,clock_4_2,
+	output clock_5, output clock_6, clock_6_2, output clock_7, output clock_8, clock_8_2,
 	output clock_9, output clock_10, output clock_11, output clock_12);
 wire clk;
 wire reset;
@@ -8,10 +8,13 @@ reg clock_1;
 reg clock_2;
 reg clock_3;
 reg clock_4;
+reg clock_4_2;
 reg clock_5;
 reg clock_6;
+reg clock_6_2;
 reg clock_7;
 reg clock_8;
+reg clock_8_2;
 reg clock_9;
 reg clock_10;
 reg clock_11;
@@ -20,10 +23,13 @@ reg clock_1_t;
 reg clock_2_t;
 reg clock_3_t;
 reg clock_4_t;
+reg clock_4_2_t;
 reg clock_5_t;
 reg clock_6_t;
+reg clock_6_2_t;
 reg clock_7_t;
 reg clock_8_t;
+reg clock_8_2_t;
 reg clock_9_t;
 reg clock_10_t;
 reg clock_11_t;
@@ -39,10 +45,13 @@ always @(posedge clk or posedge reset) begin
 		clock_2 <= 1'b0;
 		clock_3 <= 1'b0;
 		clock_4 <= 1'b0;
+		clock_4_2 <= 1'b0;
 		clock_5 <= 1'b0;
 		clock_6 <= 1'b0;
+		clock_6_2 <= 1'b0;
 		clock_7 <= 1'b0;
 		clock_8 <= 1'b0;
+		clock_8_2 <= 1'b0;
 		clock_9 <= 1'b0;
 		clock_10 <= 1'b0;
 		clock_11 <= 1'b0;
@@ -81,15 +90,18 @@ always @(posedge clk) begin
 	clock_10_t <= clock_10;
 	clock_10 <= clock_9_t;
 	clock_9_t <= clock_9;
-	clock_9 <= clock_8_t;
+	clock_9 <= clock_8_2_t;
+	clock_8_2_t <= clock_8;
 	clock_8_t <= clock_8;
 	clock_8 <= clock_7_t;
 	clock_7_t <= clock_7;
-	clock_7 <= clock_6_t;
+	clock_7 <= clock_6_2_t;
+	clock_6_2_t <= clock_6;
 	clock_6_t <= clock_6;
 	clock_6 <= clock_5_t;
 	clock_5_t <= clock_5;
-	clock_5 <= clock_4_t;
+	clock_5 <= clock_4_2_t;
+	clock_4_2_t <= clock_4;
 	clock_4_t <= clock_4;
 	clock_4 <= clock_3_t;
 	clock_3_t <= clock_3;

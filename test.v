@@ -3,10 +3,13 @@ wire clock_1;
 wire clock_2;
 wire clock_3;
 wire clock_4;
+wire clock_4_2;
 wire clock_5;
 wire clock_6;
+wire clock_6_2;
 wire clock_7;
 wire clock_8;
+wire clock_8_2;
 wire clock_9;
 wire clock_10;
 wire clock_11;
@@ -45,8 +48,8 @@ always begin
 end
 
 cpu_clock clock(clk, reset, 
-	clock_1, clock_2, clock_3, clock_4,
-	clock_5, clock_6, clock_7, clock_8,
+	clock_1, clock_2, clock_3, clock_4,clock_4_2,
+	clock_5, clock_6, clock_6_2, clock_7, clock_8, clock_8_2,
 	clock_9, clock_10, clock_11, clock_12);
 
 fetch fetch(reset, clock_1, ope, eip);//32bit‚Ìope‚ªŽè‚É“ü‚é
