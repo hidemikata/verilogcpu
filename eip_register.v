@@ -18,7 +18,7 @@ always @(*)begin
 	end
 end
 
-always @(negedge clock_4)begin//2クロック目はここに足す
+always @(posedge clock_4)begin//2クロック目はここに足す
 	if (read_or_write == 4'h4) begin
 		eip <= write_data;
 	end

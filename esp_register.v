@@ -13,7 +13,7 @@ always @(posedge reset)begin
 		esp <= 32'h00000000;//本当は全部fだが、0からインクリするようにする
 	end
 end
-always @(negedge clock_4)begin
+always @(posedge clock_4)begin
 	if (read_or_write == 4'h1) begin
 		esp <= alu_result_bus;
 	end

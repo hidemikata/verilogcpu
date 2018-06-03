@@ -18,7 +18,7 @@ always @(*)begin
 	end
 end
 
-always @(negedge clock_4)begin//1クロック目
+always @(posedge clock_4)begin//1クロック目
 //	if (read_or_write == 4'h2) begin
 //		//espのアドレスのところに書く。
 //		stack_current <= write_data;

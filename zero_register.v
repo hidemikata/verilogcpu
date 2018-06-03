@@ -11,7 +11,7 @@ always @(*)begin
 		zero <= 32'h0000_0999;//デバッグで999にしてる。
 	end
 end
-always @(negedge clock_4)begin
+always @(posedge clock_4)begin
 	if (write_data == 4'h0) begin
 		zero <= 1'b1;
 	end else begin

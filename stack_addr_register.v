@@ -10,7 +10,7 @@ always @(*)begin
 		stack_addr <= 32'h0000_0999;//デバッグで999にしてる。
 	end
 end
-always @(negedge clock_4)begin
+always @(posedge clock_4)begin
 	if (read_or_write == 4'h5) begin
 		stack_addr <= write_data;
 	end
