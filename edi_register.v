@@ -11,7 +11,7 @@ always @(*)begin
 		edi <= 32'h0000_0888;
 	end
 end
-always @(negedge clock_6)begin
+always @(posedge clock_6)begin
 	if (read_or_write == 4'h6) begin
 		edi <= write_data;
 	end

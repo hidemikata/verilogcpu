@@ -24,12 +24,12 @@ always @(posedge clock_4)begin//2ƒNƒƒbƒN–Ú‚Í‚±‚±‚É‘«‚·
 	end
 end
 
-always @(negedge clock_6)begin
+always @(posedge clock_6)begin
 	if (read_or_write == 4'h4) begin
 		eip <= write_data;
 	end
 end
-always @(negedge clock_8)begin
+always @(posedge clock_8)begin
 	if (read_or_write == 4'h4) begin
 		eip <= write_data;
 	end

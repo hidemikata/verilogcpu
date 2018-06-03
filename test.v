@@ -56,15 +56,15 @@ fetch fetch(reset, clock_1, ope, eip);//32bitのopeが手に入る
 wire [3:0]num_of_ope;
 decode decode(reset, clock_2, ope, reg_load_1, select_1, reg_load_2, select_2, reg_load_3, select_3, num_of_ope);
 
-eip_register eip_register(clock_4_2, clock_6, clock_8, clock_12, num_of_ope, reset, selected_reg_load, alu_result_bus, eip);
-ebp_register ebp_register(clock_4_2, clock_6, reset, selected_reg_load, alu_result_bus, ebp);
+eip_register eip_register(clock_4_2, clock_6_2, clock_8_2, clock_12, num_of_ope, reset, selected_reg_load, alu_result_bus, eip);
+ebp_register ebp_register(clock_4_2, clock_6_2, reset, selected_reg_load, alu_result_bus, ebp);
 stack_addr_register stack_addr_register(clock_4_2, reset, selected_reg_load, alu_result_bus, stack_addr);
-esp_register esp_register(clock_4_2, clock_6, clock_8, reset, selected_reg_load, alu_result_bus, esp);
-eax_register eax_register(clock_4_2, clock_6, reset, selected_reg_load, alu_result_bus, eax);
-edi_register edi_register(clock_4_2, clock_6, reset, selected_reg_load, alu_result_bus, edi);
-ebx_register ebx_register(clock_4_2, clock_6, reset, selected_reg_load, alu_result_bus, ebx);
-zero_register zero_register(clock_4_2, clock_6, reset, selected_reg_load, alu_result_bus, zero);
-stack_memory stack_memory(clock_4_2, clock_6, reset, selected_reg_load, alu_result_bus, esp, stack_addr, stack_current, stack_addr_access, stack_esp);
+esp_register esp_register(clock_4_2, clock_6_2, clock_8_2, reset, selected_reg_load, alu_result_bus, esp);
+eax_register eax_register(clock_4_2, clock_6_2, reset, selected_reg_load, alu_result_bus, eax);
+edi_register edi_register(clock_4_2, clock_6_2, reset, selected_reg_load, alu_result_bus, edi);
+ebx_register ebx_register(clock_4_2, clock_6_2, reset, selected_reg_load, alu_result_bus, ebx);
+zero_register zero_register(clock_4_2, clock_6_2, reset, selected_reg_load, alu_result_bus, zero);
+stack_memory stack_memory(clock_4_2, clock_6_2, reset, selected_reg_load, alu_result_bus, esp, stack_addr, stack_current, stack_addr_access, stack_esp);
 selector selector(clock_3, clock_5, clock_7, select_1, select_2, select_3, eip, ebp,esp, eax, edi,ebx, zero, stack_esp, stack_addr_access, selected_registor_output);//aluに入力するレジスタを選択する。
 
 alu alu(clock_4, clock_6, clock_8, ope, 32'h0000, selected_registor_output, num_of_ope, alu_result_bus, zero, eax);

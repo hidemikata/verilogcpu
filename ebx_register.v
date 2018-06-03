@@ -17,7 +17,7 @@ always @(posedge clock_4)begin
 	end
 end
 
-always @(negedge clock_6)begin
+always @(posedge clock_6)begin
 	if (read_or_write == 4'h7) begin
 		ebx <= write_data;
 	end
