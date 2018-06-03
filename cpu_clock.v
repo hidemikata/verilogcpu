@@ -70,12 +70,12 @@ always @(posedge clk or posedge reset) begin
 		clock_12_t <= 1'b0;
 	end
 	else  begin
-		if (count == 8'h18)
+		if (count == 8'h1e)
 			count <= 8'h01;
 		else 
 			count <= count + 8'h01;
 	
-		if (count == 8'h18)
+		if (count == 8'h1e)
 			clock_1 <= 8'b0000_0001;
 		else
 			clock_1 <= 8'b0000_0000;
@@ -91,17 +91,20 @@ always @(posedge clk) begin
 	clock_10 <= clock_9_t;
 	clock_9_t <= clock_9;
 	clock_9 <= clock_8_2_t;
-	clock_8_2_t <= clock_8;
+	clock_8_2_t <= clock_8_2;
+	clock_8_2 <= clock_8_t;
 	clock_8_t <= clock_8;
 	clock_8 <= clock_7_t;
 	clock_7_t <= clock_7;
 	clock_7 <= clock_6_2_t;
-	clock_6_2_t <= clock_6;
+	clock_6_2_t <= clock_6_2;
+	clock_6_2 <= clock_6_t;
 	clock_6_t <= clock_6;
 	clock_6 <= clock_5_t;
 	clock_5_t <= clock_5;
 	clock_5 <= clock_4_2_t;
-	clock_4_2_t <= clock_4;
+	clock_4_2_t <= clock_4_2;
+	clock_4_2 <= clock_4_t;
 	clock_4_t <= clock_4;
 	clock_4 <= clock_3_t;
 	clock_3_t <= clock_3;
