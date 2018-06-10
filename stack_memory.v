@@ -9,7 +9,7 @@ input wire [31:0]stack_addr;//ƒAƒhƒŒƒX
 output reg [31:0]stack_current;
 output reg [31:0]stack_addr_access;
 output wire [31:0]stack_esp;
-reg [7:0]mem[0:512];//8bit 512ŒÂ
+reg [7:0]mem[0:256];//8bit 512ŒÂ
 
 always @(*)begin
 	stack_addr_access <= {mem[stack_addr+3], mem[stack_addr+2], mem[stack_addr+1], mem[stack_addr]};

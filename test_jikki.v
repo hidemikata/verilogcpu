@@ -1,4 +1,13 @@
-module test;
+module test(clk, reset, switch, out_led, seg7_1FPGA, seg7_2FPGA, seg7_3FPGA, seg7_4FPGA);
+input wire clk;
+input wire reset;
+input wire switch;
+output wire out_led;
+output wire[7:0]seg7_1FPGA;
+output wire[7:0]seg7_2FPGA;
+output wire[7:0]seg7_3FPGA;
+output wire[7:0]seg7_4FPGA;
+
 wire clock_1;
 wire clock_2;
 wire clock_3;
@@ -15,15 +24,15 @@ wire clock_10;
 wire clock_11;
 wire clock_12;
 
-wire [3:0]reg_load_1; //LOAD1,LOAD2,LOAD3,LOAD4‚Ì1ƒTƒCƒNƒ‹–Ú‚Ì–½—ß—p
+wire [3:0]reg_load_1; //LOAD1,LOAD2,LOAD3,LOAD4ï¿½ï¿½1ï¿½Tï¿½Cï¿½Nï¿½ï¿½ï¿½Ú‚Ì–ï¿½ï¿½ß—p
 wire [3:0]select_1;
 wire [3:0]reg_load_2;
 wire [3:0]select_2;
 wire [3:0]reg_load_3;
 wire [3:0]select_3;
 
-reg clk;
-reg reset;
+//reg clk;
+//reg reset;
 wire [31:0]ope;
 wire [31:0]eip;
 wire [3:0]selected_reg_load;
@@ -38,21 +47,21 @@ wire [31:0]stack_current;
 wire [31:0]stack_addr_access;
 wire [31:0]stack_esp;
 wire [31:0]selected_registor_output;
-wire [31:0]stack_addr;//stack‚ÉƒAƒNƒZƒX‚·‚éÛ‚Éesp‚©‚ç‚½‚Ç‚ç‚È‚¢ê‡‚Ég—p‚·‚éB
+wire [31:0]stack_addr;//stackï¿½ÉƒAï¿½Nï¿½Zï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½Û‚ï¿½espï¿½ï¿½ï¿½ç‚½ï¿½Ç‚ï¿½ï¿½È‚ï¿½ï¿½ê‡ï¿½Égï¿½pï¿½ï¿½ï¿½ï¿½ï¿½B
 
 parameter STEP = 2;
 
-always begin
-	clk = 0;#(STEP/2);
-	clk = 1;#(STEP/2);
-end
+//always begin
+//	clk = 0;#(STEP/2);
+//	clk = 1;#(STEP/2);
+//end
 
 cpu_clock clock(clk, reset, 
 	clock_1, clock_2, clock_3, clock_4,clock_4_2,
 	clock_5, clock_6, clock_6_2, clock_7, clock_8, clock_8_2,
 	clock_9, clock_10, clock_11, clock_12);
 
-fetch fetch(reset, clock_1, ope, eip);//32bit‚Ìope‚ªè‚É“ü‚é
+fetch fetch(reset, clock_1, ope, eip);//32bitï¿½ï¿½opeï¿½ï¿½ï¿½ï¿½ï¿½É“ï¿½ï¿½ï¿½
 wire [3:0]num_of_ope;
 decode decode(reset, clock_2, ope, reg_load_1, select_1, reg_load_2, select_2, reg_load_3, select_3, num_of_ope);
 
@@ -65,30 +74,32 @@ edi_register edi_register(clock_4_2, clock_6_2, reset, selected_reg_load, alu_re
 ebx_register ebx_register(clock_4_2, clock_6_2, reset, selected_reg_load, alu_result_bus, ebx);
 zero_register zero_register(clock_4_2, clock_6_2, reset, selected_reg_load, alu_result_bus, zero);
 stack_memory stack_memory(clock_4_2, clock_6_2, reset, selected_reg_load, alu_result_bus, esp, stack_addr, stack_current, stack_addr_access, stack_esp);
-selector selector(clock_3, clock_5, clock_7, select_1, select_2, select_3, eip, ebp,esp, eax, edi,ebx, zero, stack_esp, stack_addr_access, selected_registor_output);//alu‚É“ü—Í‚·‚éƒŒƒWƒXƒ^‚ğ‘I‘ğ‚·‚éB
+selector selector(clock_3, clock_5, clock_7, select_1, select_2, select_3, eip, ebp,esp, eax, edi,ebx, zero, stack_esp, stack_addr_access, selected_registor_output);//aluï¿½É“ï¿½ï¿½Í‚ï¿½ï¿½éƒŒï¿½Wï¿½Xï¿½^ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½B
 
 alu alu(clock_4, clock_6, clock_8, ope, 32'h0000, selected_registor_output, num_of_ope, alu_result_bus, zero, eax);
 alu_result_selector alu_result_selector(clock_4, clock_6, clock_8, reg_load_1, reg_load_2, reg_load_3, selected_reg_load);
 
-wire [7:0]seg7_1FPGA;
-wire [7:0]seg7_2FPGA;
-wire [7:0]seg7_3FPGA;
-wire [7:0]seg7_4FPGA;
-SevenSegmentDec seg7_1(eax[3:0], seg7_1FPGA);//‰E‚Ì7seg
+
+SevenSegmentDec seg7_1(eax[3:0], seg7_1FPGA);//ï¿½Eï¿½ï¿½7seg
 SevenSegmentDec seg7_2(eax[7:4], seg7_2FPGA);
 SevenSegmentDec seg7_3(eax[11:8], seg7_3FPGA);
-SevenSegmentDec seg7_4(eax[15:12], seg7_4FPGA);//¶
+SevenSegmentDec seg7_4(eax[15:12], seg7_4FPGA);//ï¿½ï¿½
+assign out_led=reset;
+//assign seg7_1FPGA = 8'b1111_1110;
+//assign seg7_2FPGA = 8'b1111_1110;
+//assign seg7_3FPGA = 8'b1111_1110;
+//assign seg7_4FPGA = 8'b1111_1110;
 
-initial begin
-	$dumpfile("test.vcd");
-	$dumpvars(0, test);
-	#(STEP);
-	reset = 1;
-	#(STEP);
-	reset = 0;
-	#(STEP*50000);
-	$finish;
-end
+//initial begin
+//	$dumpfile("test.vcd");
+//	$dumpvars(0, test);
+//	#(STEP);
+//	reset = 1;
+//	#(STEP);
+//	reset = 0;
+//	#(STEP*50000);
+//	$finish;
+//end
 
 initial $monitor("%d%d%d%d%d_%d%d%d%d%d%d_%d%d%d%deip[%h]ope[%h]sel1[%d]sel2[%d]sel3[%d]reg_l1[%d]reg_l2[%d]reg_l3[%d]ali[%h]alo[%h]ret[%h]sp[%h]bp[%h]ax[%h]bx[%h]di[%h]z[%h]st_cur[%h]st_esp[%h]st_acc[%h]",//%h,%h,%h,%h,%h",
 	clock_1, clock_2, clock_3, clock_4, clock_4_2,clock_5, clock_6,clock_6_2, clock_7, clock_8,clock_8_2,
@@ -107,12 +118,12 @@ initial $monitor("%d%d%d%d%d_%d%d%d%d%d%d_%d%d%d%deip[%h]ope[%h]sel1[%d]sel2[%d]
 endmodule
 
 // 2018/03/11
-// stack‚ÍƒAƒhƒŒƒX‚ª‘‚¦‚Ä‚¢‚­Š´‚¶‚É‚È‚Á‚Ä‚¢‚éB
+// stackï¿½ÍƒAï¿½hï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É‚È‚ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½B
 //   iverilog.exe .\test.v .\cpu_clock.v .\eip_register.v .\fetch.v .\memory.v .\decode.v .\ebp_register.v .\selector.v .\alu.v alu_result_selector.v .\esp_register.v .\stack_memory.v .\eax_register.v .\stack_addr_register.v .\ebx_register.v .\edi_register.v .\zero_register.v
 //  vvp .\a.out
 //gtkwave.exe .\test.vcd
-//”gŒ`‚Íˆê‰ñvvp‚ÅÀs‚µ‚½‚çvcd‚ªo‚Ä‚­‚éB
+//ï¿½gï¿½`ï¿½Íˆï¿½ï¿½ï¿½vvpï¿½Åï¿½sï¿½ï¿½ï¿½ï¿½ï¿½ï¿½vcdï¿½ï¿½ï¿½oï¿½Ä‚ï¿½ï¿½ï¿½ï¿½B
 //
-//8b5dÀ‘•’†B
-////‚ ‚ÆAƒXƒ^ƒbƒN‚ğ‚»‚ë‚»‚ëã‚°‚Ä‚¢‚­Š´‚¶‚É’¼‚³‚È‚¢‚Æ‚Â‚¶‚Â‚Ü‚ª‚ ‚í‚ñ‚­‚È‚éB
-//ƒtƒBƒ{ƒiƒbƒ`‚ª‚Æ‚è‚ ‚¦‚¸‚Å‚«‚½B
+//8b5dï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B
+////ï¿½ï¿½ï¿½ÆAï¿½Xï¿½^ï¿½bï¿½Nï¿½ï¿½ë‚»ï¿½ï¿½ï¿½ã‚°ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É’ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½Æ‚Â‚ï¿½ï¿½Â‚Ü‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ñ‚­‚È‚ï¿½ï¿½B
+//ï¿½tï¿½Bï¿½{ï¿½iï¿½bï¿½`ï¿½ï¿½ï¿½Æ‚è‚ ï¿½ï¿½ï¿½ï¿½ï¿½Å‚ï¿½ï¿½ï¿½ï¿½B

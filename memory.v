@@ -2,7 +2,7 @@ module program_memory(reset, addr, ope);
 input wire reset;
 input wire [31:0]addr;
 output wire [31:0]ope;
-reg [7:0]mem[0:255];//8bit 256ŒÂ
+reg [7:0]mem[0:128];//8bit 256ŒÂ
 
 assign ope = {mem[addr+0], mem[addr+1], mem[addr+2], mem[addr+3]};
 
